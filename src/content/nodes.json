@@ -1,0 +1,1660 @@
+[
+  {
+    "id": "generative-ai",
+    "name": "Generative AI",
+    "parentId": null,
+    "level": "intro",
+    "oneBreath": "AI that creates new text, images, or other media instead of only classifying what already exists.",
+    "does": [
+      "Create new content from prompts",
+      "Power chatbots and copilots"
+    ],
+    "doesNot": [
+      "Not the whole of AI",
+      "Not magic — it predicts patterns"
+    ],
+    "neighbors": [
+      {
+        "id": "foundations",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "foundations",
+      "label": "Start with foundations"
+    },
+    "analogy": "A very fluent autocomplete for the world.",
+    "example": "Chat assistants, image generators, coding copilots."
+  },
+  {
+    "id": "foundations",
+    "name": "Foundations",
+    "parentId": "generative-ai",
+    "level": "intro",
+    "oneBreath": "The basic building blocks of how language models read and generate text.",
+    "does": [
+      "Explain tokens, embeddings, and context",
+      "Ground later LLM ideas"
+    ],
+    "doesNot": [
+      "Not a full math course",
+      "Not training recipes"
+    ],
+    "neighbors": [
+      {
+        "id": "token",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "token",
+      "label": "Explore foundations"
+    }
+  },
+  {
+    "id": "models",
+    "name": "Models",
+    "parentId": "generative-ai",
+    "level": "intro",
+    "oneBreath": "How modern language models are built, trained, and shaped to follow instructions.",
+    "does": [
+      "Name the core model ideas",
+      "Connect training stages"
+    ],
+    "doesNot": [
+      "Not a hardware guide",
+      "Not every model brand"
+    ],
+    "neighbors": [
+      {
+        "id": "llm",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "llm",
+      "label": "Explore models"
+    }
+  },
+  {
+    "id": "talking-to-models",
+    "name": "Talking to models",
+    "parentId": "generative-ai",
+    "level": "intro",
+    "oneBreath": "How we steer models with prompts and message structure.",
+    "does": [
+      "Improve answers with better prompts",
+      "Structure conversations"
+    ],
+    "doesNot": [
+      "Not the same as training a new model",
+      "Not a guarantee of truth"
+    ],
+    "neighbors": [
+      {
+        "id": "prompt",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "prompt",
+      "label": "Explore talking to models"
+    }
+  },
+  {
+    "id": "giving-models-knowledge",
+    "name": "Giving models knowledge",
+    "parentId": "generative-ai",
+    "level": "intro",
+    "oneBreath": "Ways to ground answers in outside information instead of memory alone.",
+    "does": [
+      "Reduce some hallucinations",
+      "Use your own docs"
+    ],
+    "doesNot": [
+      "Not identical to fine-tuning",
+      "Not automatic truth"
+    ],
+    "neighbors": [
+      {
+        "id": "rag",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "rag",
+      "label": "Explore giving models knowledge"
+    }
+  },
+  {
+    "id": "building-with-models",
+    "name": "Building with models",
+    "parentId": "generative-ai",
+    "level": "intro",
+    "oneBreath": "Turning model calls into tools, agents, and working products.",
+    "does": [
+      "Connect models to actions",
+      "Compose multi-step systems"
+    ],
+    "doesNot": [
+      "Not always necessary for simple chat",
+      "Not true human agency"
+    ],
+    "neighbors": [
+      {
+        "id": "agent",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "agent",
+      "label": "Explore building with models"
+    }
+  },
+  {
+    "id": "trust-and-quality",
+    "name": "Trust & quality",
+    "parentId": "generative-ai",
+    "level": "intro",
+    "oneBreath": "How we measure, constrain, and ship models responsibly.",
+    "does": [
+      "Evaluate quality",
+      "Add safety limits"
+    ],
+    "doesNot": [
+      "Not solved forever",
+      "Not only a legal checklist"
+    ],
+    "neighbors": [
+      {
+        "id": "evaluation",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "evaluation",
+      "label": "Explore trust & quality"
+    }
+  },
+  {
+    "id": "token",
+    "name": "Token",
+    "parentId": "foundations",
+    "level": "intro",
+    "oneBreath": "A small chunk of text the model reads and writes — often a word piece, not always a full word.",
+    "does": [
+      "Break text into model-sized pieces",
+      "Count toward context limits"
+    ],
+    "doesNot": [
+      "Not always one word",
+      "Not the same as an embedding"
+    ],
+    "neighbors": [
+      {
+        "id": "embedding",
+        "relation": "next"
+      },
+      {
+        "id": "context-window",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "embedding",
+      "label": "See embeddings"
+    },
+    "analogy": "LEGO bricks that make sentences.",
+    "example": "\"Chatbot\" may be one or two tokens."
+  },
+  {
+    "id": "embedding",
+    "name": "Embedding",
+    "parentId": "foundations",
+    "level": "core",
+    "oneBreath": "A list of numbers that places meaning in a space so similar ideas sit closer together.",
+    "does": [
+      "Compare similarity of text",
+      "Power search and RAG"
+    ],
+    "doesNot": [
+      "Not human-readable text",
+      "Not a full explanation by itself"
+    ],
+    "neighbors": [
+      {
+        "id": "token",
+        "relation": "prereq"
+      },
+      {
+        "id": "vector-database",
+        "relation": "usedIn"
+      },
+      {
+        "id": "rag",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "context-window",
+      "label": "See the context window"
+    },
+    "analogy": "A map pin for meaning.",
+    "example": "Finding similar support tickets by meaning, not keywords."
+  },
+  {
+    "id": "context-window",
+    "name": "Context window",
+    "parentId": "foundations",
+    "level": "core",
+    "oneBreath": "How much text a model can see at once in one conversation turn — its working memory size.",
+    "does": [
+      "Limits what you can paste in",
+      "Shapes long-chat design"
+    ],
+    "doesNot": [
+      "Not permanent memory",
+      "Not infinite"
+    ],
+    "neighbors": [
+      {
+        "id": "token",
+        "relation": "prereq"
+      },
+      {
+        "id": "memory",
+        "relation": "sibling"
+      },
+      {
+        "id": "prompt",
+        "relation": "usedIn"
+      },
+      {
+        "id": "long-context-vs-rag",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "probability-next-token",
+      "label": "See next-token prediction"
+    },
+    "analogy": "A desk that only holds so many pages.",
+    "example": "A model that forgets early chat once the window fills."
+  },
+  {
+    "id": "probability-next-token",
+    "name": "Probability / next-token",
+    "parentId": "foundations",
+    "level": "core",
+    "oneBreath": "Models generate by repeatedly choosing a likely next token given everything so far.",
+    "does": [
+      "Explain why outputs vary",
+      "Underpins sampling and temperature"
+    ],
+    "doesNot": [
+      "Not guaranteed truth",
+      "Not planning like a human"
+    ],
+    "neighbors": [
+      {
+        "id": "token",
+        "relation": "prereq"
+      },
+      {
+        "id": "temperature",
+        "relation": "next"
+      },
+      {
+        "id": "llm",
+        "relation": "sibling"
+      },
+      {
+        "id": "hallucination",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "llm",
+      "label": "Meet the LLM"
+    },
+    "analogy": "Predicting the next word in a sentence game.",
+    "example": "Why two runs of the same prompt can differ."
+  },
+  {
+    "id": "temperature",
+    "name": "Temperature",
+    "alias": "Sampling temperature",
+    "parentId": "foundations",
+    "level": "intro",
+    "oneBreath": "A dial that controls how boldly the model samples the next token — lower is safer and more repetitive; higher is wilder.",
+    "does": [
+      "Change how random the wording feels",
+      "Trade creativity against consistency"
+    ],
+    "doesNot": [
+      "Not a measure of model intelligence",
+      "Not a truthfulness setting"
+    ],
+    "neighbors": [
+      {
+        "id": "probability-next-token",
+        "relation": "prereq"
+      },
+      {
+        "id": "prompt",
+        "relation": "usedIn"
+      },
+      {
+        "id": "context-window",
+        "relation": "sibling"
+      },
+      {
+        "id": "structured-output",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "prompt",
+      "label": "Try it with prompting"
+    },
+    "analogy": "Turning up the spice on a recipe.",
+    "example": "Creative brainstorming at higher temperature; code at lower."
+  },
+  {
+    "id": "llm",
+    "name": "LLM",
+    "parentId": "models",
+    "level": "intro",
+    "oneBreath": "A large language model — a neural net trained on huge text to predict and generate language.",
+    "does": [
+      "Answer questions in natural language",
+      "Draft, summarize, translate, code"
+    ],
+    "doesNot": [
+      "Not a database of facts",
+      "Not always up to date"
+    ],
+    "neighbors": [
+      {
+        "id": "transformer",
+        "relation": "usedIn"
+      },
+      {
+        "id": "prompt",
+        "relation": "next"
+      },
+      {
+        "id": "rag",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "transformer",
+      "label": "See the Transformer"
+    },
+    "analogy": "A student who read the internet and patterns answers.",
+    "example": "ChatGPT-style assistants."
+  },
+  {
+    "id": "transformer",
+    "name": "Transformer",
+    "parentId": "models",
+    "level": "core",
+    "oneBreath": "The neural architecture behind modern LLMs, built around attention instead of older sequence tricks.",
+    "does": [
+      "Process tokens in parallel",
+      "Scale to large models"
+    ],
+    "doesNot": [
+      "Not the only neural architecture ever",
+      "Not a product name"
+    ],
+    "neighbors": [
+      {
+        "id": "attention",
+        "relation": "usedIn"
+      },
+      {
+        "id": "llm",
+        "relation": "sibling"
+      },
+      {
+        "id": "pretraining",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "attention",
+      "label": "Understand attention"
+    },
+    "analogy": "A reading group where every word can look at every other word.",
+    "example": "GPT, Claude, Gemini model families."
+  },
+  {
+    "id": "attention",
+    "name": "Attention",
+    "parentId": "models",
+    "level": "core",
+    "oneBreath": "A mechanism that lets the model weigh which earlier tokens matter most when predicting the next one.",
+    "does": [
+      "Link related words across a sentence",
+      "Power transformers"
+    ],
+    "doesNot": [
+      "Not human attention",
+      "Not a UI feature"
+    ],
+    "neighbors": [
+      {
+        "id": "transformer",
+        "relation": "usedIn"
+      },
+      {
+        "id": "context-window",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "transformer",
+      "label": "Back to Transformer"
+    },
+    "analogy": "Highlighting the important parts of a paragraph.",
+    "example": "Connecting \"it\" to the right noun."
+  },
+  {
+    "id": "pretraining",
+    "name": "Pretraining",
+    "parentId": "models",
+    "level": "core",
+    "oneBreath": "The first long training phase where a model learns general language patterns from massive text.",
+    "does": [
+      "Build broad language skill",
+      "Create a base model"
+    ],
+    "doesNot": [
+      "Not the same as fine-tuning for your task",
+      "Not instruction-following by default"
+    ],
+    "neighbors": [
+      {
+        "id": "fine-tuning",
+        "relation": "next"
+      },
+      {
+        "id": "llm",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "fine-tuning",
+      "label": "See fine-tuning"
+    },
+    "analogy": "Reading the whole library before specializing.",
+    "example": "Base models before chat tuning."
+  },
+  {
+    "id": "fine-tuning",
+    "name": "Fine-tuning",
+    "parentId": "models",
+    "level": "core",
+    "oneBreath": "Further training on a smaller, focused dataset so the model behaves better for a domain or style.",
+    "does": [
+      "Specialize a base model",
+      "Change tone or format habits"
+    ],
+    "doesNot": [
+      "Not always better than good prompts + RAG",
+      "Not free or risk-free"
+    ],
+    "neighbors": [
+      {
+        "id": "pretraining",
+        "relation": "prereq"
+      },
+      {
+        "id": "instruction-tuning",
+        "relation": "sibling"
+      },
+      {
+        "id": "rag",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "instruction-tuning",
+      "label": "See instruction tuning"
+    },
+    "analogy": "Apprenticeship after general school.",
+    "example": "A support bot tuned on your tickets."
+  },
+  {
+    "id": "instruction-tuning",
+    "name": "Instruction tuning",
+    "parentId": "models",
+    "level": "core",
+    "oneBreath": "Training that teaches a model to follow natural-language instructions and chat formats.",
+    "does": [
+      "Make models helpful in chat",
+      "Follow task directions better"
+    ],
+    "doesNot": [
+      "Not the same as giving live documents",
+      "Not full alignment alone"
+    ],
+    "neighbors": [
+      {
+        "id": "fine-tuning",
+        "relation": "sibling"
+      },
+      {
+        "id": "alignment",
+        "relation": "next"
+      },
+      {
+        "id": "prompt",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "alignment",
+      "label": "See alignment"
+    },
+    "analogy": "Teaching manners and how to take directions.",
+    "example": "Chat models vs raw base models."
+  },
+  {
+    "id": "alignment",
+    "name": "Alignment (RLHF / preference)",
+    "parentId": "models",
+    "level": "frontier",
+    "oneBreath": "Techniques that steer models toward preferred, safer, more helpful behavior using human or AI feedback.",
+    "does": [
+      "Reduce rude or harmful defaults",
+      "Prefer answers people rate highly"
+    ],
+    "doesNot": [
+      "Not perfect safety",
+      "Not a moral guarantee"
+    ],
+    "neighbors": [
+      {
+        "id": "instruction-tuning",
+        "relation": "prereq"
+      },
+      {
+        "id": "guardrails",
+        "relation": "sibling"
+      },
+      {
+        "id": "safety-misuse",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "guardrails",
+      "label": "See guardrails"
+    },
+    "analogy": "Coaching after practice tests.",
+    "example": "Thumbs-up/down training loops.",
+    "aliases": [
+      "RLHF",
+      "preference tuning"
+    ],
+    "year": 2022
+  },
+  {
+    "id": "prompt",
+    "name": "Prompt",
+    "parentId": "talking-to-models",
+    "level": "intro",
+    "oneBreath": "The text (and structure) you give the model to steer what it should do next.",
+    "does": [
+      "Ask for a task",
+      "Set format and constraints"
+    ],
+    "doesNot": [
+      "Not model training",
+      "Not a secret spell"
+    ],
+    "neighbors": [
+      {
+        "id": "system-vs-user-message",
+        "relation": "next"
+      },
+      {
+        "id": "few-shot",
+        "relation": "sibling"
+      },
+      {
+        "id": "llm",
+        "relation": "usedIn"
+      },
+      {
+        "id": "prompt-injection",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "system-vs-user-message",
+      "label": "See message roles"
+    },
+    "analogy": "A brief to a contractor.",
+    "example": "Summarize this email in 3 bullets."
+  },
+  {
+    "id": "system-vs-user-message",
+    "name": "System vs user message",
+    "parentId": "talking-to-models",
+    "level": "core",
+    "oneBreath": "Chat APIs separate standing instructions (system) from the person's messages (user) and the model's replies.",
+    "does": [
+      "Set durable behavior rules",
+      "Keep user content distinct"
+    ],
+    "doesNot": [
+      "Not supported identically everywhere",
+      "Not a security boundary by itself"
+    ],
+    "neighbors": [
+      {
+        "id": "prompt",
+        "relation": "prereq"
+      },
+      {
+        "id": "structured-output",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "few-shot",
+      "label": "See few-shot"
+    },
+    "analogy": "Employee handbook vs today's request.",
+    "example": "System: be concise. User: explain RAG."
+  },
+  {
+    "id": "few-shot",
+    "name": "Few-shot",
+    "parentId": "talking-to-models",
+    "level": "core",
+    "oneBreath": "Showing a few examples in the prompt so the model mirrors the pattern.",
+    "does": [
+      "Teach format quickly",
+      "Steer style without fine-tuning"
+    ],
+    "doesNot": [
+      "Not unlimited examples (context cost)",
+      "Not as strong as dedicated training sometimes"
+    ],
+    "neighbors": [
+      {
+        "id": "prompt",
+        "relation": "prereq"
+      },
+      {
+        "id": "chain-of-thought",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "chain-of-thought",
+      "label": "See chain-of-thought"
+    },
+    "analogy": "Show two solved problems before the real one.",
+    "example": "Example input/output pairs in a prompt."
+  },
+  {
+    "id": "chain-of-thought",
+    "name": "Chain-of-thought",
+    "parentId": "talking-to-models",
+    "level": "core",
+    "oneBreath": "Asking the model to reason step by step before the final answer — sometimes improves hard tasks.",
+    "does": [
+      "Help multi-step reasoning",
+      "Make intermediate steps visible"
+    ],
+    "doesNot": [
+      "Not always better",
+      "Not true private thinking in all systems"
+    ],
+    "neighbors": [
+      {
+        "id": "few-shot",
+        "relation": "sibling"
+      },
+      {
+        "id": "structured-output",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "structured-output",
+      "label": "See structured output"
+    },
+    "analogy": "Showing your work on a math test.",
+    "example": "Think step by step, then answer."
+  },
+  {
+    "id": "structured-output",
+    "name": "Structured output",
+    "parentId": "talking-to-models",
+    "level": "core",
+    "oneBreath": "Forcing the model to reply in a strict shape like JSON so software can parse it reliably.",
+    "does": [
+      "Feed apps and tools",
+      "Reduce messy free text"
+    ],
+    "doesNot": [
+      "Not immune to invalid JSON without checks",
+      "Not needed for casual chat"
+    ],
+    "neighbors": [
+      {
+        "id": "tool-use",
+        "relation": "next"
+      },
+      {
+        "id": "prompt",
+        "relation": "prereq"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "tool-use",
+      "label": "See tool use"
+    },
+    "analogy": "Filling a form instead of writing a letter.",
+    "example": "JSON schemas in API calls."
+  },
+  {
+    "id": "prompt-injection",
+    "name": "Prompt injection",
+    "parentId": "talking-to-models",
+    "level": "core",
+    "oneBreath": "When untrusted text tricks the model into ignoring its instructions — like a forged note slipped into the prompt.",
+    "does": [
+      "Override system rules via user or retrieved content",
+      "Expose tools and data if the agent obeys"
+    ],
+    "doesNot": [
+      "Not the same as jailbreaking the model weights",
+      "Not fixed by temperature"
+    ],
+    "neighbors": [
+      {
+        "id": "prompt",
+        "relation": "prereq"
+      },
+      {
+        "id": "system-vs-user-message",
+        "relation": "sibling"
+      },
+      {
+        "id": "guardrails",
+        "relation": "usedIn"
+      },
+      {
+        "id": "rag",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "guardrails",
+      "label": "See guardrails"
+    },
+    "analogy": "A sticky note on a recipe that says ignore the chef.",
+    "example": "A web page telling a browsing agent to email secrets.",
+    "changing": "As agents read more untrusted content, injection becomes a first-class design problem."
+  },
+  {
+    "id": "hallucination",
+    "name": "Hallucination",
+    "parentId": "giving-models-knowledge",
+    "level": "intro",
+    "oneBreath": "When a model states something false or made-up with a confident tone.",
+    "does": [
+      "Name a key failure mode",
+      "Motivate grounding techniques"
+    ],
+    "doesNot": [
+      "Not always intentional lying",
+      "Not unique to one vendor"
+    ],
+    "neighbors": [
+      {
+        "id": "rag",
+        "relation": "next"
+      },
+      {
+        "id": "evaluation",
+        "relation": "usedIn"
+      },
+      {
+        "id": "probability-next-token",
+        "relation": "prereq"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "rag",
+      "label": "See how RAG helps"
+    },
+    "analogy": "A fluent storyteller inventing citations.",
+    "example": "A fake paper title in an answer."
+  },
+  {
+    "id": "rag",
+    "name": "RAG",
+    "parentId": "giving-models-knowledge",
+    "level": "core",
+    "oneBreath": "Retrieval-Augmented Generation: look up relevant text, then generate an answer using it.",
+    "does": [
+      "Ground answers in your docs or the web",
+      "Reduce some hallucinations"
+    ],
+    "doesNot": [
+      "Not the same as fine-tuning",
+      "Not a guarantee of truth"
+    ],
+    "neighbors": [
+      {
+        "id": "hallucination",
+        "relation": "prereq"
+      },
+      {
+        "id": "vector-database",
+        "relation": "usedIn"
+      },
+      {
+        "id": "long-context-vs-rag",
+        "relation": "sibling"
+      },
+      {
+        "id": "agent",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "retrieval",
+      "label": "See retrieval"
+    },
+    "analogy": "An open-book exam instead of closed-book.",
+    "example": "Company chatbot over an internal wiki."
+  },
+  {
+    "id": "chunking",
+    "name": "Chunking",
+    "parentId": "giving-models-knowledge",
+    "level": "core",
+    "oneBreath": "Splitting documents into smaller pieces so search can retrieve the right passages.",
+    "does": [
+      "Make long docs searchable",
+      "Feed RAG pipelines"
+    ],
+    "doesNot": [
+      "Not one perfect chunk size forever",
+      "Not the same as tokenization"
+    ],
+    "neighbors": [
+      {
+        "id": "rag",
+        "relation": "usedIn"
+      },
+      {
+        "id": "retrieval",
+        "relation": "next"
+      },
+      {
+        "id": "embedding",
+        "relation": "prereq"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "vector-database",
+      "label": "See vector databases"
+    },
+    "analogy": "Cutting a book into indexed note cards.",
+    "example": "Splitting a PDF into overlapping paragraphs."
+  },
+  {
+    "id": "vector-database",
+    "name": "Vector database",
+    "parentId": "giving-models-knowledge",
+    "level": "core",
+    "oneBreath": "Storage optimized for finding items with similar embeddings quickly.",
+    "does": [
+      "Power semantic search",
+      "Back RAG systems"
+    ],
+    "doesNot": [
+      "Not a replacement for all SQL needs",
+      "Not magic quality by itself"
+    ],
+    "neighbors": [
+      {
+        "id": "embedding",
+        "relation": "prereq"
+      },
+      {
+        "id": "rag",
+        "relation": "usedIn"
+      },
+      {
+        "id": "retrieval",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "retrieval",
+      "label": "See retrieval"
+    },
+    "analogy": "A library sorted by meaning-neighborhoods.",
+    "example": "Pinecone, Weaviate, pgvector-style stores."
+  },
+  {
+    "id": "retrieval",
+    "name": "Retrieval",
+    "parentId": "giving-models-knowledge",
+    "level": "core",
+    "oneBreath": "The step that finds the most relevant chunks for a question before generation.",
+    "does": [
+      "Select evidence for the model",
+      "Rank candidates"
+    ],
+    "doesNot": [
+      "Not generation itself",
+      "Not perfect relevance always"
+    ],
+    "neighbors": [
+      {
+        "id": "chunking",
+        "relation": "prereq"
+      },
+      {
+        "id": "reranking",
+        "relation": "next"
+      },
+      {
+        "id": "rag",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "reranking",
+      "label": "See reranking"
+    },
+    "analogy": "A librarian fetching the best pages.",
+    "example": "Top-k nearest embedding matches."
+  },
+  {
+    "id": "reranking",
+    "name": "Reranking",
+    "parentId": "giving-models-knowledge",
+    "level": "frontier",
+    "oneBreath": "A second pass that reorders retrieved chunks so the best evidence rises to the top.",
+    "does": [
+      "Improve RAG precision",
+      "Filter noisy matches"
+    ],
+    "doesNot": [
+      "Not free (extra compute)",
+      "Not required for every app"
+    ],
+    "neighbors": [
+      {
+        "id": "retrieval",
+        "relation": "prereq"
+      },
+      {
+        "id": "rag",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "rag",
+      "label": "Back to RAG"
+    },
+    "analogy": "Resorting search results with a sharper judge.",
+    "example": "Cross-encoder rerankers."
+  },
+  {
+    "id": "long-context-vs-rag",
+    "name": "Long context vs RAG",
+    "parentId": "giving-models-knowledge",
+    "level": "core",
+    "oneBreath": "Two ways to give a model more information: stuff it in a huge window, or fetch only what matters. Often you combine both.",
+    "does": [
+      "Clarify when to retrieve vs paste everything",
+      "Frame cost, latency, and freshness tradeoffs"
+    ],
+    "doesNot": [
+      "Not a claim that one always wins",
+      "Not the same as fine-tuning"
+    ],
+    "neighbors": [
+      {
+        "id": "context-window",
+        "relation": "prereq"
+      },
+      {
+        "id": "rag",
+        "relation": "sibling"
+      },
+      {
+        "id": "retrieval",
+        "relation": "sibling"
+      },
+      {
+        "id": "latency-cost",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "rag",
+      "label": "See RAG"
+    },
+    "analogy": "Carrying the whole library vs asking the librarian for three books.",
+    "example": "Paste a short spec into context; retrieve from a 10k-doc wiki with RAG."
+  },
+  {
+    "id": "tool-use",
+    "name": "Tool use / function calling",
+    "parentId": "building-with-models",
+    "level": "core",
+    "oneBreath": "Letting a model call external functions — search, calculators, APIs — instead of only writing text.",
+    "does": [
+      "Take real actions",
+      "Fetch live data"
+    ],
+    "doesNot": [
+      "Not unrestricted computer control by default",
+      "Not reliable without validation"
+    ],
+    "neighbors": [
+      {
+        "id": "structured-output",
+        "relation": "prereq"
+      },
+      {
+        "id": "agent",
+        "relation": "next"
+      },
+      {
+        "id": "skill",
+        "relation": "sibling"
+      },
+      {
+        "id": "mcp",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "agent",
+      "label": "See agents"
+    },
+    "analogy": "Asking an assistant to use a calculator app.",
+    "example": "Booking API called from a chat."
+  },
+  {
+    "id": "agent",
+    "name": "Agent",
+    "parentId": "building-with-models",
+    "level": "core",
+    "oneBreath": "A system where a model plans steps, uses tools, and loops toward a goal with some autonomy.",
+    "does": [
+      "Handle multi-step tasks",
+      "Combine reasoning and tools"
+    ],
+    "doesNot": [
+      "Not a person",
+      "Not always better than a simple prompt"
+    ],
+    "neighbors": [
+      {
+        "id": "tool-use",
+        "relation": "prereq"
+      },
+      {
+        "id": "agent-harness",
+        "relation": "next"
+      },
+      {
+        "id": "skill",
+        "relation": "sibling"
+      },
+      {
+        "id": "human-in-the-loop",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "memory",
+      "label": "See memory"
+    },
+    "analogy": "An intern with a checklist and apps.",
+    "example": "A bot that researches then files a ticket."
+  },
+  {
+    "id": "multi-agent",
+    "name": "Multi-agent",
+    "parentId": "building-with-models",
+    "level": "frontier",
+    "oneBreath": "Several specialized agents collaborating — or debating — to complete a job.",
+    "does": [
+      "Split roles (research, critique, write)",
+      "Parallelize work"
+    ],
+    "doesNot": [
+      "Not automatically smarter",
+      "Harder to debug"
+    ],
+    "neighbors": [
+      {
+        "id": "agent",
+        "relation": "prereq"
+      },
+      {
+        "id": "orchestration",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "orchestration",
+      "label": "See orchestration"
+    },
+    "analogy": "A small team with different jobs.",
+    "example": "Researcher + editor agent pair."
+  },
+  {
+    "id": "memory",
+    "name": "Memory",
+    "parentId": "building-with-models",
+    "level": "core",
+    "oneBreath": "Ways a system remembers facts across turns or sessions beyond the raw context window.",
+    "does": [
+      "Personalize over time",
+      "Store user preferences"
+    ],
+    "doesNot": [
+      "Not the same as the context window alone",
+      "Raises privacy stakes"
+    ],
+    "neighbors": [
+      {
+        "id": "context-window",
+        "relation": "sibling"
+      },
+      {
+        "id": "agent",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "context-window",
+      "label": "Compare to context window"
+    },
+    "analogy": "A notebook the assistant keeps.",
+    "example": "Saved profile facts between chats."
+  },
+  {
+    "id": "orchestration",
+    "name": "Orchestration",
+    "parentId": "building-with-models",
+    "level": "core",
+    "oneBreath": "The control layer that sequences prompts, tools, retrieval, and agents into a reliable workflow.",
+    "does": [
+      "Glue components together",
+      "Add retries and routing"
+    ],
+    "doesNot": [
+      "Not the model weights themselves",
+      "Can become over-complex"
+    ],
+    "neighbors": [
+      {
+        "id": "agent",
+        "relation": "usedIn"
+      },
+      {
+        "id": "rag",
+        "relation": "usedIn"
+      },
+      {
+        "id": "tool-use",
+        "relation": "usedIn"
+      },
+      {
+        "id": "agent-harness",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "evaluation",
+      "label": "Think about quality"
+    },
+    "analogy": "A stage manager for the show.",
+    "example": "Workflow engines and agent graphs."
+  },
+  {
+    "id": "skill",
+    "name": "Skill",
+    "alias": "Agent skill",
+    "parentId": "building-with-models",
+    "level": "frontier",
+    "oneBreath": "A reusable pack of instructions (and often tools or scripts) that an agent can load to perform a specific job well.",
+    "does": [
+      "Package know-how for repeatable tasks",
+      "Let agents specialize without retraining the model"
+    ],
+    "doesNot": [
+      "Not a human soft skill",
+      "Not the same as fine-tuning the model"
+    ],
+    "neighbors": [
+      {
+        "id": "agent",
+        "relation": "prereq"
+      },
+      {
+        "id": "tool-use",
+        "relation": "sibling"
+      },
+      {
+        "id": "agent-harness",
+        "relation": "usedIn"
+      },
+      {
+        "id": "orchestration",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "agent-harness",
+      "label": "See the harness"
+    },
+    "analogy": "A recipe card plus the utensils for one dish.",
+    "example": "A \"review this PR\" skill with steps, a checklist, and repo tools.",
+    "aliases": [
+      "agent skill",
+      "capability pack"
+    ],
+    "relatedTechniques": [
+      "tool-use",
+      "agent-harness",
+      "orchestration"
+    ],
+    "changing": "Skills are emerging as a portable unit of agent capability across products."
+  },
+  {
+    "id": "agent-harness",
+    "name": "Agent harness",
+    "alias": "Agent runtime",
+    "parentId": "building-with-models",
+    "level": "frontier",
+    "oneBreath": "The scaffolding that runs an agent safely — tool permissions, loops, sandboxes, retries, and traces — separate from the model itself.",
+    "does": [
+      "Bound how an agent acts in the real world",
+      "Add safety rails and observability around the loop"
+    ],
+    "doesNot": [
+      "Not the LLM weights",
+      "Not a single prompt"
+    ],
+    "neighbors": [
+      {
+        "id": "agent",
+        "relation": "prereq"
+      },
+      {
+        "id": "orchestration",
+        "relation": "sibling"
+      },
+      {
+        "id": "tool-use",
+        "relation": "usedIn"
+      },
+      {
+        "id": "evaluation",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "skill",
+      "label": "See skills"
+    },
+    "analogy": "A workshop bench with tools bolted down and a kill switch.",
+    "example": "A coding agent limited to one project folder that logs every tool call.",
+    "aliases": [
+      "agent runtime",
+      "agent loop"
+    ],
+    "relatedTechniques": [
+      "tool-use",
+      "evaluation",
+      "guardrails"
+    ],
+    "changing": "Harness design is becoming as important as model choice for reliable agents."
+  },
+  {
+    "id": "human-in-the-loop",
+    "name": "Human-in-the-loop",
+    "alias": "HITL",
+    "parentId": "building-with-models",
+    "level": "core",
+    "oneBreath": "Keeping a person in the decision path — approve, edit, or stop — before the agent takes risky actions.",
+    "does": [
+      "Add checkpoints for high-stakes steps",
+      "Catch mistakes tools would otherwise ship"
+    ],
+    "doesNot": [
+      "Not a reason to skip automation entirely",
+      "Not the same as training the model"
+    ],
+    "neighbors": [
+      {
+        "id": "agent",
+        "relation": "prereq"
+      },
+      {
+        "id": "agent-harness",
+        "relation": "usedIn"
+      },
+      {
+        "id": "orchestration",
+        "relation": "sibling"
+      },
+      {
+        "id": "guardrails",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "agent-harness",
+      "label": "See the harness"
+    },
+    "analogy": "A co-pilot who still asks before landing.",
+    "example": "Agent drafts a PR; you click approve before it merges."
+  },
+  {
+    "id": "mcp",
+    "name": "MCP",
+    "alias": "Model Context Protocol",
+    "parentId": "building-with-models",
+    "level": "frontier",
+    "oneBreath": "An open way for apps and agents to plug into tools and data sources through a shared protocol — instead of one-off integrations.",
+    "does": [
+      "Standardize how tools and context are exposed",
+      "Let many clients reuse the same servers"
+    ],
+    "doesNot": [
+      "Not a model by itself",
+      "Not required for every simple chatbot"
+    ],
+    "neighbors": [
+      {
+        "id": "tool-use",
+        "relation": "prereq"
+      },
+      {
+        "id": "agent",
+        "relation": "sibling"
+      },
+      {
+        "id": "skill",
+        "relation": "sibling"
+      },
+      {
+        "id": "agent-harness",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "tool-use",
+      "label": "See tool use"
+    },
+    "analogy": "USB for AI tools — one plug shape, many devices.",
+    "example": "An IDE agent connecting to GitHub and docs via MCP servers.",
+    "aliases": [
+      "Model Context Protocol"
+    ],
+    "relatedTechniques": [
+      "tool-use",
+      "agent-harness",
+      "skill"
+    ],
+    "changing": "MCP is quickly becoming a common glue layer across agent products."
+  },
+  {
+    "id": "evaluation",
+    "name": "Evaluation",
+    "parentId": "trust-and-quality",
+    "level": "core",
+    "oneBreath": "Measuring how well a model or system performs — with tests, graders, and real user signals.",
+    "does": [
+      "Catch regressions",
+      "Compare approaches fairly"
+    ],
+    "doesNot": [
+      "Not one universal score",
+      "Not only vibe checks"
+    ],
+    "neighbors": [
+      {
+        "id": "hallucination",
+        "relation": "usedIn"
+      },
+      {
+        "id": "guardrails",
+        "relation": "sibling"
+      },
+      {
+        "id": "observability",
+        "relation": "sibling"
+      },
+      {
+        "id": "agent-harness",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "guardrails",
+      "label": "See guardrails"
+    },
+    "analogy": "Exams for the assistant.",
+    "example": "Golden question sets and A/B tests."
+  },
+  {
+    "id": "guardrails",
+    "name": "Guardrails",
+    "parentId": "trust-and-quality",
+    "level": "core",
+    "oneBreath": "Filters and policies that block or reshape unsafe, off-policy, or malformed inputs and outputs.",
+    "does": [
+      "Reduce harmful completions",
+      "Enforce business rules"
+    ],
+    "doesNot": [
+      "Not perfect",
+      "Not a substitute for alignment work"
+    ],
+    "neighbors": [
+      {
+        "id": "safety-misuse",
+        "relation": "sibling"
+      },
+      {
+        "id": "alignment",
+        "relation": "sibling"
+      },
+      {
+        "id": "evaluation",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "safety-misuse",
+      "label": "See safety"
+    },
+    "analogy": "Bouncers at the door.",
+    "example": "PII redaction and topic blocks."
+  },
+  {
+    "id": "latency-cost",
+    "name": "Latency & cost",
+    "parentId": "trust-and-quality",
+    "level": "core",
+    "oneBreath": "How long responses take and how much each call costs — central product constraints.",
+    "does": [
+      "Budget model choices",
+      "Design caching and routing"
+    ],
+    "doesNot": [
+      "Not only a finance problem",
+      "Not fixed forever as models change"
+    ],
+    "neighbors": [
+      {
+        "id": "evaluation",
+        "relation": "sibling"
+      },
+      {
+        "id": "orchestration",
+        "relation": "usedIn"
+      },
+      {
+        "id": "observability",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "evaluation",
+      "label": "Tie to evaluation"
+    },
+    "analogy": "Taxi meter and travel time.",
+    "example": "Choosing a smaller model for autocomplete."
+  },
+  {
+    "id": "safety-misuse",
+    "name": "Safety / misuse",
+    "parentId": "trust-and-quality",
+    "level": "core",
+    "oneBreath": "Risks of harmful use — and practices to reduce abuse, leakage, and dangerous assistance.",
+    "does": [
+      "Frame real-world harm paths",
+      "Guide policy and product limits"
+    ],
+    "doesNot": [
+      "Not only jailbreak memes",
+      "Not solved by one filter"
+    ],
+    "neighbors": [
+      {
+        "id": "guardrails",
+        "relation": "sibling"
+      },
+      {
+        "id": "alignment",
+        "relation": "prereq"
+      },
+      {
+        "id": "prompt-injection",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "guardrails",
+      "label": "See guardrails"
+    },
+    "analogy": "Locks and norms for powerful tools.",
+    "example": "Rate limits, monitoring, refusal policies."
+  },
+  {
+    "id": "observability",
+    "name": "Observability / tracing",
+    "alias": "Tracing",
+    "parentId": "trust-and-quality",
+    "level": "core",
+    "oneBreath": "Recording prompts, tool calls, timings, and outcomes so you can see why an agent or chain behaved the way it did.",
+    "does": [
+      "Debug multi-step failures",
+      "Measure cost and latency in production"
+    ],
+    "doesNot": [
+      "Not evaluation by itself",
+      "Not a substitute for guardrails"
+    ],
+    "neighbors": [
+      {
+        "id": "evaluation",
+        "relation": "sibling"
+      },
+      {
+        "id": "agent-harness",
+        "relation": "usedIn"
+      },
+      {
+        "id": "latency-cost",
+        "relation": "sibling"
+      },
+      {
+        "id": "orchestration",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "evaluation",
+      "label": "See evaluation"
+    },
+    "analogy": "A flight recorder for the assistant.",
+    "example": "A trace UI showing each tool call and token spend for a failed task.",
+    "relatedTechniques": [
+      "evaluation",
+      "latency-cost",
+      "agent-harness"
+    ]
+  }
+]
