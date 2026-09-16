@@ -385,3 +385,25 @@ body {
     transform: none;
   }
 }
+
+/* Phones: drop expensive blur / grain so pan+zoom stays smooth */
+@media (max-width: 767px), (pointer: coarse) {
+  .canopy-grain,
+  .light-shaft,
+  .mote {
+    display: none;
+  }
+  .ground-glow {
+    filter: none;
+    opacity: 0.7;
+  }
+  .field-key {
+    backdrop-filter: none;
+  }
+  .leaf-node {
+    filter: none;
+  }
+  .whoami-node.is-leaf:hover {
+    filter: none;
+  }
+}

@@ -1,7 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import { ReactFlowProvider } from "@xyflow/react";
 import type { ConceptNode } from "@/content/schema";
 import { indexById } from "@/content/load";
@@ -25,25 +24,54 @@ function breadcrumbFor(
   return parts;
 }
 
+function useIsMobile() {
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const sync = () => setMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+  return mobile;
+}
+
 type Props = {
   nodes: ConceptNode[];
   initialFocusId?: string;
 };
 
 export function MapExperience({ nodes, initialFocusId }: Props) {
-  const router = useRouter();
   const byId = useMemo(() => indexById(nodes), [nodes]);
-  const focused = initialFocusId ? byId.get(initialFocusId) : undefined;
+  const isMobile = useIsMobile();
+  const [focusedId, setFocusedId] = useState<string | undefined>(initialFocusId);
+
+  useEffect(() => {
+    setFocusedId(initialFocusId);
+  }, [initialFocusId]);
+
+  useEffect(() => {
+    const onPop = () => {
+      const match = window.location.pathname.match(/^\/c\/([^/]+)/);
+      setFocusedId(match?.[1]);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  const focused = focusedId ? byId.get(focusedId) : undefined;
   const accent = focused
     ? chapterColor(resolveChapterId(focused, byId))
     : "var(--map-accent)";
 
   const onSelect = (id: string) => {
-    router.push(`/c/${id}`);
+    setFocusedId(id);
+    window.history.pushState(null, "", `/c/${id}`);
   };
 
   const onClose = () => {
-    router.push("/");
+    setFocusedId(undefined);
+    window.history.pushState(null, "", "/");
   };
 
   const neighborNames = focused
@@ -51,6 +79,17 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
         focused.neighbors.map((n) => [n.id, byId.get(n.id)?.name ?? n.id]),
       )
     : {};
+
+  const card = focused ? (
+    <OrientationCard
+      node={focused}
+      breadcrumb={breadcrumbFor(focused.id, byId)}
+      neighborNames={neighborNames}
+      accent={accent}
+      onNavigate={onSelect}
+      onClose={onClose}
+    />
+  ) : null;
 
   return (
     <div className="map-field relative h-[100dvh] w-full overflow-hidden">
@@ -64,38 +103,19 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
         <ReactFlowProvider>
           <ConceptMap
             concepts={nodes}
-            focusedId={initialFocusId}
+            focusedId={focusedId}
             onSelect={onSelect}
           />
         </ReactFlowProvider>
       </div>
 
-      {focused ? (
-        <>
-          <div className="pointer-events-none absolute bottom-4 right-4 top-28 z-20 hidden w-[min(26rem,calc(100%-2rem))] md:block">
-            <div className="pointer-events-auto h-full">
-              <OrientationCard
-                node={focused}
-                breadcrumb={breadcrumbFor(focused.id, byId)}
-                neighborNames={neighborNames}
-                accent={accent}
-                onNavigate={onSelect}
-                onClose={onClose}
-              />
-            </div>
-          </div>
-          <OrientationSheet open>
-            <OrientationCard
-              node={focused}
-              breadcrumb={breadcrumbFor(focused.id, byId)}
-              neighborNames={neighborNames}
-              accent={accent}
-              onNavigate={onSelect}
-              onClose={onClose}
-            />
-          </OrientationSheet>
-        </>
+      {focused && !isMobile ? (
+        <div className="pointer-events-none absolute bottom-4 right-4 top-28 z-20 w-[min(26rem,calc(100%-2rem))]">
+          <div className="pointer-events-auto h-full">{card}</div>
+        </div>
       ) : null}
+
+      {focused && isMobile ? <OrientationSheet open>{card}</OrientationSheet> : null}
     </div>
   );
 }

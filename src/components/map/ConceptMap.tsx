@@ -29,7 +29,7 @@ function FocusCamera({ focusedId }: { focusedId?: string }) {
   useEffect(() => {
     if (!focusedId) {
       if (!didFitEmpty.current) {
-        fitView({ padding: 0.16, duration: 550 });
+        fitView({ padding: 0.16, duration: 280 });
         didFitEmpty.current = true;
       }
       return;
@@ -39,7 +39,7 @@ function FocusCamera({ focusedId }: { focusedId?: string }) {
     if (!node) return;
     const x = node.position.x + (node.measured?.width ?? 150) / 2;
     const y = node.position.y + (node.measured?.height ?? 56) / 2;
-    setCenter(x, y, { zoom: 1.05, duration: 580 });
+    setCenter(x, y, { zoom: 1.05, duration: 320 });
   }, [focusedId, getNode, setCenter, fitView]);
 
   return null;
@@ -198,6 +198,7 @@ export function ConceptMap({ concepts, focusedId, onSelect }: Props) {
         minZoom={0.18}
         maxZoom={2.4}
         proOptions={{ hideAttribution: true }}
+        onlyRenderVisibleElements
         nodesDraggable
         nodesConnectable={false}
         elementsSelectable={false}

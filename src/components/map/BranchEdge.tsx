@@ -26,29 +26,15 @@ export function BranchEdge({
   });
 
   return (
-    <>
-      {/* Soft glow under the limb */}
-      <BaseEdge
-        id={`${id}-glow`}
-        path={path}
-        style={{
-          ...style,
-          strokeWidth: weight + 6,
-          opacity: 0.12,
-          stroke: style?.stroke,
-          filter: "blur(4px)",
-        }}
-      />
-      <BaseEdge
-        id={id}
-        path={path}
-        markerEnd={markerEnd}
-        style={{
-          ...style,
-          strokeWidth: weight,
-          strokeLinecap: "round",
-        }}
-      />
-    </>
+    <BaseEdge
+      id={id}
+      path={path}
+      markerEnd={markerEnd}
+      style={{
+        ...style,
+        strokeWidth: weight,
+        strokeLinecap: "round",
+      }}
+    />
   );
 }
