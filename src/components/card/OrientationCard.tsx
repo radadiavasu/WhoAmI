@@ -3,10 +3,10 @@
 import type { ConceptNode } from "@/content/schema";
 
 const relationLabel: Record<string, string> = {
-  prereq: "Grows from",
-  sibling: "Nearby leaf",
-  next: "Grows toward",
-  usedIn: "Feeds into",
+  prereq: "Learn first",
+  sibling: "Related",
+  next: "Go next",
+  usedIn: "Used in",
 };
 
 type Props = {
@@ -86,7 +86,7 @@ export function OrientationCard({
         {node.neighbors.length > 0 ? (
           <div>
             <h3 className="mb-2 font-display text-lg">
-              Connected leaves
+              Related ideas
             </h3>
             <ul className="flex flex-wrap gap-2">
               {node.neighbors.map((n) => (
@@ -128,11 +128,15 @@ export function OrientationCard({
           <div className="mt-2 space-y-2 text-[var(--ink-soft)]">
             <p>
               <span className="font-medium text-[var(--ink)]">Level:</span>{" "}
-              {node.level}
+              {node.level === "intro"
+                ? "beginner-friendly"
+                : node.level === "core"
+                  ? "important to know"
+                  : "more advanced"}
             </p>
             {node.analogy ? (
               <p>
-                <span className="font-medium text-[var(--ink)]">Analogy:</span>{" "}
+                <span className="font-medium text-[var(--ink)]">Like this:</span>{" "}
                 {node.analogy}
               </p>
             ) : null}
@@ -151,7 +155,7 @@ export function OrientationCard({
           node.changing) && (
           <details className="rounded-2xl bg-[var(--panel-lift)] px-3 py-2">
             <summary className="cursor-pointer font-medium text-[var(--ink)]">
-              For the curious / pros
+              Extra detail
             </summary>
             <div className="mt-2 space-y-2 text-[var(--ink-soft)]">
               {node.aliases?.length ? (

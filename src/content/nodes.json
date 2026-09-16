@@ -4,14 +4,14 @@
     "name": "Generative AI",
     "parentId": null,
     "level": "intro",
-    "oneBreath": "AI that creates new text, images, or other media instead of only classifying what already exists.",
+    "oneBreath": "AI that makes new things — text, images, code — instead of only sorting or labeling what already exists.",
     "does": [
-      "Create new content from prompts",
-      "Power chatbots and copilots"
+      "Write or create from a request",
+      "Power chat apps and copilots"
     ],
     "doesNot": [
-      "Not the whole of AI",
-      "Not magic — it predicts patterns"
+      "Not every kind of AI",
+      "Not magic — it predicts what usually comes next"
     ],
     "neighbors": [
       {
@@ -24,22 +24,22 @@
       "targetId": "foundations",
       "label": "Start with foundations"
     },
-    "analogy": "A very fluent autocomplete for the world.",
-    "example": "Chat assistants, image generators, coding copilots."
+    "analogy": "A very fluent autocomplete for words and ideas.",
+    "example": "Chatbots, image makers, coding helpers."
   },
   {
     "id": "foundations",
     "name": "Foundations",
     "parentId": "generative-ai",
     "level": "intro",
-    "oneBreath": "The basic building blocks of how language models read and generate text.",
+    "oneBreath": "The basic building blocks: how these systems read text and pick what to say next.",
     "does": [
-      "Explain tokens, embeddings, and context",
-      "Ground later LLM ideas"
+      "Explain the small pieces behind chat AI",
+      "Make later ideas easier"
     ],
     "doesNot": [
       "Not a full math course",
-      "Not training recipes"
+      "Not how to train a model from scratch"
     ],
     "neighbors": [
       {
@@ -58,14 +58,14 @@
     "name": "Models",
     "parentId": "generative-ai",
     "level": "intro",
-    "oneBreath": "How modern language models are built, trained, and shaped to follow instructions.",
+    "oneBreath": "How the big chat brains are built, trained, and taught to follow instructions.",
     "does": [
-      "Name the core model ideas",
-      "Connect training stages"
+      "Name the main model ideas",
+      "Show how training stages connect"
     ],
     "doesNot": [
-      "Not a hardware guide",
-      "Not every model brand"
+      "Not a guide to computer chips",
+      "Not a list of every brand name"
     ],
     "neighbors": [
       {
@@ -84,14 +84,14 @@
     "name": "Talking to models",
     "parentId": "generative-ai",
     "level": "intro",
-    "oneBreath": "How we steer models with prompts and message structure.",
+    "oneBreath": "How you write requests so the AI understands what you want — and what to avoid.",
     "does": [
-      "Improve answers with better prompts",
-      "Structure conversations"
+      "Improve answers with clearer asks",
+      "Show patterns like examples and step-by-step"
     ],
     "doesNot": [
-      "Not the same as training a new model",
-      "Not a guarantee of truth"
+      "Not changing the model’s core training",
+      "Not a guarantee of perfect answers"
     ],
     "neighbors": [
       {
@@ -110,14 +110,14 @@
     "name": "Giving models knowledge",
     "parentId": "generative-ai",
     "level": "intro",
-    "oneBreath": "Ways to ground answers in outside information instead of memory alone.",
+    "oneBreath": "Ways to give the AI fresh or private facts so it doesn’t only rely on what it memorized.",
     "does": [
-      "Reduce some hallucinations",
-      "Use your own docs"
+      "Connect answers to real documents",
+      "Reduce made-up confident answers"
     ],
     "doesNot": [
-      "Not identical to fine-tuning",
-      "Not automatic truth"
+      "Not the same as retraining the whole model",
+      "Not perfect truth every time"
     ],
     "neighbors": [
       {
@@ -136,14 +136,14 @@
     "name": "Building with models",
     "parentId": "generative-ai",
     "level": "intro",
-    "oneBreath": "Turning model calls into tools, agents, and working products.",
+    "oneBreath": "Turning a chat model into something that can take steps, use apps, and finish real jobs.",
     "does": [
-      "Connect models to actions",
-      "Compose multi-step systems"
+      "Connect AI to actions and tools",
+      "Build multi-step helpers"
     ],
     "doesNot": [
-      "Not always necessary for simple chat",
-      "Not true human agency"
+      "Not always needed for a simple Q&A",
+      "Not the same as a real human worker"
     ],
     "neighbors": [
       {
@@ -162,14 +162,14 @@
     "name": "Trust & quality",
     "parentId": "generative-ai",
     "level": "intro",
-    "oneBreath": "How we measure, constrain, and ship models responsibly.",
+    "oneBreath": "Checking whether the AI is safe, accurate, fast enough, and worth the cost.",
     "does": [
-      "Evaluate quality",
-      "Add safety limits"
+      "Catch bad or risky outputs",
+      "Compare quality over time"
     ],
     "doesNot": [
-      "Not solved forever",
-      "Not only a legal checklist"
+      "Not a single perfect score",
+      "Not only “does it feel right?”"
     ],
     "neighbors": [
       {
@@ -188,14 +188,14 @@
     "name": "Token",
     "parentId": "foundations",
     "level": "intro",
-    "oneBreath": "A small chunk of text the model reads and writes — often a word piece, not always a full word.",
+    "oneBreath": "A tiny piece of text the AI reads and writes — often part of a word, not always a whole word.",
     "does": [
-      "Break text into model-sized pieces",
-      "Count toward context limits"
+      "Break sentences into bite-size pieces",
+      "Count toward length limits"
     ],
     "doesNot": [
-      "Not always one word",
-      "Not the same as an embedding"
+      "Not always one full word",
+      "Not the same as meaning or memory"
     ],
     "neighbors": [
       {
@@ -210,24 +210,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "embedding",
-      "label": "See embeddings"
+      "label": "See how meaning is stored"
     },
-    "analogy": "LEGO bricks that make sentences.",
-    "example": "\"Chatbot\" may be one or two tokens."
+    "analogy": "LEGO bricks that build a sentence.",
+    "example": "“Chatbot” might be one piece or two."
   },
   {
     "id": "embedding",
     "name": "Embedding",
     "parentId": "foundations",
     "level": "core",
-    "oneBreath": "A list of numbers that places meaning in a space so similar ideas sit closer together.",
+    "oneBreath": "A way to turn text into a list of numbers so similar meanings sit near each other.",
     "does": [
-      "Compare similarity of text",
-      "Power search and RAG"
+      "Help find related documents",
+      "Power search that understands meaning"
     ],
     "doesNot": [
       "Not human-readable text",
-      "Not a full explanation by itself"
+      "Not a full answer by itself"
     ],
     "neighbors": [
       {
@@ -246,24 +246,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "context-window",
-      "label": "See the context window"
+      "label": "See how much it can read at once"
     },
-    "analogy": "A map pin for meaning.",
-    "example": "Finding similar support tickets by meaning, not keywords."
+    "analogy": "A map where similar ideas live on nearby streets.",
+    "example": "“Doctor” and “physician” land close on that map."
   },
   {
     "id": "context-window",
     "name": "Context window",
     "parentId": "foundations",
     "level": "core",
-    "oneBreath": "How much text a model can see at once in one conversation turn — its working memory size.",
+    "oneBreath": "How much text the AI can see at once in this chat — like a limited desk size.",
     "does": [
-      "Limits what you can paste in",
-      "Shapes long-chat design"
+      "Hold the conversation and pasted files for a while",
+      "Set a hard length limit"
     ],
     "doesNot": [
-      "Not permanent memory",
-      "Not infinite"
+      "Not infinite memory of everything forever",
+      "Not the same as saving facts across days"
     ],
     "neighbors": [
       {
@@ -286,24 +286,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "probability-next-token",
-      "label": "See next-token prediction"
+      "label": "See how it picks the next word"
     },
-    "analogy": "A desk that only holds so many pages.",
-    "example": "A model that forgets early chat once the window fills."
+    "analogy": "A whiteboard that only fits so many notes.",
+    "example": "A long PDF may not fit in one go."
   },
   {
     "id": "probability-next-token",
     "name": "Probability / next-token",
     "parentId": "foundations",
     "level": "core",
-    "oneBreath": "Models generate by repeatedly choosing a likely next token given everything so far.",
+    "oneBreath": "The AI writes by repeatedly guessing the most likely next little piece of text.",
     "does": [
-      "Explain why outputs vary",
-      "Underpins sampling and temperature"
+      "Explain why answers can change each time",
+      "Underpin settings like temperature"
     ],
     "doesNot": [
-      "Not guaranteed truth",
-      "Not planning like a human"
+      "Not a guarantee the answer is true",
+      "Not careful planning like a person"
     ],
     "neighbors": [
       {
@@ -326,10 +326,10 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "llm",
-      "label": "Meet the LLM"
+      "label": "Meet the chat model"
     },
-    "analogy": "Predicting the next word in a sentence game.",
-    "example": "Why two runs of the same prompt can differ."
+    "analogy": "A game of “what word comes next?”",
+    "example": "Same question, two slightly different replies."
   },
   {
     "id": "temperature",
@@ -337,14 +337,14 @@
     "alias": "Sampling temperature",
     "parentId": "foundations",
     "level": "intro",
-    "oneBreath": "A dial that controls how boldly the model samples the next token — lower is safer and more repetitive; higher is wilder.",
+    "oneBreath": "A creativity dial: low = safer and more repetitive; high = more surprising wording.",
     "does": [
       "Change how random the wording feels",
-      "Trade creativity against consistency"
+      "Trade fun ideas vs steady answers"
     ],
     "doesNot": [
-      "Not a measure of model intelligence",
-      "Not a truthfulness setting"
+      "Not a measure of how smart the AI is",
+      "Not a switch for truthfulness"
     ],
     "neighbors": [
       {
@@ -367,24 +367,24 @@
     "nextStep": {
       "kind": "seeRelated",
       "targetId": "prompt",
-      "label": "Try it with prompting"
+      "label": "Try it with better asks"
     },
-    "analogy": "Turning up the spice on a recipe.",
-    "example": "Creative brainstorming at higher temperature; code at lower."
+    "analogy": "Turning the spice up or down on a recipe.",
+    "example": "Brainstorming high; careful code lower."
   },
   {
     "id": "llm",
     "name": "LLM",
     "parentId": "models",
     "level": "intro",
-    "oneBreath": "A large language model — a neural net trained on huge text to predict and generate language.",
+    "oneBreath": "A large language model: software trained on lots of text to continue writing in a helpful way.",
     "does": [
-      "Answer questions in natural language",
-      "Draft, summarize, translate, code"
+      "Chat, write, summarize, and draft",
+      "Follow many kinds of instructions"
     ],
     "doesNot": [
-      "Not a database of facts",
-      "Not always up to date"
+      "Not a search engine by itself",
+      "Not always up to date on brand-new facts"
     ],
     "neighbors": [
       {
@@ -403,24 +403,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "transformer",
-      "label": "See the Transformer"
+      "label": "See the design behind chat models"
     },
-    "analogy": "A student who read the internet and patterns answers.",
-    "example": "ChatGPT-style assistants."
+    "analogy": "A student who read a huge library and now finishes your sentences.",
+    "example": "The engine behind most chat assistants."
   },
   {
     "id": "transformer",
     "name": "Transformer",
     "parentId": "models",
     "level": "core",
-    "oneBreath": "The neural architecture behind modern LLMs, built around attention instead of older sequence tricks.",
+    "oneBreath": "The popular design pattern behind modern chat AIs — good at relating words across a sentence.",
     "does": [
-      "Process tokens in parallel",
-      "Scale to large models"
+      "Handle long-ish text better than older designs",
+      "Power most big chat models"
     ],
     "doesNot": [
-      "Not the only neural architecture ever",
-      "Not a product name"
+      "Not a power-line transformer",
+      "Not the only possible AI design"
     ],
     "neighbors": [
       {
@@ -439,24 +439,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "attention",
-      "label": "Understand attention"
+      "label": "See how it focuses on words"
     },
-    "analogy": "A reading group where every word can look at every other word.",
-    "example": "GPT, Claude, Gemini model families."
+    "analogy": "A seating chart that shows who should listen to whom in a room.",
+    "example": "The “T” in many model names you see online."
   },
   {
     "id": "attention",
     "name": "Attention",
     "parentId": "models",
     "level": "core",
-    "oneBreath": "A mechanism that lets the model weigh which earlier tokens matter most when predicting the next one.",
+    "oneBreath": "A trick that lets the AI focus on the most useful earlier words when writing the next one.",
     "does": [
-      "Link related words across a sentence",
-      "Power transformers"
+      "Connect related words in a sentence",
+      "Help models understand “it” and “they”"
     ],
     "doesNot": [
-      "Not human attention",
-      "Not a UI feature"
+      "Not human focus or mindfulness",
+      "Not a button in an app"
     ],
     "neighbors": [
       {
@@ -471,24 +471,24 @@
     "nextStep": {
       "kind": "seeRelated",
       "targetId": "transformer",
-      "label": "Back to Transformer"
+      "label": "Back to that model design"
     },
-    "analogy": "Highlighting the important parts of a paragraph.",
-    "example": "Connecting \"it\" to the right noun."
+    "analogy": "Highlighting the important lines in a paragraph.",
+    "example": "Linking “it” back to the right noun."
   },
   {
     "id": "pretraining",
     "name": "Pretraining",
     "parentId": "models",
     "level": "core",
-    "oneBreath": "The first long training phase where a model learns general language patterns from massive text.",
+    "oneBreath": "The long first training stage: read huge amounts of text to learn language patterns.",
     "does": [
-      "Build broad language skill",
-      "Create a base model"
+      "Teach grammar, facts, and style in bulk",
+      "Create the base model before special tuning"
     ],
     "doesNot": [
-      "Not the same as fine-tuning for your task",
-      "Not instruction-following by default"
+      "Not the final “be a helpful assistant” training",
+      "Not something you do in a normal chat"
     ],
     "neighbors": [
       {
@@ -503,24 +503,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "fine-tuning",
-      "label": "See fine-tuning"
+      "label": "See focused extra training"
     },
-    "analogy": "Reading the whole library before specializing.",
-    "example": "Base models before chat tuning."
+    "analogy": "Years of general school before a job.",
+    "example": "Training on books, websites, and code at huge scale."
   },
   {
     "id": "fine-tuning",
     "name": "Fine-tuning",
     "parentId": "models",
     "level": "core",
-    "oneBreath": "Further training on a smaller, focused dataset so the model behaves better for a domain or style.",
+    "oneBreath": "Extra training on a smaller, focused set of examples so the model gets better at one job.",
     "does": [
-      "Specialize a base model",
-      "Change tone or format habits"
+      "Specialize for a domain or style",
+      "Change behavior more deeply than a prompt"
     ],
     "doesNot": [
-      "Not always better than good prompts + RAG",
-      "Not free or risk-free"
+      "Not the same as pasting docs into the chat",
+      "Not free or instant — it needs data and compute"
     ],
     "neighbors": [
       {
@@ -539,24 +539,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "instruction-tuning",
-      "label": "See instruction tuning"
+      "label": "See how it learns to follow asks"
     },
-    "analogy": "Apprenticeship after general school.",
-    "example": "A support bot tuned on your tickets."
+    "analogy": "Job training after general school.",
+    "example": "Teaching a model your company’s support tone."
   },
   {
     "id": "instruction-tuning",
     "name": "Instruction tuning",
     "parentId": "models",
     "level": "core",
-    "oneBreath": "Training that teaches a model to follow natural-language instructions and chat formats.",
+    "oneBreath": "Training that teaches the model to follow directions like “summarize this” or “be brief.”",
     "does": [
-      "Make models helpful in chat",
-      "Follow task directions better"
+      "Make models better at obeying asks",
+      "Turn a raw text predictor into an assistant"
     ],
     "doesNot": [
-      "Not the same as giving live documents",
-      "Not full alignment alone"
+      "Not teaching brand-new world facts alone",
+      "Not a substitute for safety checks"
     ],
     "neighbors": [
       {
@@ -575,24 +575,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "alignment",
-      "label": "See alignment"
+      "label": "See how answers get steered"
     },
-    "analogy": "Teaching manners and how to take directions.",
-    "example": "Chat models vs raw base models."
+    "analogy": "Practice drills: “when asked X, answer like Y.”",
+    "example": "Chat models that wait for your request instead of rambling."
   },
   {
     "id": "alignment",
     "name": "Alignment (RLHF / preference)",
     "parentId": "models",
     "level": "frontier",
-    "oneBreath": "Techniques that steer models toward preferred, safer, more helpful behavior using human or AI feedback.",
+    "oneBreath": "Shaping the model so it prefers helpful, honest, harmless answers — closer to what people want.",
     "does": [
-      "Reduce rude or harmful defaults",
-      "Prefer answers people rate highly"
+      "Reduce rude or dangerous replies",
+      "Steer toward preferred human choices"
     ],
     "doesNot": [
       "Not perfect safety",
-      "Not a moral guarantee"
+      "Not the same as looking up fresh documents"
     ],
     "neighbors": [
       {
@@ -611,10 +611,10 @@
     "nextStep": {
       "kind": "seeRelated",
       "targetId": "guardrails",
-      "label": "See guardrails"
+      "label": "See the safety filters"
     },
-    "analogy": "Coaching after practice tests.",
-    "example": "Thumbs-up/down training loops.",
+    "analogy": "Coaching that rewards good behavior.",
+    "example": "Humans ranking which reply feels better (often called RLHF).",
     "aliases": [
       "RLHF",
       "preference tuning"
@@ -626,14 +626,14 @@
     "name": "Prompt",
     "parentId": "talking-to-models",
     "level": "intro",
-    "oneBreath": "The text (and structure) you give the model to steer what it should do next.",
+    "oneBreath": "The text you type (or send) that tells the AI what to do.",
     "does": [
-      "Ask for a task",
-      "Set format and constraints"
+      "Steer the answer with clear goals",
+      "Include context, rules, and examples"
     ],
     "doesNot": [
-      "Not model training",
-      "Not a secret spell"
+      "Not the model’s permanent memory",
+      "Not a magic spell — clarity still matters"
     ],
     "neighbors": [
       {
@@ -656,24 +656,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "system-vs-user-message",
-      "label": "See message roles"
+      "label": "See system vs user messages"
     },
-    "analogy": "A brief to a contractor.",
-    "example": "Summarize this email in 3 bullets."
+    "analogy": "A brief you hand to a contractor.",
+    "example": "“Explain this error in simple words.”"
   },
   {
     "id": "system-vs-user-message",
     "name": "System vs user message",
     "parentId": "talking-to-models",
     "level": "core",
-    "oneBreath": "Chat APIs separate standing instructions (system) from the person's messages (user) and the model's replies.",
+    "oneBreath": "Two roles in a chat: system = standing rules; user = your request this turn.",
     "does": [
-      "Set durable behavior rules",
-      "Keep user content distinct"
+      "Set ongoing behavior with system text",
+      "Keep your ask separate from the rules"
     ],
     "doesNot": [
-      "Not supported identically everywhere",
-      "Not a security boundary by itself"
+      "Not always visible in every consumer app",
+      "Not a guarantee users can’t trick the rules"
     ],
     "neighbors": [
       {
@@ -688,24 +688,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "few-shot",
-      "label": "See few-shot"
+      "label": "See learning from examples"
     },
-    "analogy": "Employee handbook vs today's request.",
-    "example": "System: be concise. User: explain RAG."
+    "analogy": "Employee handbook (system) vs today’s ticket (user).",
+    "example": "“You are a concise tutor” vs “Explain RAG.”"
   },
   {
     "id": "few-shot",
     "name": "Few-shot",
     "parentId": "talking-to-models",
     "level": "core",
-    "oneBreath": "Showing a few examples in the prompt so the model mirrors the pattern.",
+    "oneBreath": "Showing a few examples in your ask so the AI copies the pattern you want.",
     "does": [
-      "Teach format quickly",
-      "Steer style without fine-tuning"
+      "Teach format or style quickly",
+      "Work without retraining the model"
     ],
     "doesNot": [
-      "Not unlimited examples (context cost)",
-      "Not as strong as dedicated training sometimes"
+      "Not the same as full fine-tuning",
+      "Not free if examples eat your length limit"
     ],
     "neighbors": [
       {
@@ -720,24 +720,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "chain-of-thought",
-      "label": "See chain-of-thought"
+      "label": "See step-by-step thinking"
     },
-    "analogy": "Show two solved problems before the real one.",
-    "example": "Example input/output pairs in a prompt."
+    "analogy": "Show two sample answers, then ask for a third.",
+    "example": "Two labeled emails, then “label this one.”"
   },
   {
     "id": "chain-of-thought",
     "name": "Chain-of-thought",
     "parentId": "talking-to-models",
     "level": "core",
-    "oneBreath": "Asking the model to reason step by step before the final answer — sometimes improves hard tasks.",
+    "oneBreath": "Asking the AI to reason step by step before the final answer.",
     "does": [
-      "Help multi-step reasoning",
-      "Make intermediate steps visible"
+      "Help on multi-step problems",
+      "Make the path easier to check"
     ],
     "doesNot": [
-      "Not always better",
-      "Not true private thinking in all systems"
+      "Not always needed for simple facts",
+      "Not a proof the reasoning is correct"
     ],
     "neighbors": [
       {
@@ -752,24 +752,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "structured-output",
-      "label": "See structured output"
+      "label": "See fixed-format answers"
     },
     "analogy": "Showing your work on a math test.",
-    "example": "Think step by step, then answer."
+    "example": "“Think step by step, then give the total.”"
   },
   {
     "id": "structured-output",
     "name": "Structured output",
     "parentId": "talking-to-models",
     "level": "core",
-    "oneBreath": "Forcing the model to reply in a strict shape like JSON so software can parse it reliably.",
+    "oneBreath": "Making the AI answer in a fixed shape — like JSON fields — so software can use it reliably.",
     "does": [
-      "Feed apps and tools",
-      "Reduce messy free text"
+      "Feed other apps without messy parsing",
+      "Reduce free-form rambling"
     ],
     "doesNot": [
-      "Not immune to invalid JSON without checks",
-      "Not needed for casual chat"
+      "Not always prettier for humans to read",
+      "Not a promise every field is true"
     ],
     "neighbors": [
       {
@@ -784,24 +784,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "tool-use",
-      "label": "See tool use"
+      "label": "See calling outside apps"
     },
-    "analogy": "Filling a form instead of writing a letter.",
-    "example": "JSON schemas in API calls."
+    "analogy": "Filling a form instead of writing an essay.",
+    "example": "Return {name, price, inStock} for a product."
   },
   {
     "id": "prompt-injection",
     "name": "Prompt injection",
     "parentId": "talking-to-models",
     "level": "core",
-    "oneBreath": "When untrusted text tricks the model into ignoring its instructions — like a forged note slipped into the prompt.",
+    "oneBreath": "A trick where hidden or pasted text tries to make the AI ignore its real instructions.",
     "does": [
-      "Override system rules via user or retrieved content",
-      "Expose tools and data if the agent obeys"
+      "Override rules via sneaky content",
+      "Risk tools or data if the AI obeys"
     ],
     "doesNot": [
-      "Not the same as jailbreaking the model weights",
-      "Not fixed by temperature"
+      "Not the same as breaking into the model’s files",
+      "Not fixed by turning temperature down"
     ],
     "neighbors": [
       {
@@ -824,25 +824,25 @@
     "nextStep": {
       "kind": "seeRelated",
       "targetId": "guardrails",
-      "label": "See guardrails"
+      "label": "See the safety filters"
     },
-    "analogy": "A sticky note on a recipe that says ignore the chef.",
-    "example": "A web page telling a browsing agent to email secrets.",
-    "changing": "As agents read more untrusted content, injection becomes a first-class design problem."
+    "analogy": "A sticky note on a recipe: “ignore the chef.”",
+    "example": "A webpage telling a browsing bot to email secrets.",
+    "changing": "As bots read more untrusted pages, this becomes a day-one design worry."
   },
   {
     "id": "hallucination",
     "name": "Hallucination",
     "parentId": "giving-models-knowledge",
     "level": "intro",
-    "oneBreath": "When a model states something false or made-up with a confident tone.",
+    "oneBreath": "When the AI sounds sure but invents facts, quotes, or details that aren’t real.",
     "does": [
-      "Name a key failure mode",
-      "Motivate grounding techniques"
+      "Fill gaps with plausible-sounding guesses",
+      "Happen more when it lacks sources"
     ],
     "doesNot": [
       "Not always intentional lying",
-      "Not unique to one vendor"
+      "Not solved by confidence alone"
     ],
     "neighbors": [
       {
@@ -861,24 +861,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "rag",
-      "label": "See how RAG helps"
+      "label": "See lookup-then-answer"
     },
-    "analogy": "A fluent storyteller inventing citations.",
-    "example": "A fake paper title in an answer."
+    "analogy": "A student bluffing on an oral exam.",
+    "example": "A fake book title or made-up citation."
   },
   {
     "id": "rag",
     "name": "RAG",
     "parentId": "giving-models-knowledge",
     "level": "core",
-    "oneBreath": "Retrieval-Augmented Generation: look up relevant text, then generate an answer using it.",
+    "oneBreath": "The assistant looks up info from your files or the web, then answers using that — like an open-book test instead of guessing from memory.",
     "does": [
-      "Ground answers in your docs or the web",
-      "Reduce some hallucinations"
+      "Ground answers in your docs",
+      "Cut down some made-up facts"
     ],
     "doesNot": [
-      "Not the same as fine-tuning",
-      "Not a guarantee of truth"
+      "Not the same as retraining the model",
+      "Not a promise every answer is true"
     ],
     "neighbors": [
       {
@@ -901,24 +901,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "retrieval",
-      "label": "See retrieval"
+      "label": "See fetching the right bits"
     },
-    "analogy": "An open-book exam instead of closed-book.",
-    "example": "Company chatbot over an internal wiki."
+    "analogy": "Open-book exam vs closed-book.",
+    "example": "A company bot that searches the internal wiki first."
   },
   {
     "id": "chunking",
     "name": "Chunking",
     "parentId": "giving-models-knowledge",
     "level": "core",
-    "oneBreath": "Splitting documents into smaller pieces so search can retrieve the right passages.",
+    "oneBreath": "Splitting long documents into smaller pieces so search and AI can handle them.",
     "does": [
-      "Make long docs searchable",
-      "Feed RAG pipelines"
+      "Fit big files into workable bites",
+      "Improve find-the-right-paragraph search"
     ],
     "doesNot": [
-      "Not one perfect chunk size forever",
-      "Not the same as tokenization"
+      "Not deleting content on purpose",
+      "Not one perfect split size for every doc"
     ],
     "neighbors": [
       {
@@ -937,24 +937,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "vector-database",
-      "label": "See vector databases"
+      "label": "See meaning-based search stores"
     },
-    "analogy": "Cutting a book into indexed note cards.",
-    "example": "Splitting a PDF into overlapping paragraphs."
+    "analogy": "Cutting a book into chapters before shelving.",
+    "example": "Break a 50-page PDF into short sections."
   },
   {
     "id": "vector-database",
     "name": "Vector database",
     "parentId": "giving-models-knowledge",
     "level": "core",
-    "oneBreath": "Storage optimized for finding items with similar embeddings quickly.",
+    "oneBreath": "A store built to find text by meaning — “what’s similar?” — not only exact keywords.",
     "does": [
-      "Power semantic search",
-      "Back RAG systems"
+      "Speed up meaning-based search",
+      "Hold those number-maps of documents"
     ],
     "doesNot": [
-      "Not a replacement for all SQL needs",
-      "Not magic quality by itself"
+      "Not a regular spreadsheet",
+      "Not the AI model itself"
     ],
     "neighbors": [
       {
@@ -973,24 +973,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "retrieval",
-      "label": "See retrieval"
+      "label": "See fetching the right bits"
     },
-    "analogy": "A library sorted by meaning-neighborhoods.",
-    "example": "Pinecone, Weaviate, pgvector-style stores."
+    "analogy": "A library sorted by topic vibe, not just title A–Z.",
+    "example": "Finding policy pages related to “parental leave.”"
   },
   {
     "id": "retrieval",
     "name": "Retrieval",
     "parentId": "giving-models-knowledge",
     "level": "core",
-    "oneBreath": "The step that finds the most relevant chunks for a question before generation.",
+    "oneBreath": "The step that fetches the most relevant snippets before the AI writes an answer.",
     "does": [
-      "Select evidence for the model",
-      "Rank candidates"
+      "Pick evidence for the reply",
+      "Rank which pieces matter most"
     ],
     "doesNot": [
-      "Not generation itself",
-      "Not perfect relevance always"
+      "Not the writing step itself",
+      "Not always perfect relevance"
     ],
     "neighbors": [
       {
@@ -1009,24 +1009,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "reranking",
-      "label": "See reranking"
+      "label": "See re-sorting the best bits"
     },
     "analogy": "A librarian fetching the best pages.",
-    "example": "Top-k nearest embedding matches."
+    "example": "Top matching paragraphs for your question."
   },
   {
     "id": "reranking",
     "name": "Reranking",
     "parentId": "giving-models-knowledge",
     "level": "frontier",
-    "oneBreath": "A second pass that reorders retrieved chunks so the best evidence rises to the top.",
+    "oneBreath": "A second pass that re-sorts search results so the best snippets rise to the top.",
     "does": [
-      "Improve RAG precision",
-      "Filter noisy matches"
+      "Improve what the AI actually reads",
+      "Filter noisy first-pass matches"
     ],
     "doesNot": [
-      "Not free (extra compute)",
-      "Not required for every app"
+      "Not a full rewrite of your documents",
+      "Not required for every tiny knowledge base"
     ],
     "neighbors": [
       {
@@ -1041,24 +1041,24 @@
     "nextStep": {
       "kind": "seeRelated",
       "targetId": "rag",
-      "label": "Back to RAG"
+      "label": "Back to lookup-then-answer"
     },
-    "analogy": "Resorting search results with a sharper judge.",
-    "example": "Cross-encoder rerankers."
+    "analogy": "Resorting a messy stack after a quick grab.",
+    "example": "Promote the paragraph that truly answers the ask."
   },
   {
     "id": "long-context-vs-rag",
     "name": "Long context vs RAG",
     "parentId": "giving-models-knowledge",
     "level": "core",
-    "oneBreath": "Two ways to give a model more information: stuff it in a huge window, or fetch only what matters. Often you combine both.",
+    "oneBreath": "Two ways to give more info: paste a lot into the chat window, or fetch only what’s needed. Often you mix both.",
     "does": [
-      "Clarify when to retrieve vs paste everything",
-      "Frame cost, latency, and freshness tradeoffs"
+      "Clarify when to paste vs search",
+      "Frame cost, speed, and freshness tradeoffs"
     ],
     "doesNot": [
-      "Not a claim that one always wins",
-      "Not the same as fine-tuning"
+      "Not a claim one method always wins",
+      "Not the same as retraining"
     ],
     "neighbors": [
       {
@@ -1081,24 +1081,24 @@
     "nextStep": {
       "kind": "seeRelated",
       "targetId": "rag",
-      "label": "See RAG"
+      "label": "See lookup-then-answer"
     },
-    "analogy": "Carrying the whole library vs asking the librarian for three books.",
-    "example": "Paste a short spec into context; retrieve from a 10k-doc wiki with RAG."
+    "analogy": "Carry the whole library vs ask for three books.",
+    "example": "Paste a short spec; search a huge wiki with lookup."
   },
   {
     "id": "tool-use",
     "name": "Tool use / function calling",
     "parentId": "building-with-models",
     "level": "core",
-    "oneBreath": "Letting a model call external functions — search, calculators, APIs — instead of only writing text.",
+    "oneBreath": "Letting the AI call outside helpers — search, calculators, APIs — instead of only writing text.",
     "does": [
-      "Take real actions",
+      "Take real actions in other systems",
       "Fetch live data"
     ],
     "doesNot": [
-      "Not unrestricted computer control by default",
-      "Not reliable without validation"
+      "Not unlimited control of your computer by default",
+      "Not safe without checks"
     ],
     "neighbors": [
       {
@@ -1121,24 +1121,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "agent",
-      "label": "See agents"
+      "label": "See multi-step helpers"
     },
     "analogy": "Asking an assistant to use a calculator app.",
-    "example": "Booking API called from a chat."
+    "example": "Booking through an API from a chat."
   },
   {
     "id": "agent",
     "name": "Agent",
     "parentId": "building-with-models",
     "level": "core",
-    "oneBreath": "A system where a model plans steps, uses tools, and loops toward a goal with some autonomy.",
+    "oneBreath": "An AI helper that plans steps, uses tools, and keeps going toward a goal — with some independence.",
     "does": [
-      "Handle multi-step tasks",
-      "Combine reasoning and tools"
+      "Handle jobs with several steps",
+      "Mix thinking with tool use"
     ],
     "doesNot": [
-      "Not a person",
-      "Not always better than a simple prompt"
+      "Not a real person",
+      "Not always better than one clear prompt"
     ],
     "neighbors": [
       {
@@ -1161,24 +1161,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "memory",
-      "label": "See memory"
+      "label": "See remembering across chats"
     },
     "analogy": "An intern with a checklist and apps.",
-    "example": "A bot that researches then files a ticket."
+    "example": "Research something, then file a ticket."
   },
   {
     "id": "multi-agent",
     "name": "Multi-agent",
     "parentId": "building-with-models",
     "level": "frontier",
-    "oneBreath": "Several specialized agents collaborating — or debating — to complete a job.",
+    "oneBreath": "Several specialized AI helpers working together — or checking each other — on one job.",
     "does": [
-      "Split roles (research, critique, write)",
-      "Parallelize work"
+      "Split roles like research and edit",
+      "Work on parts in parallel"
     ],
     "doesNot": [
       "Not automatically smarter",
-      "Harder to debug"
+      "Harder to debug when something goes wrong"
     ],
     "neighbors": [
       {
@@ -1193,24 +1193,24 @@
     "nextStep": {
       "kind": "seeRelated",
       "targetId": "orchestration",
-      "label": "See orchestration"
+      "label": "See the workflow control layer"
     },
     "analogy": "A small team with different jobs.",
-    "example": "Researcher + editor agent pair."
+    "example": "One agent researches; another edits the draft."
   },
   {
     "id": "memory",
     "name": "Memory",
     "parentId": "building-with-models",
     "level": "core",
-    "oneBreath": "Ways a system remembers facts across turns or sessions beyond the raw context window.",
+    "oneBreath": "Ways the system remembers facts across turns or visits — beyond what’s only on screen right now.",
     "does": [
       "Personalize over time",
-      "Store user preferences"
+      "Store preferences you care about"
     ],
     "doesNot": [
-      "Not the same as the context window alone",
-      "Raises privacy stakes"
+      "Not the same as the short chat window alone",
+      "Raises privacy questions"
     ],
     "neighbors": [
       {
@@ -1225,24 +1225,24 @@
     "nextStep": {
       "kind": "seeRelated",
       "targetId": "context-window",
-      "label": "Compare to context window"
+      "label": "Compare to the short desk limit"
     },
     "analogy": "A notebook the assistant keeps.",
-    "example": "Saved profile facts between chats."
+    "example": "Remembering your name between sessions."
   },
   {
     "id": "orchestration",
     "name": "Orchestration",
     "parentId": "building-with-models",
     "level": "core",
-    "oneBreath": "The control layer that sequences prompts, tools, retrieval, and agents into a reliable workflow.",
+    "oneBreath": "The control layer that sequences prompts, lookups, tools, and agents into a reliable workflow.",
     "does": [
-      "Glue components together",
+      "Glue pieces together",
       "Add retries and routing"
     ],
     "doesNot": [
-      "Not the model weights themselves",
-      "Can become over-complex"
+      "Not the model’s brain weights",
+      "Can get overly complex"
     ],
     "neighbors": [
       {
@@ -1265,10 +1265,10 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "evaluation",
-      "label": "Think about quality"
+      "label": "Think about quality checks"
     },
     "analogy": "A stage manager for the show.",
-    "example": "Workflow engines and agent graphs."
+    "example": "Workflow builders and agent graphs."
   },
   {
     "id": "skill",
@@ -1276,14 +1276,14 @@
     "alias": "Agent skill",
     "parentId": "building-with-models",
     "level": "frontier",
-    "oneBreath": "A reusable pack of instructions (and often tools or scripts) that an agent can load to perform a specific job well.",
+    "oneBreath": "A reusable pack of instructions (and often tools) an agent can load to do one job well.",
     "does": [
-      "Package know-how for repeatable tasks",
-      "Let agents specialize without retraining the model"
+      "Package know-how for repeat tasks",
+      "Specialize without retraining the whole model"
     ],
     "doesNot": [
-      "Not a human soft skill",
-      "Not the same as fine-tuning the model"
+      "Not a human soft skill like teamwork",
+      "Not the same as fine-tuning"
     ],
     "neighbors": [
       {
@@ -1306,10 +1306,10 @@
     "nextStep": {
       "kind": "seeRelated",
       "targetId": "agent-harness",
-      "label": "See the harness"
+      "label": "See the safety cage around agents"
     },
     "analogy": "A recipe card plus the utensils for one dish.",
-    "example": "A \"review this PR\" skill with steps, a checklist, and repo tools.",
+    "example": "A “review this pull request” pack with steps and checks.",
     "aliases": [
       "agent skill",
       "capability pack"
@@ -1319,7 +1319,7 @@
       "agent-harness",
       "orchestration"
     ],
-    "changing": "Skills are emerging as a portable unit of agent capability across products."
+    "changing": "Skills are becoming a portable way to share what agents can do."
   },
   {
     "id": "agent-harness",
@@ -1327,13 +1327,13 @@
     "alias": "Agent runtime",
     "parentId": "building-with-models",
     "level": "frontier",
-    "oneBreath": "The scaffolding that runs an agent safely — tool permissions, loops, sandboxes, retries, and traces — separate from the model itself.",
+    "oneBreath": "The safety cage around an agent: permissions, loops, sandboxes, retries, and logs — separate from the model itself.",
     "does": [
-      "Bound how an agent acts in the real world",
-      "Add safety rails and observability around the loop"
+      "Limit what the agent can touch",
+      "Add rails and visibility around the loop"
     ],
     "doesNot": [
-      "Not the LLM weights",
+      "Not the AI’s trained brain",
       "Not a single prompt"
     ],
     "neighbors": [
@@ -1357,10 +1357,10 @@
     "nextStep": {
       "kind": "seeRelated",
       "targetId": "skill",
-      "label": "See skills"
+      "label": "See reusable job packs"
     },
     "analogy": "A workshop bench with tools bolted down and a kill switch.",
-    "example": "A coding agent limited to one project folder that logs every tool call.",
+    "example": "A coding agent stuck to one folder that logs every tool call.",
     "aliases": [
       "agent runtime",
       "agent loop"
@@ -1370,7 +1370,7 @@
       "evaluation",
       "guardrails"
     ],
-    "changing": "Harness design is becoming as important as model choice for reliable agents."
+    "changing": "Good harness design matters as much as picking the model."
   },
   {
     "id": "human-in-the-loop",
@@ -1378,13 +1378,13 @@
     "alias": "HITL",
     "parentId": "building-with-models",
     "level": "core",
-    "oneBreath": "Keeping a person in the decision path — approve, edit, or stop — before the agent takes risky actions.",
+    "oneBreath": "Keeping a person in the path — approve, edit, or stop — before risky actions go out.",
     "does": [
       "Add checkpoints for high-stakes steps",
-      "Catch mistakes tools would otherwise ship"
+      "Catch mistakes before they ship"
     ],
     "doesNot": [
-      "Not a reason to skip automation entirely",
+      "Not a reason to automate nothing",
       "Not the same as training the model"
     ],
     "neighbors": [
@@ -1408,10 +1408,10 @@
     "nextStep": {
       "kind": "seeRelated",
       "targetId": "agent-harness",
-      "label": "See the harness"
+      "label": "See the safety cage around agents"
     },
     "analogy": "A co-pilot who still asks before landing.",
-    "example": "Agent drafts a PR; you click approve before it merges."
+    "example": "Agent drafts a change; you click approve before it merges."
   },
   {
     "id": "mcp",
@@ -1419,10 +1419,10 @@
     "alias": "Model Context Protocol",
     "parentId": "building-with-models",
     "level": "frontier",
-    "oneBreath": "An open way for apps and agents to plug into tools and data sources through a shared protocol — instead of one-off integrations.",
+    "oneBreath": "A shared plug standard so apps and agents can connect to tools and data without a custom hookup each time.",
     "does": [
-      "Standardize how tools and context are exposed",
-      "Let many clients reuse the same servers"
+      "Make tools reusable across clients",
+      "Simplify how context is exposed"
     ],
     "doesNot": [
       "Not a model by itself",
@@ -1449,10 +1449,10 @@
     "nextStep": {
       "kind": "seeRelated",
       "targetId": "tool-use",
-      "label": "See tool use"
+      "label": "See calling outside apps"
     },
     "analogy": "USB for AI tools — one plug shape, many devices.",
-    "example": "An IDE agent connecting to GitHub and docs via MCP servers.",
+    "example": "An editor agent connecting to GitHub and docs the same way.",
     "aliases": [
       "Model Context Protocol"
     ],
@@ -1461,21 +1461,21 @@
       "agent-harness",
       "skill"
     ],
-    "changing": "MCP is quickly becoming a common glue layer across agent products."
+    "changing": "Quickly becoming common glue across agent products."
   },
   {
     "id": "evaluation",
     "name": "Evaluation",
     "parentId": "trust-and-quality",
     "level": "core",
-    "oneBreath": "Measuring how well a model or system performs — with tests, graders, and real user signals.",
+    "oneBreath": "Measuring how well the AI or system works — with tests, graders, and real user signals.",
     "does": [
-      "Catch regressions",
+      "Catch quality drops after changes",
       "Compare approaches fairly"
     ],
     "doesNot": [
-      "Not one universal score",
-      "Not only vibe checks"
+      "Not one universal score for everything",
+      "Not only vibes or gut feel"
     ],
     "neighbors": [
       {
@@ -1498,24 +1498,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "guardrails",
-      "label": "See guardrails"
+      "label": "See the safety filters"
     },
     "analogy": "Exams for the assistant.",
-    "example": "Golden question sets and A/B tests."
+    "example": "A fixed set of questions you re-run after each update."
   },
   {
     "id": "guardrails",
     "name": "Guardrails",
     "parentId": "trust-and-quality",
     "level": "core",
-    "oneBreath": "Filters and policies that block or reshape unsafe, off-policy, or malformed inputs and outputs.",
+    "oneBreath": "Filters and rules that block or rewrite unsafe or off-policy outputs before users see them.",
     "does": [
-      "Reduce harmful completions",
-      "Enforce business rules"
+      "Catch toxic or disallowed content",
+      "Enforce company policies"
     ],
     "doesNot": [
-      "Not perfect",
-      "Not a substitute for alignment work"
+      "Not perfect coverage",
+      "Not a replacement for good product design"
     ],
     "neighbors": [
       {
@@ -1534,24 +1534,24 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "safety-misuse",
-      "label": "See safety"
+      "label": "See misuse risks"
     },
-    "analogy": "Bouncers at the door.",
-    "example": "PII redaction and topic blocks."
+    "analogy": "Bouncers at the door of the reply.",
+    "example": "Block requests for illegal how-tos."
   },
   {
     "id": "latency-cost",
     "name": "Latency & cost",
     "parentId": "trust-and-quality",
     "level": "core",
-    "oneBreath": "How long responses take and how much each call costs — central product constraints.",
+    "oneBreath": "How long answers take and how much each call costs — the practical budget for using AI.",
     "does": [
-      "Budget model choices",
-      "Design caching and routing"
+      "Force tradeoffs between quality and spend",
+      "Shape which model or steps you choose"
     ],
     "doesNot": [
-      "Not only a finance problem",
-      "Not fixed forever as models change"
+      "Not the same as answer quality",
+      "Not free just because it’s “in the cloud”"
     ],
     "neighbors": [
       {
@@ -1570,24 +1570,24 @@
     "nextStep": {
       "kind": "seeRelated",
       "targetId": "evaluation",
-      "label": "Tie to evaluation"
+      "label": "Tie back to quality tests"
     },
-    "analogy": "Taxi meter and travel time.",
-    "example": "Choosing a smaller model for autocomplete."
+    "analogy": "Taxi fare and travel time for each trip.",
+    "example": "A cheaper small model for drafts; a bigger one for finals."
   },
   {
     "id": "safety-misuse",
     "name": "Safety / misuse",
     "parentId": "trust-and-quality",
     "level": "core",
-    "oneBreath": "Risks of harmful use — and practices to reduce abuse, leakage, and dangerous assistance.",
+    "oneBreath": "Risks of people using AI for harm — scams, abuse, or banned advice — and how products respond.",
     "does": [
-      "Frame real-world harm paths",
-      "Guide policy and product limits"
+      "Name misuse categories",
+      "Drive policies and blocks"
     ],
     "doesNot": [
-      "Not only jailbreak memes",
-      "Not solved by one filter"
+      "Not solved by one filter forever",
+      "Not only a technical problem"
     ],
     "neighbors": [
       {
@@ -1606,10 +1606,10 @@
     "nextStep": {
       "kind": "seeRelated",
       "targetId": "guardrails",
-      "label": "See guardrails"
+      "label": "See the safety filters"
     },
-    "analogy": "Locks and norms for powerful tools.",
-    "example": "Rate limits, monitoring, refusal policies."
+    "analogy": "Rules for a powerful tool in public hands.",
+    "example": "Blocking help for phishing emails."
   },
   {
     "id": "observability",
@@ -1617,14 +1617,14 @@
     "alias": "Tracing",
     "parentId": "trust-and-quality",
     "level": "core",
-    "oneBreath": "Recording prompts, tool calls, timings, and outcomes so you can see why an agent or chain behaved the way it did.",
+    "oneBreath": "Recording prompts, tool calls, timing, and results so you can see why a system did what it did.",
     "does": [
       "Debug multi-step failures",
-      "Measure cost and latency in production"
+      "Track cost and speed in real use"
     ],
     "doesNot": [
-      "Not evaluation by itself",
-      "Not a substitute for guardrails"
+      "Not the same as grading answer quality",
+      "Not a substitute for safety rails"
     ],
     "neighbors": [
       {
@@ -1647,10 +1647,10 @@
     "nextStep": {
       "kind": "seeRelated",
       "targetId": "evaluation",
-      "label": "See evaluation"
+      "label": "See how we measure quality"
     },
     "analogy": "A flight recorder for the assistant.",
-    "example": "A trace UI showing each tool call and token spend for a failed task.",
+    "example": "A timeline of each tool call when a task fails.",
     "relatedTechniques": [
       "evaluation",
       "latency-cost",
