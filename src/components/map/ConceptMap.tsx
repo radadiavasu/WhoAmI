@@ -22,25 +22,31 @@ import { BranchEdge } from "./BranchEdge";
 const nodeTypes = { concept: ConceptNodeView };
 const edgeTypes = { branch: BranchEdge };
 
-function FocusCamera({ focusedId }: { focusedId?: string }) {
-  const { setCenter, getNode, fitView } = useReactFlow();
-  const didFitEmpty = useRef(false);
+function FocusCamera({
+  focusedId,
+  contextIds,
+}: {
+  focusedId?: string;
+  contextIds: string[];
+}) {
+  const { fitView } = useReactFlow();
+  const contextKey = contextIds.slice().sort().join("|");
 
   useEffect(() => {
     if (!focusedId) {
-      if (!didFitEmpty.current) {
-        fitView({ padding: 0.16, duration: 280 });
-        didFitEmpty.current = true;
-      }
+      fitView({ padding: 0.1, duration: 280 });
       return;
     }
-    didFitEmpty.current = false;
-    const node = getNode(focusedId);
-    if (!node) return;
-    const x = node.position.x + (node.measured?.width ?? 150) / 2;
-    const y = node.position.y + (node.measured?.height ?? 56) / 2;
-    setCenter(x, y, { zoom: 1.05, duration: 320 });
-  }, [focusedId, getNode, setCenter, fitView]);
+    const ids = contextIds.length > 0 ? contextIds : [focusedId];
+    // Frame the leaf with its chapter path so placement stays visible.
+    fitView({
+      nodes: ids.map((id) => ({ id })),
+      padding: 0.28,
+      duration: 340,
+      maxZoom: 1.15,
+      minZoom: 0.45,
+    });
+  }, [focusedId, contextKey, contextIds, fitView]);
 
   return null;
 }
@@ -48,10 +54,16 @@ function FocusCamera({ focusedId }: { focusedId?: string }) {
 type Props = {
   concepts: ConceptNode[];
   focusedId?: string;
+  visitedIds: Set<string>;
   onSelect: (id: string) => void;
 };
 
-export function ConceptMap({ concepts, focusedId, onSelect }: Props) {
+export function ConceptMap({
+  concepts,
+  focusedId,
+  visitedIds,
+  onSelect,
+}: Props) {
   // React Flow measures the viewport on the client; SSR HTML never matches.
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -67,6 +79,15 @@ export function ConceptMap({ concepts, focusedId, onSelect }: Props) {
     () => (focusedId ? getFocusSet(focusedId, concepts) : null),
     [focusedId, concepts],
   );
+
+  const contextIds = useMemo(() => {
+    if (!focusedId || !focus) return [] as string[];
+    return [
+      focusedId,
+      ...focus.pathIds,
+      ...focus.neighborIds,
+    ];
+  }, [focusedId, focus]);
 
   /** User-moved node positions survive focus updates. */
   const draggedPositions = useRef(
@@ -89,11 +110,13 @@ export function ConceptMap({ concepts, focusedId, onSelect }: Props) {
             limbColor: chapterColor(resolveChapterId(n.data.node, byId)),
             focused: focusedId === n.id,
             neighbor: focus?.neighborIds.has(n.id) ?? false,
+            path: focus?.pathIds.has(n.id) ?? false,
+            visited: visitedIds.has(n.id),
             dimmed: focus?.dimmedIds.has(n.id) ?? false,
           } satisfies ConceptNodeData,
         };
       }),
-    [graph.nodes, focusedId, focus, byId],
+    [graph.nodes, focusedId, focus, byId, visitedIds],
   );
 
   const layoutEdges: Edge[] = useMemo(() => {
@@ -112,19 +135,28 @@ export function ConceptMap({ concepts, focusedId, onSelect }: Props) {
       })
       .map((e) => {
         const neighbor = e.data?.kind === "neighbor";
+        const onPath =
+          Boolean(focusedId) &&
+          ((e.source === focusedId && focus?.pathIds.has(e.target)) ||
+            (e.target === focusedId && focus?.pathIds.has(e.source)) ||
+            (focus?.pathIds.has(e.source) && focus?.pathIds.has(e.target)));
         const involved =
           focusedId &&
           (e.source === focusedId ||
             e.target === focusedId ||
             focus?.neighborIds.has(e.source) ||
-            focus?.neighborIds.has(e.target));
+            focus?.neighborIds.has(e.target) ||
+            onPath);
         const dimmed = Boolean(focusedId) && !involved;
         const sourceNode = byId.get(e.source);
-        const stroke = involved
-          ? "var(--sun)"
-          : sourceNode
-            ? chapterColor(resolveChapterId(sourceNode, byId))
-            : "var(--glow)";
+        const stroke =
+          neighbor || onPath
+            ? "var(--sun)"
+            : involved
+              ? "var(--sun)"
+              : sourceNode
+                ? chapterColor(resolveChapterId(sourceNode, byId))
+                : "var(--glow)";
         return {
           id: e.id,
           source: e.source,
@@ -133,8 +165,9 @@ export function ConceptMap({ concepts, focusedId, onSelect }: Props) {
           data: e.data,
           animated: Boolean(involved && neighbor),
           style: {
-            stroke: neighbor ? "var(--sun)" : stroke,
-            opacity: dimmed ? 0.08 : neighbor ? 0.8 : 0.88,
+            stroke,
+            opacity: dimmed ? 0.08 : neighbor || onPath ? 0.9 : 0.88,
+            strokeWidth: onPath ? 2.4 : undefined,
             strokeDasharray: neighbor ? "6 8" : undefined,
           },
         };
@@ -194,7 +227,7 @@ export function ConceptMap({ concepts, focusedId, onSelect }: Props) {
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         fitView
-        fitViewOptions={{ padding: 0.14 }}
+        fitViewOptions={{ padding: 0.1 }}
         minZoom={0.18}
         maxZoom={2.4}
         proOptions={{ hideAttribution: true }}
@@ -210,7 +243,7 @@ export function ConceptMap({ concepts, focusedId, onSelect }: Props) {
         selectionOnDrag={false}
         nodeDragThreshold={4}
       >
-        <FocusCamera focusedId={focusedId} />
+        <FocusCamera focusedId={focusedId} contextIds={contextIds} />
         <Controls showInteractive={false} position="bottom-left" />
       </ReactFlow>
     </div>

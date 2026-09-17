@@ -18,8 +18,8 @@ const n = (
 
 function centerOf(
   node: { position: { x: number; y: number } },
-  w = 158,
-  h = 62,
+  w = 196,
+  h = 76,
 ) {
   return { x: node.position.x + w / 2, y: node.position.y + h / 2 };
 }
@@ -58,7 +58,7 @@ describe("buildFlowGraph", () => {
       for (let j = i + 1; j < leaves.length; j++) {
         const a = centerOf(leaves[i]!);
         const b = centerOf(leaves[j]!);
-        expect(Math.hypot(a.x - b.x, a.y - b.y)).toBeGreaterThan(190);
+        expect(Math.hypot(a.x - b.x, a.y - b.y)).toBeGreaterThan(220);
       }
     }
   });
@@ -78,7 +78,7 @@ describe("buildFlowGraph", () => {
         for (let j = i + 1; j < group.length; j++) {
           const a = centerOf(group[i]!);
           const b = centerOf(group[j]!);
-          expect(Math.hypot(a.x - b.x, a.y - b.y)).toBeGreaterThan(190);
+          expect(Math.hypot(a.x - b.x, a.y - b.y)).toBeGreaterThan(220);
         }
       }
     }

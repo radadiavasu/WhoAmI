@@ -4,6 +4,28 @@ import type { ConceptNode } from "@/content/schema";
 
 const nodes: ConceptNode[] = [
   {
+    id: "root",
+    name: "Root",
+    parentId: null,
+    level: "intro",
+    oneBreath: "x",
+    does: ["a"],
+    doesNot: ["b"],
+    neighbors: [],
+    nextStep: { kind: "seeRelated", label: "n" },
+  },
+  {
+    id: "c",
+    name: "Chapter",
+    parentId: "root",
+    level: "intro",
+    oneBreath: "x",
+    does: ["a"],
+    doesNot: ["b"],
+    neighbors: [],
+    nextStep: { kind: "seeRelated", label: "n" },
+  },
+  {
     id: "rag",
     name: "RAG",
     parentId: "c",
@@ -44,5 +66,13 @@ describe("getFocusSet", () => {
     expect(f.neighborIds.has("hallucination")).toBe(true);
     expect(f.dimmedIds.has("agent")).toBe(true);
     expect(f.dimmedIds.has("rag")).toBe(false);
+  });
+
+  it("keeps the path to root undimmed so placement stays readable", () => {
+    const f = getFocusSet("rag", nodes);
+    expect(f.pathIds.has("c")).toBe(true);
+    expect(f.pathIds.has("root")).toBe(true);
+    expect(f.dimmedIds.has("c")).toBe(false);
+    expect(f.dimmedIds.has("root")).toBe(false);
   });
 });

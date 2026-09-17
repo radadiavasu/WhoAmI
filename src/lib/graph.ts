@@ -33,10 +33,10 @@ const ROOT_W = 240;
 const ROOT_H = 96;
 const CHAPTER_W = 176;
 const CHAPTER_H = 76;
-const LEAF_W = 158;
-const LEAF_H = 62;
+const LEAF_W = 196;
+const LEAF_H = 76;
 /** Minimum center-to-center distance so oval leaves never visually merge. */
-const LEAF_GAP = 200;
+const LEAF_GAP = 236;
 
 function offsetFrom(
   origin: { x: number; y: number },

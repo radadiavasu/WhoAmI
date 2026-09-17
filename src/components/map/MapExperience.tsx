@@ -45,15 +45,35 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
   const byId = useMemo(() => indexById(nodes), [nodes]);
   const isMobile = useIsMobile();
   const [focusedId, setFocusedId] = useState<string | undefined>(initialFocusId);
+  const [visitedIds, setVisitedIds] = useState<Set<string>>(
+    () => new Set(initialFocusId ? [initialFocusId] : []),
+  );
 
   useEffect(() => {
     setFocusedId(initialFocusId);
+    if (initialFocusId) {
+      setVisitedIds((prev) => {
+        if (prev.has(initialFocusId)) return prev;
+        const next = new Set(prev);
+        next.add(initialFocusId);
+        return next;
+      });
+    }
   }, [initialFocusId]);
 
   useEffect(() => {
     const onPop = () => {
       const match = window.location.pathname.match(/^\/c\/([^/]+)/);
-      setFocusedId(match?.[1]);
+      const id = match?.[1];
+      setFocusedId(id);
+      if (id) {
+        setVisitedIds((prev) => {
+          if (prev.has(id)) return prev;
+          const next = new Set(prev);
+          next.add(id);
+          return next;
+        });
+      }
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
@@ -66,6 +86,12 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
 
   const onSelect = (id: string) => {
     setFocusedId(id);
+    setVisitedIds((prev) => {
+      if (prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
     window.history.pushState(null, "", `/c/${id}`);
   };
 
@@ -104,6 +130,7 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
           <ConceptMap
             concepts={nodes}
             focusedId={focusedId}
+            visitedIds={visitedIds}
             onSelect={onSelect}
           />
         </ReactFlowProvider>

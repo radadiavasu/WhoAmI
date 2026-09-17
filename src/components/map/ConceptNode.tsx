@@ -12,12 +12,23 @@ export type ConceptNodeData = {
   limbColor: string;
   focused?: boolean;
   neighbor?: boolean;
+  path?: boolean;
+  visited?: boolean;
   dimmed?: boolean;
 };
 
 function ConceptNodeComponent({ data, id }: NodeProps) {
-  const { node, role, angle, limbColor, focused, neighbor, dimmed } =
-    data as ConceptNodeData;
+  const {
+    node,
+    role,
+    angle,
+    limbColor,
+    focused,
+    neighbor,
+    path,
+    visited,
+    dimmed,
+  } = data as ConceptNodeData;
 
   return (
     <div
@@ -25,6 +36,8 @@ function ConceptNodeComponent({ data, id }: NodeProps) {
         "whoami-node relative",
         focused ? "is-focused" : "",
         neighbor ? "is-neighbor" : "",
+        path ? "is-path" : "",
+        visited && !focused ? "is-visited" : "",
         dimmed ? "is-dimmed" : "",
         role === "leaf" ? "is-leaf" : "",
       ].join(" ")}
@@ -57,7 +70,7 @@ function ConceptNodeComponent({ data, id }: NodeProps) {
         </div>
       ) : (
         <div className="leaf-node">
-          <svg className="leaf-svg" viewBox="0 0 180 72" aria-hidden>
+          <svg className="leaf-svg" viewBox="0 0 220 84" aria-hidden>
             <defs>
               <linearGradient id={`leaf-fill-${id}`} x1="0" y1="0" x2="1" y2="1">
                 <stop offset="0%" stopColor="#1a2420" />
@@ -66,26 +79,61 @@ function ConceptNodeComponent({ data, id }: NodeProps) {
                   stopColor="color-mix(in oklab, var(--limb) 32%, #121a17)"
                 />
               </linearGradient>
+              {visited ? (
+                <linearGradient
+                  id={`leaf-picked-${id}`}
+                  x1="0"
+                  y1="0"
+                  x2="1"
+                  y2="1"
+                >
+                  <stop offset="0%" stopColor="#1e2a28" />
+                  <stop offset="55%" stopColor="#243330" />
+                  <stop
+                    offset="100%"
+                    stopColor="color-mix(in oklab, var(--limb) 18%, #2a3532)"
+                  />
+                </linearGradient>
+              ) : null}
             </defs>
             <path
-              d="M14,36 C18,12 52,6 90,8 C132,10 164,18 168,36 C164,54 128,64 90,64 C50,64 18,56 14,36 Z"
-              fill={`url(#leaf-fill-${id})`}
+              className="leaf-body"
+              d={
+                visited && !focused
+                  ? // Picked leaf — bite taken from the tip (you've been here).
+                    "M16,42 C20,14 60,7 110,9 C150,11 178,18 192,30 C186,36 186,48 192,54 C178,66 150,73 110,75 C60,75 20,66 16,42 Z"
+                  : "M16,42 C20,14 60,7 110,9 C155,11 196,20 204,42 C196,64 152,75 110,75 C60,75 20,66 16,42 Z"
+              }
+              fill={
+                visited && !focused
+                  ? `url(#leaf-picked-${id})`
+                  : `url(#leaf-fill-${id})`
+              }
               stroke="var(--limb)"
-              strokeWidth="2.4"
+              strokeWidth="2.6"
               opacity="0.95"
             />
             <path
-              d="M28,36 C60,28 110,28 155,36"
+              className="leaf-vein"
+              d="M32,42 C72,32 130,32 172,42"
               fill="none"
               stroke="var(--limb)"
-              strokeWidth="1"
+              strokeWidth="1.1"
               opacity="0.45"
             />
+            {visited && !focused ? (
+              <path
+                className="leaf-picked-edge"
+                d="M192,30 C186,36 186,48 192,54"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+              />
+            ) : null}
           </svg>
           <div className="leaf-label">
-            <div className="text-[12.5px] font-semibold leading-snug text-[var(--ink)]">
-              {node.name}
-            </div>
+            <div className="leaf-label-text text-[var(--ink)]">{node.name}</div>
           </div>
         </div>
       )}

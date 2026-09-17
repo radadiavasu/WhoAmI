@@ -281,8 +281,8 @@ body {
 
 .leaf-node {
   position: relative;
-  width: 158px;
-  height: 62px;
+  width: 196px;
+  height: 76px;
   transform: rotate(var(--tilt, 0deg));
   filter: drop-shadow(0 0 12px color-mix(in oklab, var(--limb) 35%, transparent));
 }
@@ -300,8 +300,15 @@ body {
   display: grid;
   place-items: center;
   height: 100%;
-  padding: 0 18px;
+  padding: 0 22px;
   text-align: center;
+}
+
+.leaf-label-text {
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 .whoami-node {
@@ -324,9 +331,39 @@ body {
   transform: rotate(var(--tilt, 0deg)) scale(1.12);
 }
 
+.whoami-node.is-path {
+  z-index: 3;
+  filter: drop-shadow(0 0 16px color-mix(in oklab, var(--sun) 35%, transparent));
+}
+
+/* Visited = picked leaf — tip bitten out + cool mist wash. No badge, no mote. */
+.whoami-node.is-visited .leaf-node {
+  filter: drop-shadow(0 0 8px color-mix(in oklab, var(--ink) 18%, transparent));
+}
+
+.whoami-node.is-visited .leaf-body {
+  stroke: color-mix(in oklab, var(--ink) 55%, var(--limb));
+  stroke-width: 2.7;
+}
+
+.whoami-node.is-visited .leaf-vein {
+  stroke: color-mix(in oklab, var(--ink-soft) 70%, var(--limb));
+  opacity: 0.55;
+  stroke-width: 1.2;
+}
+
+.whoami-node.is-visited .leaf-picked-edge {
+  color: color-mix(in oklab, var(--ink) 88%, var(--moss));
+}
+
 .whoami-node.is-dimmed {
   opacity: 0.12;
   filter: grayscale(0.45);
+}
+
+.whoami-node.is-visited.is-dimmed {
+  opacity: 0.5;
+  filter: grayscale(0.1);
 }
 
 .whoami-node {
