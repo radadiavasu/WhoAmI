@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { ReactFlowProvider } from "@xyflow/react";
 import type { ConceptNode } from "@/content/schema";
 import { indexById } from "@/content/load";
@@ -29,15 +29,15 @@ function breadcrumbFor(
 }
 
 function useIsMobile() {
-  const [mobile, setMobile] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)");
-    const sync = () => setMobile(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
-  return mobile;
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia("(max-width: 767px)");
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia("(max-width: 767px)").matches,
+    () => false,
+  );
 }
 
 type OpenSource = "map" | "search" | "neighbor" | "next_step" | "url";
@@ -54,7 +54,7 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
   const [visitedIds, setVisitedIds] = useState<Set<string>>(
     () => new Set(initialFocusId ? [initialFocusId] : []),
   );
-  const trackedUrl = useRef<string | undefined>(undefined);
+  const didTrackLanding = useRef(false);
 
   const openNode = (id: string, source: OpenSource) => {
     trackNodeOpen(id, source);
@@ -68,20 +68,11 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
     window.history.pushState(null, "", `/c/${id}`);
   };
 
+  // Cold load of /c/[id] — track once; focus already seeded from props.
   useEffect(() => {
-    setFocusedId(initialFocusId);
-    if (initialFocusId) {
-      setVisitedIds((prev) => {
-        if (prev.has(initialFocusId)) return prev;
-        const next = new Set(prev);
-        next.add(initialFocusId);
-        return next;
-      });
-      if (trackedUrl.current !== initialFocusId) {
-        trackedUrl.current = initialFocusId;
-        trackNodeOpen(initialFocusId, "url");
-      }
-    }
+    if (!initialFocusId || didTrackLanding.current) return;
+    didTrackLanding.current = true;
+    trackNodeOpen(initialFocusId, "url");
   }, [initialFocusId]);
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useSyncExternalStore } from "react";
 import {
   Controls,
   ReactFlow,
@@ -21,6 +21,14 @@ import { BranchEdge } from "./BranchEdge";
 
 const nodeTypes = { concept: ConceptNodeView };
 const edgeTypes = { branch: BranchEdge };
+
+function useIsClient() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
+}
 
 function FocusCamera({
   focusedId,
@@ -65,10 +73,7 @@ export function ConceptMap({
   onSelect,
 }: Props) {
   // React Flow measures the viewport on the client; SSR HTML never matches.
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useIsClient();
 
   const graph = useMemo(() => buildFlowGraph(concepts), [concepts]);
   const byId = useMemo(
@@ -96,26 +101,23 @@ export function ConceptMap({
 
   const layoutNodes: Node[] = useMemo(
     () =>
-      graph.nodes.map((n) => {
-        const saved = draggedPositions.current.get(n.id);
-        return {
-          id: n.id,
-          type: n.type,
-          position: saved ?? n.position,
-          draggable: true,
-          data: {
-            node: n.data.node,
-            role: n.data.role,
-            angle: n.data.angle,
-            limbColor: chapterColor(resolveChapterId(n.data.node, byId)),
-            focused: focusedId === n.id,
-            neighbor: focus?.neighborIds.has(n.id) ?? false,
-            path: focus?.pathIds.has(n.id) ?? false,
-            visited: visitedIds.has(n.id),
-            dimmed: focus?.dimmedIds.has(n.id) ?? false,
-          } satisfies ConceptNodeData,
-        };
-      }),
+      graph.nodes.map((n) => ({
+        id: n.id,
+        type: n.type,
+        position: n.position,
+        draggable: true,
+        data: {
+          node: n.data.node,
+          role: n.data.role,
+          angle: n.data.angle,
+          limbColor: chapterColor(resolveChapterId(n.data.node, byId)),
+          focused: focusedId === n.id,
+          neighbor: focus?.neighborIds.has(n.id) ?? false,
+          path: focus?.pathIds.has(n.id) ?? false,
+          visited: visitedIds.has(n.id),
+          dimmed: focus?.dimmedIds.has(n.id) ?? false,
+        } satisfies ConceptNodeData,
+      })),
     [graph.nodes, focusedId, focus, byId, visitedIds],
   );
 
