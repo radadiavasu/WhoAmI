@@ -36,7 +36,10 @@ const CHAPTER_H = 76;
 const LEAF_W = 196;
 const LEAF_H = 76;
 /** Minimum center-to-center distance so oval leaves never visually merge. */
-const LEAF_GAP = 236;
+const LEAF_GAP = 268;
+/** Keep chapter hubs apart so neighboring canopies don't tangle. */
+const CHAPTER_GAP = 420;
+const LEAF_CHAPTER_GAP = 250;
 
 function offsetFrom(
   origin: { x: number; y: number },
@@ -91,6 +94,7 @@ function separateCenters(
 
 /**
  * Pack leaves on multiple rings around a branch so chord length >= LEAF_GAP.
+ * Narrower fan + farther rings = less bleed into neighboring chapters.
  */
 function placeLeavesAroundBranch(
   hub: { x: number; y: number; angle: number },
@@ -99,8 +103,9 @@ function placeLeavesAroundBranch(
   angles: Map<string, number>,
 ) {
   const remaining = [...kids];
-  let radius = 270;
-  const halfSpan = 48;
+  let radius = 360;
+  const halfSpan = 38;
+  const ringStep = 168;
 
   while (remaining.length > 0) {
     const angleStepDeg = (LEAF_GAP / radius) * (180 / Math.PI);
@@ -119,7 +124,7 @@ function placeLeavesAroundBranch(
       angles.set(kid.id, angle);
     });
 
-    radius += 120;
+    radius += ringStep;
   }
 }
 
@@ -145,7 +150,7 @@ export function buildFlowGraph(nodes: ConceptNode[]): {
   const angles = new Map<string, number>();
   const roles = new Map<string, TreeRole>();
 
-  const origin = { x: 1200, y: 1100 };
+  const origin = { x: 1600, y: 1400 };
 
   if (root) {
     centers.set(root.id, { ...origin });
@@ -157,22 +162,33 @@ export function buildFlowGraph(nodes: ConceptNode[]): {
     (n): n is ConceptNode => Boolean(n),
   );
 
-  // Keep limbs in the upper half-plane (never below the trunk)
-  const chapterAngles = spreadAnglesLinear(chapters.length, -72, 72);
+  // Wide enough for six chapters, but stay in the upper half-plane
+  const chapterAngles = spreadAnglesLinear(chapters.length, -86, 86);
   const chapterMeta = new Map<
     string,
     { x: number; y: number; angle: number }
   >();
+  const chapterIds = chapters.map((c) => c.id);
 
   chapters.forEach((chapter, i) => {
     const angle = chapterAngles[i]!;
-    const radius = 480 + (i % 2 === 0 ? 70 : 10) + Math.abs(angle) * 1.8;
+    const radius = 720 + (i % 2 === 0 ? 130 : 40) + Math.abs(angle) * 3.2;
     const center = offsetFrom(origin, angle, radius);
     chapterMeta.set(chapter.id, { ...center, angle });
     centers.set(chapter.id, center);
     angles.set(chapter.id, angle);
     roles.set(chapter.id, "branch");
   });
+
+  // Pull chapter hubs apart before hanging leaves on them
+  separateCenters(centers, chapterIds, CHAPTER_GAP, 90);
+  for (const chapter of chapters) {
+    const c = centers.get(chapter.id)!;
+    // Never let a chapter sink toward/below the trunk
+    if (c.y > origin.y - 320) c.y = origin.y - 320;
+    const meta = chapterMeta.get(chapter.id)!;
+    chapterMeta.set(chapter.id, { ...meta, x: c.x, y: c.y });
+  }
 
   const leafIds: string[] = [];
 
@@ -189,21 +205,21 @@ export function buildFlowGraph(nodes: ConceptNode[]): {
   }
 
   // Hard separation pass — leaves first, then against branches
-  separateCenters(centers, leafIds, LEAF_GAP, 100);
+  separateCenters(centers, leafIds, LEAF_GAP, 120);
   separateCenters(
     centers,
-    [...chapters.map((c) => c.id), ...leafIds],
-    190,
-    60,
+    [...chapterIds, ...leafIds],
+    LEAF_CHAPTER_GAP,
+    80,
   );
 
   for (const id of leafIds) {
     const c = centers.get(id)!;
-    if (c.y > origin.y - 160) c.y = origin.y - 160;
+    if (c.y > origin.y - 200) c.y = origin.y - 200;
   }
 
   // Final leaf-only polish after y clamp
-  separateCenters(centers, leafIds, LEAF_GAP, 40);
+  separateCenters(centers, leafIds, LEAF_GAP, 50);
 
   const sizeFor = (role: TreeRole) => {
     if (role === "trunk") return { w: ROOT_W, h: ROOT_H };

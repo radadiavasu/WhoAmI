@@ -58,7 +58,7 @@ describe("buildFlowGraph", () => {
       for (let j = i + 1; j < leaves.length; j++) {
         const a = centerOf(leaves[i]!);
         const b = centerOf(leaves[j]!);
-        expect(Math.hypot(a.x - b.x, a.y - b.y)).toBeGreaterThan(220);
+        expect(Math.hypot(a.x - b.x, a.y - b.y)).toBeGreaterThan(250);
       }
     }
   });
@@ -78,7 +78,7 @@ describe("buildFlowGraph", () => {
         for (let j = i + 1; j < group.length; j++) {
           const a = centerOf(group[i]!);
           const b = centerOf(group[j]!);
-          expect(Math.hypot(a.x - b.x, a.y - b.y)).toBeGreaterThan(220);
+          expect(Math.hypot(a.x - b.x, a.y - b.y)).toBeGreaterThan(250);
         }
       }
     }
