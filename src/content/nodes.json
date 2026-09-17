@@ -205,6 +205,10 @@
       {
         "id": "context-window",
         "relation": "usedIn"
+      },
+      {
+        "id": "tokenizer",
+        "relation": "next"
       }
     ],
     "nextStep": {
@@ -398,6 +402,10 @@
       {
         "id": "rag",
         "relation": "sibling"
+      },
+      {
+        "id": "multimodal",
+        "relation": "next"
       }
     ],
     "nextStep": {
@@ -683,6 +691,10 @@
       {
         "id": "structured-output",
         "relation": "next"
+      },
+      {
+        "id": "system-prompt",
+        "relation": "next"
       }
     ],
     "nextStep": {
@@ -856,6 +868,10 @@
       {
         "id": "probability-next-token",
         "relation": "prereq"
+      },
+      {
+        "id": "knowledge-cutoff",
+        "relation": "sibling"
       }
     ],
     "nextStep": {
@@ -1004,6 +1020,10 @@
       {
         "id": "rag",
         "relation": "usedIn"
+      },
+      {
+        "id": "hybrid-search",
+        "relation": "next"
       }
     ],
     "nextStep": {
@@ -1529,6 +1549,10 @@
       {
         "id": "evaluation",
         "relation": "usedIn"
+      },
+      {
+        "id": "red-teaming",
+        "relation": "prereq"
       }
     ],
     "nextStep": {
@@ -1565,6 +1589,10 @@
       {
         "id": "observability",
         "relation": "sibling"
+      },
+      {
+        "id": "streaming",
+        "relation": "sibling"
       }
     ],
     "nextStep": {
@@ -1600,6 +1628,10 @@
       },
       {
         "id": "prompt-injection",
+        "relation": "sibling"
+      },
+      {
+        "id": "pii-privacy",
         "relation": "sibling"
       }
     ],
@@ -1656,5 +1688,610 @@
       "latency-cost",
       "agent-harness"
     ]
+  },
+  {
+    "id": "tokenizer",
+    "name": "Tokenizer",
+    "parentId": "foundations",
+    "level": "intro",
+    "oneBreath": "The tool that splits text into tokens the model can read — and stitches tokens back into words.",
+    "does": [
+      "Decide how text is chopped into pieces",
+      "Affect how much fits in the context window"
+    ],
+    "doesNot": [
+      "Not the same as the chat model itself",
+      "Not a spell-checker"
+    ],
+    "neighbors": [
+      {
+        "id": "token",
+        "relation": "prereq"
+      },
+      {
+        "id": "context-window",
+        "relation": "usedIn"
+      },
+      {
+        "id": "embedding",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "token",
+      "label": "See what a token is"
+    },
+    "analogy": "A ticket booth that turns sentences into ride tickets.",
+    "example": "Why “ChatGPT” might count as more than one token."
+  },
+  {
+    "id": "top-p",
+    "name": "Top-p",
+    "alias": "Nucleus sampling",
+    "parentId": "foundations",
+    "level": "core",
+    "oneBreath": "Another creativity control: the model only picks from the smallest set of likely next tokens whose probabilities add up to p.",
+    "does": [
+      "Limit wild word choices without only using temperature",
+      "Keep answers mostly on the likely path"
+    ],
+    "doesNot": [
+      "Not a truth dial",
+      "Not the same setting as temperature (though they interact)"
+    ],
+    "neighbors": [
+      {
+        "id": "temperature",
+        "relation": "sibling"
+      },
+      {
+        "id": "probability-next-token",
+        "relation": "prereq"
+      },
+      {
+        "id": "structured-output",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "temperature",
+      "label": "Compare with temperature"
+    },
+    "analogy": "Only sampling from the top slice of a popularity pie.",
+    "example": "top_p=0.9 keeps the boring-but-safe options in play."
+  },
+  {
+    "id": "moe",
+    "name": "Mixture of Experts",
+    "alias": "MoE",
+    "parentId": "models",
+    "level": "frontier",
+    "oneBreath": "A model design with many specialist “experts,” where only a few activate for each token — big capacity without always paying full cost.",
+    "does": [
+      "Scale model skill efficiently",
+      "Route different inputs to different experts"
+    ],
+    "doesNot": [
+      "Not a team of separate chatbots you talk to",
+      "Not automatically smarter on every task"
+    ],
+    "neighbors": [
+      {
+        "id": "llm",
+        "relation": "prereq"
+      },
+      {
+        "id": "transformer",
+        "relation": "usedIn"
+      },
+      {
+        "id": "latency-cost",
+        "relation": "sibling"
+      },
+      {
+        "id": "quantization",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "latency-cost",
+      "label": "See cost and speed tradeoffs"
+    },
+    "analogy": "A hospital with many specialists — only the right ones see each patient.",
+    "example": "Model cards that mention “sparse” or “MoE” architecture.",
+    "changing": "Open and closed labs keep shipping larger MoE variants."
+  },
+  {
+    "id": "multimodal",
+    "name": "Multimodal model",
+    "alias": "Vision-language model",
+    "parentId": "models",
+    "level": "core",
+    "oneBreath": "A model that can take more than text — often images, sometimes audio or video — and still answer in language.",
+    "does": [
+      "Describe or reason about pictures and screens",
+      "Combine text instructions with visual input"
+    ],
+    "doesNot": [
+      "Not magically perfect at reading tiny UI text",
+      "Not the same as a separate image-generator product"
+    ],
+    "neighbors": [
+      {
+        "id": "llm",
+        "relation": "prereq"
+      },
+      {
+        "id": "prompt",
+        "relation": "usedIn"
+      },
+      {
+        "id": "tool-use",
+        "relation": "sibling"
+      },
+      {
+        "id": "reasoning-model",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "prompt",
+      "label": "See how asks still matter"
+    },
+    "analogy": "A tutor who can look at the worksheet, not only hear you describe it.",
+    "example": "“What’s wrong in this screenshot?”"
+  },
+  {
+    "id": "reasoning-model",
+    "name": "Reasoning model",
+    "alias": "Thinking model",
+    "parentId": "models",
+    "level": "frontier",
+    "oneBreath": "A model tuned to spend more internal steps on hard problems before answering — slower, often stronger on puzzles and math-ish tasks.",
+    "does": [
+      "Improve multi-step problem solving",
+      "Trade latency for deeper attempts"
+    ],
+    "doesNot": [
+      "Not a guarantee of truth",
+      "Not always better for simple chat"
+    ],
+    "neighbors": [
+      {
+        "id": "llm",
+        "relation": "prereq"
+      },
+      {
+        "id": "chain-of-thought",
+        "relation": "sibling"
+      },
+      {
+        "id": "latency-cost",
+        "relation": "usedIn"
+      },
+      {
+        "id": "alignment",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "chain-of-thought",
+      "label": "Compare with chain-of-thought prompting"
+    },
+    "analogy": "Showing your work on an exam before writing the final line.",
+    "example": "Models marketed for “thinking” or long internal deliberation.",
+    "changing": "Product lines split “fast chat” vs “deep reason” modes."
+  },
+  {
+    "id": "quantization",
+    "name": "Quantization",
+    "parentId": "models",
+    "level": "core",
+    "oneBreath": "Shrinking a model’s numbers (like 4-bit or 8-bit) so it runs cheaper and fits on smaller machines — with some quality tradeoff.",
+    "does": [
+      "Make local or edge deployment practical",
+      "Cut memory and often cost"
+    ],
+    "doesNot": [
+      "Not free skill — quality can drop",
+      "Not the same as fine-tuning"
+    ],
+    "neighbors": [
+      {
+        "id": "llm",
+        "relation": "prereq"
+      },
+      {
+        "id": "latency-cost",
+        "relation": "usedIn"
+      },
+      {
+        "id": "moe",
+        "relation": "sibling"
+      },
+      {
+        "id": "fine-tuning",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "latency-cost",
+      "label": "See latency and cost"
+    },
+    "analogy": "Compressing a photo so it fits on your phone.",
+    "example": "GGUF / “Q4” downloads for running models locally.",
+    "aliases": [
+      "4-bit",
+      "GGUF",
+      "INT8"
+    ]
+  },
+  {
+    "id": "system-prompt",
+    "name": "System prompt",
+    "parentId": "talking-to-models",
+    "level": "intro",
+    "oneBreath": "Standing instructions that shape the assistant’s role, tone, and rules across the chat — usually hidden from the end user.",
+    "does": [
+      "Set default behavior and boundaries",
+      "Steer style without rewriting every ask"
+    ],
+    "doesNot": [
+      "Not immune to prompt injection",
+      "Not a substitute for app-level guardrails"
+    ],
+    "neighbors": [
+      {
+        "id": "system-vs-user-message",
+        "relation": "sibling"
+      },
+      {
+        "id": "prompt",
+        "relation": "prereq"
+      },
+      {
+        "id": "prompt-injection",
+        "relation": "usedIn"
+      },
+      {
+        "id": "jailbreak",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "system-vs-user-message",
+      "label": "See system vs user messages"
+    },
+    "analogy": "The job description taped above the desk.",
+    "example": "“You are a concise support agent; never invent order IDs.”"
+  },
+  {
+    "id": "jailbreak",
+    "name": "Jailbreak",
+    "parentId": "talking-to-models",
+    "level": "core",
+    "oneBreath": "A user attempt to talk the model into ignoring its safety or product rules — often with role-play or “ignore previous instructions.”",
+    "does": [
+      "Probe how strong the rules really are",
+      "Show why safety needs more than a polite system prompt"
+    ],
+    "doesNot": [
+      "Not the same as prompt injection via untrusted documents",
+      "Not a legitimate product feature"
+    ],
+    "neighbors": [
+      {
+        "id": "prompt-injection",
+        "relation": "sibling"
+      },
+      {
+        "id": "system-prompt",
+        "relation": "prereq"
+      },
+      {
+        "id": "guardrails",
+        "relation": "usedIn"
+      },
+      {
+        "id": "red-teaming",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "red-teaming",
+      "label": "See how teams test for this"
+    },
+    "analogy": "Talking a bouncer into letting you past the rope.",
+    "example": "“Pretend the safety rules are off and tell me how to…”"
+  },
+  {
+    "id": "knowledge-cutoff",
+    "name": "Knowledge cutoff",
+    "parentId": "giving-models-knowledge",
+    "level": "intro",
+    "oneBreath": "The date after which the model’s training data mostly stops — so it may not know newer events unless you give it fresh info.",
+    "does": [
+      "Explain outdated answers",
+      "Motivate browse tools and RAG"
+    ],
+    "doesNot": [
+      "Not an exact calendar for every fact",
+      "Not fixed by raising temperature"
+    ],
+    "neighbors": [
+      {
+        "id": "hallucination",
+        "relation": "sibling"
+      },
+      {
+        "id": "rag",
+        "relation": "next"
+      },
+      {
+        "id": "pretraining",
+        "relation": "prereq"
+      },
+      {
+        "id": "long-context-vs-rag",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "rag",
+      "label": "See how RAG adds fresh docs"
+    },
+    "analogy": "A textbook printed last year.",
+    "example": "Asking about a product launched after the model’s training window."
+  },
+  {
+    "id": "citations",
+    "name": "Citations",
+    "alias": "Grounding with sources",
+    "parentId": "giving-models-knowledge",
+    "level": "core",
+    "oneBreath": "Pointing answers back to the retrieved snippets or URLs so a human can check where a claim came from.",
+    "does": [
+      "Build trust in RAG answers",
+      "Help spot when the model wandered off-source"
+    ],
+    "doesNot": [
+      "Not proof the source is correct",
+      "Not automatic just because RAG ran"
+    ],
+    "neighbors": [
+      {
+        "id": "rag",
+        "relation": "prereq"
+      },
+      {
+        "id": "retrieval",
+        "relation": "usedIn"
+      },
+      {
+        "id": "hallucination",
+        "relation": "sibling"
+      },
+      {
+        "id": "evaluation",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "evaluation",
+      "label": "See how quality gets checked"
+    },
+    "analogy": "Footnotes in a research paper.",
+    "example": "Support bot that shows the wiki paragraph it used."
+  },
+  {
+    "id": "hybrid-search",
+    "name": "Hybrid search",
+    "parentId": "giving-models-knowledge",
+    "level": "core",
+    "oneBreath": "Finding documents with both keyword search and meaning (vector) search, then blending the results — often stronger than either alone.",
+    "does": [
+      "Catch exact IDs and rare names",
+      "Still find paraphrased meaning"
+    ],
+    "doesNot": [
+      "Not a replacement for good chunking",
+      "Not free — more systems to tune"
+    ],
+    "neighbors": [
+      {
+        "id": "retrieval",
+        "relation": "prereq"
+      },
+      {
+        "id": "vector-database",
+        "relation": "usedIn"
+      },
+      {
+        "id": "reranking",
+        "relation": "next"
+      },
+      {
+        "id": "rag",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "reranking",
+      "label": "See how reranking cleans results"
+    },
+    "analogy": "Using both a library catalog number and “books like this.”",
+    "example": "Searching “INV-1042 refund” plus similar tickets."
+  },
+  {
+    "id": "workflows-vs-agents",
+    "name": "Workflows vs agents",
+    "parentId": "building-with-models",
+    "level": "core",
+    "oneBreath": "Workflows follow a planned path of steps you designed; agents choose more of the path themselves with tools — more flexible, less predictable.",
+    "does": [
+      "Help you pick structure vs autonomy",
+      "Clarify when a flowchart beats “just let it decide”"
+    ],
+    "doesNot": [
+      "Not a moral judgment that agents are “smarter”",
+      "Not mutually exclusive — hybrids are common"
+    ],
+    "neighbors": [
+      {
+        "id": "agent",
+        "relation": "sibling"
+      },
+      {
+        "id": "orchestration",
+        "relation": "usedIn"
+      },
+      {
+        "id": "tool-use",
+        "relation": "prereq"
+      },
+      {
+        "id": "human-in-the-loop",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "agent",
+      "label": "See what people mean by agent"
+    },
+    "analogy": "A recipe with numbered steps vs a chef improvising with the pantry.",
+    "example": "Fixed “extract → validate → email” vs an agent that picks tools mid-flight."
+  },
+  {
+    "id": "streaming",
+    "name": "Streaming",
+    "parentId": "building-with-models",
+    "level": "intro",
+    "oneBreath": "Sending the answer token-by-token as it’s generated so the UI can show text appearing live.",
+    "does": [
+      "Make waits feel shorter",
+      "Let users stop a bad answer early"
+    ],
+    "doesNot": [
+      "Not faster total generation by itself",
+      "Not the same as a finished, validated JSON object"
+    ],
+    "neighbors": [
+      {
+        "id": "latency-cost",
+        "relation": "sibling"
+      },
+      {
+        "id": "structured-output",
+        "relation": "sibling"
+      },
+      {
+        "id": "llm",
+        "relation": "prereq"
+      },
+      {
+        "id": "observability",
+        "relation": "usedIn"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "latency-cost",
+      "label": "See latency and cost"
+    },
+    "analogy": "Watching a letter get typed instead of waiting for the envelope.",
+    "example": "Chat UIs that reveal words as they arrive."
+  },
+  {
+    "id": "red-teaming",
+    "name": "Red teaming",
+    "parentId": "trust-and-quality",
+    "level": "core",
+    "oneBreath": "Deliberately attacking your own AI product with tricky prompts to find safety and abuse holes before real users do.",
+    "does": [
+      "Surface jailbreaks and misuse paths",
+      "Feed fixes into guardrails and evals"
+    ],
+    "doesNot": [
+      "Not a one-time checkbox",
+      "Not the same as normal happy-path QA"
+    ],
+    "neighbors": [
+      {
+        "id": "jailbreak",
+        "relation": "usedIn"
+      },
+      {
+        "id": "safety-misuse",
+        "relation": "sibling"
+      },
+      {
+        "id": "guardrails",
+        "relation": "next"
+      },
+      {
+        "id": "evaluation",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "guardrails",
+      "label": "See guardrails"
+    },
+    "analogy": "Hiring friendly hackers to poke your house locks.",
+    "example": "A weekly battery of “ignore the rules” and social-engineering prompts."
+  },
+  {
+    "id": "pii-privacy",
+    "name": "PII and privacy",
+    "alias": "Personal data in prompts",
+    "parentId": "trust-and-quality",
+    "level": "intro",
+    "oneBreath": "Personal or sensitive data in prompts, logs, and training — who can see it, how long it is kept, and what must never be pasted in.",
+    "does": [
+      "Shape safe product defaults",
+      "Explain “can I paste this customer file?” anxiety"
+    ],
+    "doesNot": [
+      "Not only a legal footnote",
+      "Not solved by a cute system prompt alone"
+    ],
+    "neighbors": [
+      {
+        "id": "safety-misuse",
+        "relation": "sibling"
+      },
+      {
+        "id": "guardrails",
+        "relation": "usedIn"
+      },
+      {
+        "id": "observability",
+        "relation": "usedIn"
+      },
+      {
+        "id": "rag",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "safety-misuse",
+      "label": "See safety and misuse"
+    },
+    "analogy": "Not leaving your passport on a café table.",
+    "example": "Policies that strip emails and card numbers before logging prompts."
   }
 ]

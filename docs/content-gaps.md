@@ -1,12 +1,12 @@
 # GenAI slice — content gap list
 
-Current tree: **46 nodes** (1 root + 6 chapters + 39 concepts). The original design-spec spine is fully filled. Next growth should close **real confusion gaps**, not invent a second map.
+Current tree: **61 nodes** (1 root + 6 chapters + 54 concepts). Original design-spec spine is filled; **Priority A** from this doc is authored.
 
-Target for Phase 1: **~60–70 nodes** (~15–25 new leaves). Prefer concepts people hear in product/news and cannot place.
+Target band for Phase 1: **~60–70 nodes** — we are inside it. Prefer quality + neighbor wiring over more leaves.
 
 ## How to use
 
-1. Pick from **Priority A** first (highest confusion × fits existing chapters).
+1. Pick from **Priority B** only if overview zoom still feels scannable.
 2. Author in `src/content/nodes.json` per `docs/content-authoring.md`.
 3. Wire 2–4 `neighbors` + one `nextStep` into existing nodes.
 4. `npm test` before shipping.
@@ -15,27 +15,27 @@ Skip anything that needs a new root (classic ML, diffusion-as-domain, speech-as-
 
 ---
 
-## Priority A — add next (~15)
+## Priority A — done (15)
 
-| Proposed id | Name | Chapter | Why it belongs |
-|---|---|---|---|
-| `top-p` | Top-p / nucleus sampling | foundations | Pair with Temperature; people hear both, confuse both |
-| `tokenizer` | Tokenizer | foundations | “Why is my context count weird?” |
-| `moe` | Mixture of Experts (MoE) | models | Common in model cards; opaque to beginners |
-| `multimodal` | Multimodal model | models | Vision/audio LLMs — where does “GPT can see” sit? |
-| `reasoning-model` | Reasoning model | models | o1-style / “thinking” models vs normal chat |
-| `quantization` | Quantization | models | Local/open models; GGUF / 4-bit talk |
-| `knowledge-cutoff` | Knowledge cutoff | giving-models-knowledge | Explains “why doesn’t it know today?” before RAG |
-| `citations` | Citations / grounding | giving-models-knowledge | Next step after RAG for trust |
-| `hybrid-search` | Hybrid search | giving-models-knowledge | Keyword + vector; frequent RAG follow-up |
-| `workflows-vs-agents` | Workflows vs agents | building-with-models | Hottest builder confusion right now |
-| `streaming` | Streaming | building-with-models | UX/API reality; links latency & cost |
-| `jailbreak` | Jailbreak | talking-to-models | Sibling of prompt injection; different intent |
-| `system-prompt` | System prompt | talking-to-models | Sharper than system-vs-user for search hits |
-| `red-teaming` | Red teaming | trust-and-quality | How safety gets tested |
-| `pii-privacy` | PII & privacy | trust-and-quality | Enterprise “can we paste this?” fear |
+| id | Name | Chapter |
+|---|---|---|
+| `tokenizer` | Tokenizer | foundations |
+| `top-p` | Top-p | foundations |
+| `moe` | Mixture of Experts | models |
+| `multimodal` | Multimodal model | models |
+| `reasoning-model` | Reasoning model | models |
+| `quantization` | Quantization | models |
+| `system-prompt` | System prompt | talking-to-models |
+| `jailbreak` | Jailbreak | talking-to-models |
+| `knowledge-cutoff` | Knowledge cutoff | giving-models-knowledge |
+| `citations` | Citations | giving-models-knowledge |
+| `hybrid-search` | Hybrid search | giving-models-knowledge |
+| `workflows-vs-agents` | Workflows vs agents | building-with-models |
+| `streaming` | Streaming | building-with-models |
+| `red-teaming` | Red teaming | trust-and-quality |
+| `pii-privacy` | PII and privacy | trust-and-quality |
 
-## Priority B — after A (~10)
+## Priority B — optional next (~10)
 
 | Proposed id | Name | Chapter | Notes |
 |---|---|---|---|
@@ -57,12 +57,6 @@ Skip anything that needs a new root (classic ML, diffusion-as-domain, speech-as-
 - Company/model brand nodes (GPT-5, Claude, Gemini) — too ephemeral for the spine  
 - Accounts, courses, quizzes
 
-## Suggested authoring order
+## Pause rule
 
-1. `top-p` + `tokenizer` (foundations denser)  
-2. `reasoning-model` + `multimodal` + `moe` (models news literacy)  
-3. `workflows-vs-agents` + `streaming` (builders)  
-4. `knowledge-cutoff` + `citations` + `hybrid-search` (RAG story complete)  
-5. `jailbreak` + `system-prompt` + `red-teaming` + `pii-privacy` (trust/talk)
-
-Stop when the tree still feels scannable in one overview zoom. If leaves collide or chapters look crowded, pause and improve neighbors/next-steps instead of adding more.
+If leaves collide or chapters look crowded at overview zoom, stop adding and improve neighbors / next-steps / search aliases instead.
