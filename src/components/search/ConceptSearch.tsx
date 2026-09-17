@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { ConceptNode } from "@/content/schema";
+import { trackSearchSelect } from "@/lib/analytics";
 import { searchNodes } from "@/lib/search";
 
 type Props = {
@@ -16,6 +17,12 @@ export function ConceptSearch({ nodes, onSelect }: Props) {
     [query, nodes],
   );
 
+  const pick = (id: string) => {
+    trackSearchSelect(query, id);
+    onSelect(id);
+    setQuery("");
+  };
+
   return (
     <div className="relative w-full">
       <label className="sr-only" htmlFor="concept-search">
@@ -29,8 +36,7 @@ export function ConceptSearch({ nodes, onSelect }: Props) {
           onKeyDown={(e) => {
             if (e.key === "Escape") setQuery("");
             if (e.key === "Enter" && results[0]) {
-              onSelect(results[0].id);
-              setQuery("");
+              pick(results[0].id);
             }
           }}
           placeholder="I’m confused about…"
@@ -45,10 +51,7 @@ export function ConceptSearch({ nodes, onSelect }: Props) {
               <button
                 type="button"
                 className="flex w-full flex-col items-start px-4 py-2.5 text-left text-sm hover:bg-[color-mix(in_oklab,var(--glow)_22%,var(--panel))]"
-                onClick={() => {
-                  onSelect(node.id);
-                  setQuery("");
-                }}
+                onClick={() => pick(node.id)}
               >
                 <span className="font-semibold text-[var(--ink)]">
                   {node.name}

@@ -15,6 +15,7 @@ type Props = {
   neighborNames: Record<string, string>;
   accent?: string;
   onNavigate: (id: string) => void;
+  onNextStep?: (targetId: string) => void;
   onClose?: () => void;
 };
 
@@ -24,6 +25,7 @@ export function OrientationCard({
   neighborNames,
   accent = "var(--glow)",
   onNavigate,
+  onNextStep,
   onClose,
 }: Props) {
   return (
@@ -114,7 +116,9 @@ export function OrientationCard({
           className="w-full rounded-full px-3 py-3 text-sm font-semibold text-[#07140f] shadow-[0_10px_28px_color-mix(in_oklab,black_40%,transparent)] disabled:opacity-40"
           style={{ background: accent }}
           onClick={() => {
-            if (node.nextStep.targetId) onNavigate(node.nextStep.targetId);
+            if (!node.nextStep.targetId) return;
+            if (onNextStep) onNextStep(node.nextStep.targetId);
+            else onNavigate(node.nextStep.targetId);
           }}
           disabled={!node.nextStep.targetId}
         >

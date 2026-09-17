@@ -1,5 +1,6 @@
 import { Figtree, Fraunces } from "next/font/google";
 import type { Metadata } from "next";
+import { AnalyticsBeacon } from "@/components/analytics/AnalyticsBeacon";
 import "./globals.css";
 
 const display = Fraunces({
@@ -28,6 +29,7 @@ export default function RootLayout({
     <html lang="en" className={`${display.variable} ${sans.variable} h-full`}>
       <body className="font-body min-h-full antialiased">
         {children}
+        <AnalyticsBeacon />
       </body>
     </html>
   );

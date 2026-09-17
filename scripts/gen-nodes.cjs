@@ -1,82 +1,17 @@
-﻿const fs = require("fs");
-const nodes = [];
-const add = (n) => nodes.push(n);
+﻿/**
+ * DO NOT RUN — archived generator.
+ *
+ * This script is stale: it regenerates an outdated nodes.json and will
+ * overwrite hand-authored concepts if executed.
+ *
+ * Edit `src/content/nodes.json` directly. See `docs/content-authoring.md`.
+ */
 
-add({
-  id: "generative-ai", name: "Generative AI", parentId: null, level: "intro",
-  oneBreath: "AI that creates new text, images, or other media instead of only classifying what already exists.",
-  does: ["Create new content from prompts", "Power chatbots and copilots"],
-  doesNot: ["Not the whole of AI", "Not magic — it predicts patterns"],
-  neighbors: [{ id: "foundations", relation: "next" }],
-  nextStep: { kind: "goDeeper", targetId: "foundations", label: "Start with foundations" },
-  analogy: "A very fluent autocomplete for the world.",
-  example: "Chat assistants, image generators, coding copilots."
-});
-
-const chapters = [
-  ["foundations", "Foundations", "The basic building blocks of how language models read and generate text.", "Explain tokens, embeddings, and context", "Ground later LLM ideas", "Not a full math course", "Not training recipes", "token"],
-  ["models", "Models", "How modern language models are built, trained, and shaped to follow instructions.", "Name the core model ideas", "Connect training stages", "Not a hardware guide", "Not every model brand", "llm"],
-  ["talking-to-models", "Talking to models", "How we steer models with prompts and message structure.", "Improve answers with better prompts", "Structure conversations", "Not the same as training a new model", "Not a guarantee of truth", "prompt"],
-  ["giving-models-knowledge", "Giving models knowledge", "Ways to ground answers in outside information instead of memory alone.", "Reduce some hallucinations", "Use your own docs", "Not identical to fine-tuning", "Not automatic truth", "rag"],
-  ["building-with-models", "Building with models", "Turning model calls into tools, agents, and working products.", "Connect models to actions", "Compose multi-step systems", "Not always necessary for simple chat", "Not true human agency", "agent"],
-  ["trust-and-quality", "Trust & quality", "How we measure, constrain, and ship models responsibly.", "Evaluate quality", "Add safety limits", "Not solved forever", "Not only a legal checklist", "evaluation"],
-];
-
-for (const [id, name, oneBreath, d1, d2, n1, n2, next] of chapters) {
-  add({
-    id, name, parentId: "generative-ai", level: "intro", oneBreath,
-    does: [d1, d2], doesNot: [n1, n2],
-    neighbors: [{ id: next, relation: "next" }],
-    nextStep: { kind: "goDeeper", targetId: next, label: `Explore ${name.toLowerCase()}` },
-  });
-}
-
-const concepts = [
-  ["token", "Token", "foundations", "intro", "A small chunk of text the model reads and writes — often a word piece, not always a full word.", ["Break text into model-sized pieces", "Count toward context limits"], ["Not always one word", "Not the same as an embedding"], [["embedding","next"],["context-window","usedIn"]], ["goDeeper","embedding","See embeddings"], "LEGO bricks that make sentences.", "\"Chatbot\" may be one or two tokens."],
-  ["embedding", "Embedding", "foundations", "core", "A list of numbers that places meaning in a space so similar ideas sit closer together.", ["Compare similarity of text", "Power search and RAG"], ["Not human-readable text", "Not a full explanation by itself"], [["token","prereq"],["vector-database","usedIn"],["rag","next"]], ["goDeeper","context-window","See the context window"], "A map pin for meaning.", "Finding similar support tickets by meaning, not keywords."],
-  ["context-window", "Context window", "foundations", "core", "How much text a model can see at once in one conversation turn — its working memory size.", ["Limits what you can paste in", "Shapes long-chat design"], ["Not permanent memory", "Not infinite"], [["token","prereq"],["memory","sibling"],["prompt","usedIn"]], ["goDeeper","probability-next-token","See next-token prediction"], "A desk that only holds so many pages.", "A model that forgets early chat once the window fills."],
-  ["probability-next-token", "Probability / next-token", "foundations", "core", "Models generate by repeatedly choosing a likely next token given everything so far.", ["Explain why outputs vary", "Underpins sampling and temperature"], ["Not guaranteed truth", "Not planning like a human"], [["token","prereq"],["llm","next"],["hallucination","usedIn"]], ["goDeeper","llm","Meet the LLM"], "Predicting the next word in a sentence game.", "Why two runs of the same prompt can differ."],
-  ["llm", "LLM", "models", "intro", "A large language model — a neural net trained on huge text to predict and generate language.", ["Answer questions in natural language", "Draft, summarize, translate, code"], ["Not a database of facts", "Not always up to date"], [["transformer","usedIn"],["prompt","next"],["rag","sibling"]], ["goDeeper","transformer","See the Transformer"], "A student who read the internet and patterns answers.", "ChatGPT-style assistants."],
-  ["transformer", "Transformer", "models", "core", "The neural architecture behind modern LLMs, built around attention instead of older sequence tricks.", ["Process tokens in parallel", "Scale to large models"], ["Not the only neural architecture ever", "Not a product name"], [["attention","usedIn"],["llm","sibling"],["pretraining","next"]], ["goDeeper","attention","Understand attention"], "A reading group where every word can look at every other word.", "GPT, Claude, Gemini model families."],
-  ["attention", "Attention", "models", "core", "A mechanism that lets the model weigh which earlier tokens matter most when predicting the next one.", ["Link related words across a sentence", "Power transformers"], ["Not human attention", "Not a UI feature"], [["transformer","usedIn"],["context-window","sibling"]], ["seeRelated","transformer","Back to Transformer"], "Highlighting the important parts of a paragraph.", "Connecting \"it\" to the right noun."],
-  ["pretraining", "Pretraining", "models", "core", "The first long training phase where a model learns general language patterns from massive text.", ["Build broad language skill", "Create a base model"], ["Not the same as fine-tuning for your task", "Not instruction-following by default"], [["fine-tuning","next"],["llm","usedIn"]], ["goDeeper","fine-tuning","See fine-tuning"], "Reading the whole library before specializing.", "Base models before chat tuning."],
-  ["fine-tuning", "Fine-tuning", "models", "core", "Further training on a smaller, focused dataset so the model behaves better for a domain or style.", ["Specialize a base model", "Change tone or format habits"], ["Not always better than good prompts + RAG", "Not free or risk-free"], [["pretraining","prereq"],["instruction-tuning","sibling"],["rag","sibling"]], ["goDeeper","instruction-tuning","See instruction tuning"], "Apprenticeship after general school.", "A support bot tuned on your tickets."],
-  ["instruction-tuning", "Instruction tuning", "models", "core", "Training that teaches a model to follow natural-language instructions and chat formats.", ["Make models helpful in chat", "Follow task directions better"], ["Not the same as giving live documents", "Not full alignment alone"], [["fine-tuning","sibling"],["alignment","next"],["prompt","usedIn"]], ["goDeeper","alignment","See alignment"], "Teaching manners and how to take directions.", "Chat models vs raw base models."],
-  ["alignment", "Alignment (RLHF / preference)", "models", "frontier", "Techniques that steer models toward preferred, safer, more helpful behavior using human or AI feedback.", ["Reduce rude or harmful defaults", "Prefer answers people rate highly"], ["Not perfect safety", "Not a moral guarantee"], [["instruction-tuning","prereq"],["guardrails","sibling"],["safety-misuse","usedIn"]], ["seeRelated","guardrails","See guardrails"], "Coaching after practice tests.", "Thumbs-up/down training loops.", ["RLHF","preference tuning"], 2022],
-  ["prompt", "Prompt", "talking-to-models", "intro", "The text (and structure) you give the model to steer what it should do next.", ["Ask for a task", "Set format and constraints"], ["Not model training", "Not a secret spell"], [["system-vs-user-message","next"],["few-shot","sibling"],["llm","usedIn"]], ["goDeeper","system-vs-user-message","See message roles"], "A brief to a contractor.", "Summarize this email in 3 bullets."],
-  ["system-vs-user-message", "System vs user message", "talking-to-models", "core", "Chat APIs separate standing instructions (system) from the person's messages (user) and the model's replies.", ["Set durable behavior rules", "Keep user content distinct"], ["Not supported identically everywhere", "Not a security boundary by itself"], [["prompt","prereq"],["structured-output","next"]], ["goDeeper","few-shot","See few-shot"], "Employee handbook vs today's request.", "System: be concise. User: explain RAG."],
-  ["few-shot", "Few-shot", "talking-to-models", "core", "Showing a few examples in the prompt so the model mirrors the pattern.", ["Teach format quickly", "Steer style without fine-tuning"], ["Not unlimited examples (context cost)", "Not as strong as dedicated training sometimes"], [["prompt","prereq"],["chain-of-thought","sibling"]], ["goDeeper","chain-of-thought","See chain-of-thought"], "Show two solved problems before the real one.", "Example input/output pairs in a prompt."],
-  ["chain-of-thought", "Chain-of-thought", "talking-to-models", "core", "Asking the model to reason step by step before the final answer — sometimes improves hard tasks.", ["Help multi-step reasoning", "Make intermediate steps visible"], ["Not always better", "Not true private thinking in all systems"], [["few-shot","sibling"],["structured-output","next"]], ["goDeeper","structured-output","See structured output"], "Showing your work on a math test.", "Think step by step, then answer."],
-  ["structured-output", "Structured output", "talking-to-models", "core", "Forcing the model to reply in a strict shape like JSON so software can parse it reliably.", ["Feed apps and tools", "Reduce messy free text"], ["Not immune to invalid JSON without checks", "Not needed for casual chat"], [["tool-use","next"],["prompt","prereq"]], ["goDeeper","tool-use","See tool use"], "Filling a form instead of writing a letter.", "JSON schemas in API calls."],
-  ["hallucination", "Hallucination", "giving-models-knowledge", "intro", "When a model states something false or made-up with a confident tone.", ["Name a key failure mode", "Motivate grounding techniques"], ["Not always intentional lying", "Not unique to one vendor"], [["rag","next"],["evaluation","usedIn"],["probability-next-token","prereq"]], ["goDeeper","rag","See how RAG helps"], "A fluent storyteller inventing citations.", "A fake paper title in an answer."],
-  ["rag", "RAG", "giving-models-knowledge", "core", "Retrieval-Augmented Generation: look up relevant text, then generate an answer using it.", ["Ground answers in your docs or the web", "Reduce some hallucinations"], ["Not the same as fine-tuning", "Not a guarantee of truth"], [["hallucination","prereq"],["vector-database","usedIn"],["fine-tuning","sibling"],["agent","next"]], ["goDeeper","retrieval","See retrieval"], "An open-book exam instead of closed-book.", "Company chatbot over an internal wiki."],
-  ["chunking", "Chunking", "giving-models-knowledge", "core", "Splitting documents into smaller pieces so search can retrieve the right passages.", ["Make long docs searchable", "Feed RAG pipelines"], ["Not one perfect chunk size forever", "Not the same as tokenization"], [["rag","usedIn"],["retrieval","next"],["embedding","prereq"]], ["goDeeper","vector-database","See vector databases"], "Cutting a book into indexed note cards.", "Splitting a PDF into overlapping paragraphs."],
-  ["vector-database", "Vector database", "giving-models-knowledge", "core", "Storage optimized for finding items with similar embeddings quickly.", ["Power semantic search", "Back RAG systems"], ["Not a replacement for all SQL needs", "Not magic quality by itself"], [["embedding","prereq"],["rag","usedIn"],["retrieval","next"]], ["goDeeper","retrieval","See retrieval"], "A library sorted by meaning-neighborhoods.", "Pinecone, Weaviate, pgvector-style stores."],
-  ["retrieval", "Retrieval", "giving-models-knowledge", "core", "The step that finds the most relevant chunks for a question before generation.", ["Select evidence for the model", "Rank candidates"], ["Not generation itself", "Not perfect relevance always"], [["chunking","prereq"],["reranking","next"],["rag","usedIn"]], ["goDeeper","reranking","See reranking"], "A librarian fetching the best pages.", "Top-k nearest embedding matches."],
-  ["reranking", "Reranking", "giving-models-knowledge", "frontier", "A second pass that reorders retrieved chunks so the best evidence rises to the top.", ["Improve RAG precision", "Filter noisy matches"], ["Not free (extra compute)", "Not required for every app"], [["retrieval","prereq"],["rag","usedIn"]], ["seeRelated","rag","Back to RAG"], "Resorting search results with a sharper judge.", "Cross-encoder rerankers."],
-  ["tool-use", "Tool use / function calling", "building-with-models", "core", "Letting a model call external functions — search, calculators, APIs — instead of only writing text.", ["Take real actions", "Fetch live data"], ["Not unrestricted computer control by default", "Not reliable without validation"], [["structured-output","prereq"],["agent","next"]], ["goDeeper","agent","See agents"], "Asking an assistant to use a calculator app.", "Booking API called from a chat."],
-  ["agent", "Agent", "building-with-models", "core", "A system where a model plans steps, uses tools, and loops toward a goal with some autonomy.", ["Handle multi-step tasks", "Combine reasoning and tools"], ["Not a person", "Not always better than a simple prompt"], [["tool-use","prereq"],["multi-agent","next"],["rag","sibling"],["orchestration","usedIn"]], ["goDeeper","memory","See memory"], "An intern with a checklist and apps.", "A bot that researches then files a ticket."],
-  ["multi-agent", "Multi-agent", "building-with-models", "frontier", "Several specialized agents collaborating — or debating — to complete a job.", ["Split roles (research, critique, write)", "Parallelize work"], ["Not automatically smarter", "Harder to debug"], [["agent","prereq"],["orchestration","usedIn"]], ["seeRelated","orchestration","See orchestration"], "A small team with different jobs.", "Researcher + editor agent pair."],
-  ["memory", "Memory", "building-with-models", "core", "Ways a system remembers facts across turns or sessions beyond the raw context window.", ["Personalize over time", "Store user preferences"], ["Not the same as the context window alone", "Raises privacy stakes"], [["context-window","sibling"],["agent","usedIn"]], ["seeRelated","context-window","Compare to context window"], "A notebook the assistant keeps.", "Saved profile facts between chats."],
-  ["orchestration", "Orchestration", "building-with-models", "core", "The control layer that sequences prompts, tools, retrieval, and agents into a reliable workflow.", ["Glue components together", "Add retries and routing"], ["Not the model weights themselves", "Can become over-complex"], [["agent","usedIn"],["rag","usedIn"],["tool-use","usedIn"]], ["goDeeper","evaluation","Think about quality"], "A stage manager for the show.", "Workflow engines and agent graphs."],
-  ["evaluation", "Evaluation", "trust-and-quality", "core", "Measuring how well a model or system performs — with tests, graders, and real user signals.", ["Catch regressions", "Compare approaches fairly"], ["Not one universal score", "Not only vibe checks"], [["hallucination","usedIn"],["guardrails","sibling"],["latency-cost","sibling"]], ["goDeeper","guardrails","See guardrails"], "Exams for the assistant.", "Golden question sets and A/B tests."],
-  ["guardrails", "Guardrails", "trust-and-quality", "core", "Filters and policies that block or reshape unsafe, off-policy, or malformed inputs and outputs.", ["Reduce harmful completions", "Enforce business rules"], ["Not perfect", "Not a substitute for alignment work"], [["safety-misuse","sibling"],["alignment","sibling"],["evaluation","usedIn"]], ["goDeeper","safety-misuse","See safety"], "Bouncers at the door.", "PII redaction and topic blocks."],
-  ["latency-cost", "Latency & cost", "trust-and-quality", "core", "How long responses take and how much each call costs — central product constraints.", ["Budget model choices", "Design caching and routing"], ["Not only a finance problem", "Not fixed forever as models change"], [["evaluation","sibling"],["orchestration","usedIn"]], ["seeRelated","evaluation","Tie to evaluation"], "Taxi meter and travel time.", "Choosing a smaller model for autocomplete."],
-  ["safety-misuse", "Safety / misuse", "trust-and-quality", "core", "Risks of harmful use — and practices to reduce abuse, leakage, and dangerous assistance.", ["Frame real-world harm paths", "Guide policy and product limits"], ["Not only jailbreak memes", "Not solved by one filter"], [["guardrails","sibling"],["alignment","prereq"]], ["seeRelated","guardrails","See guardrails"], "Locks and norms for powerful tools.", "Rate limits, monitoring, refusal policies."]
-];
-
-for (const row of concepts) {
-  const [id, name, parentId, level, oneBreath, does, doesNot, neighbors, nextStep, analogy, example, aliases, year] = row;
-  const node = {
-    id, name, parentId, level, oneBreath, does, doesNot,
-    neighbors: neighbors.map(([nid, relation]) => ({ id: nid, relation })),
-    nextStep: { kind: nextStep[0], targetId: nextStep[1], label: nextStep[2] },
-    analogy, example,
-  };
-  if (aliases) node.aliases = aliases;
-  if (year) node.year = year;
-  add(node);
-}
-
-fs.writeFileSync("src/content/nodes.json", JSON.stringify(nodes, null, 2));
-console.log("wrote", nodes.length, "nodes");
+console.error(
+  [
+    "Refusing to run scripts/gen-nodes.cjs.",
+    "It is stale and would overwrite src/content/nodes.json.",
+    "Edit nodes.json by hand — see docs/content-authoring.md.",
+  ].join("\n"),
+);
+process.exit(1);

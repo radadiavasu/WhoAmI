@@ -13,3 +13,8 @@ MVP content lives in one file. No backend or migrations.
 7. Run `npm test` — validation catches bad ids and broken links.
 
 The map layout is computed from `parentId`; you do not edit positions by hand.
+
+## Do not regenerate from script
+
+`scripts/gen-nodes.cjs` is **stale** and will refuse to run. It must not overwrite `nodes.json`.
+
