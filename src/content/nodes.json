@@ -622,8 +622,8 @@
     ],
     "nextStep": {
       "kind": "seeRelated",
-      "targetId": "guardrails",
-      "label": "See the safety filters"
+      "targetId": "prompt",
+      "label": "See how we ask the model"
     },
     "analogy": "Coaching that rewards good behavior.",
     "example": "Humans ranking which reply feels better (often called RLHF).",
@@ -1033,7 +1033,7 @@
     "nextStep": {
       "kind": "goDeeper",
       "targetId": "reranking",
-      "label": "See re-sorting the best bits"
+      "label": "See ranking the best chunks"
     },
     "analogy": "A librarian fetching the best pages.",
     "example": "Top matching paragraphs for your question."
@@ -1063,9 +1063,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "rag",
-      "label": "Back to lookup-then-answer"
+      "kind": "goDeeper",
+      "targetId": "citations",
+      "label": "See pointing answers at sources"
     },
     "analogy": "Resorting a messy stack after a quick grab.",
     "example": "Promote the paragraph that truly answers the ask."
@@ -1247,9 +1247,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "context-window",
-      "label": "Compare to the short desk limit"
+      "kind": "goDeeper",
+      "targetId": "orchestration",
+      "label": "See how steps get coordinated"
     },
     "analogy": "A notebook the assistant keeps.",
     "example": "Remembering your name between sessions."
@@ -1288,8 +1288,8 @@
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "evaluation",
-      "label": "Think about quality checks"
+      "targetId": "workflows-vs-agents",
+      "label": "Compare planned flows vs agents"
     },
     "analogy": "A stage manager for the show.",
     "example": "Workflow builders and agent graphs."
@@ -1472,8 +1472,8 @@
     ],
     "nextStep": {
       "kind": "seeRelated",
-      "targetId": "tool-use",
-      "label": "See calling outside apps"
+      "targetId": "generative-ai",
+      "label": "Back to the map — pick another branch"
     },
     "analogy": "USB for AI tools — one plug shape, many devices.",
     "example": "An editor agent connecting to GitHub and docs the same way.",
@@ -1601,8 +1601,8 @@
     ],
     "nextStep": {
       "kind": "seeRelated",
-      "targetId": "evaluation",
-      "label": "Tie back to quality tests"
+      "targetId": "generative-ai",
+      "label": "Back to the map — pick another branch"
     },
     "analogy": "Taxi fare and travel time for each trip.",
     "example": "A cheaper small model for drafts; a bigger one for finals."
@@ -1641,8 +1641,8 @@
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "pii-privacy",
-      "label": "See privacy and personal data"
+      "targetId": "red-teaming",
+      "label": "See how teams attack their own AI"
     },
     "analogy": "Rules for a powerful tool in public hands.",
     "example": "Blocking help for phishing emails."
@@ -1681,9 +1681,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "evaluation",
-      "label": "See how we measure quality"
+      "kind": "goDeeper",
+      "targetId": "latency-cost",
+      "label": "See speed and spend tradeoffs"
     },
     "analogy": "A flight recorder for the assistant.",
     "example": "A timeline of each tool call when a task fails.",
@@ -2170,9 +2170,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "agent",
-      "label": "See what people mean by agent"
+      "kind": "goDeeper",
+      "targetId": "streaming",
+      "label": "See answers appear live"
     },
     "analogy": "A recipe with numbered steps vs a chef improvising with the pantry.",
     "example": "Fixed “extract → validate → email” vs an agent that picks tools mid-flight."
@@ -2210,9 +2210,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "latency-cost",
-      "label": "See latency and cost"
+      "kind": "goDeeper",
+      "targetId": "mcp",
+      "label": "See the shared plug for tools"
     },
     "analogy": "Watching a letter get typed instead of waiting for the envelope.",
     "example": "Chat UIs that reveal words as they arrive."
@@ -2250,9 +2250,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "guardrails",
-      "label": "See guardrails"
+      "kind": "goDeeper",
+      "targetId": "pii-privacy",
+      "label": "See privacy and personal data"
     },
     "analogy": "Hiring friendly hackers to poke your house locks.",
     "example": "A weekly battery of “ignore the rules” and social-engineering prompts."
