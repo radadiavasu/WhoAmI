@@ -15,6 +15,7 @@ export type ConceptNodeData = {
   path?: boolean;
   visited?: boolean;
   dimmed?: boolean;
+  invite?: boolean;
 };
 
 function ConceptNodeComponent({ data, id }: NodeProps) {
@@ -28,6 +29,7 @@ function ConceptNodeComponent({ data, id }: NodeProps) {
     path,
     visited,
     dimmed,
+    invite,
   } = data as ConceptNodeData;
 
   return (
@@ -39,6 +41,7 @@ function ConceptNodeComponent({ data, id }: NodeProps) {
         path ? "is-path" : "",
         visited && !focused ? "is-visited" : "",
         dimmed ? "is-dimmed" : "",
+        invite ? "is-invite" : "",
         role === "leaf" ? "is-leaf" : "",
       ].join(" ")}
       style={

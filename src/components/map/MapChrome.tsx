@@ -8,6 +8,8 @@ import type { ConceptNode } from "@/content/schema";
 type Props = {
   nodes: ConceptNode[];
   compactBrand: boolean;
+  /** Soften map chrome while the welcome choice is up. */
+  welcoming?: boolean;
   onSelect: (id: string) => void;
 };
 
@@ -18,7 +20,12 @@ const FIELD_KEYS = [
   { label: "click open" },
 ] as const;
 
-export function MapChrome({ nodes, compactBrand, onSelect }: Props) {
+export function MapChrome({
+  nodes,
+  compactBrand,
+  welcoming = false,
+  onSelect,
+}: Props) {
   const [quietHints, setQuietHints] = useState(false);
 
   useEffect(() => {
@@ -36,7 +43,7 @@ export function MapChrome({ nodes, compactBrand, onSelect }: Props) {
       <div className="pointer-events-auto flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
         <div className="max-w-md">
           <WhoAmILockup compact={compactBrand} />
-          {!compactBrand ? (
+          {!compactBrand && !welcoming ? (
             <p
               className={[
                 "field-key",
@@ -59,7 +66,14 @@ export function MapChrome({ nodes, compactBrand, onSelect }: Props) {
             </p>
           ) : null}
         </div>
-        <div className="w-full md:max-w-sm">
+        <div
+          className={[
+            "w-full md:max-w-sm",
+            welcoming ? "opacity-40 pointer-events-none" : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+        >
           <ConceptSearch nodes={nodes} onSelect={onSelect} />
         </div>
       </div>

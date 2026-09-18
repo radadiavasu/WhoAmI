@@ -62,6 +62,8 @@ function FocusCamera({
 type Props = {
   concepts: ConceptNode[];
   focusedId?: string;
+  /** Soft pulse on this node when the map is empty (first-visit hint). */
+  inviteId?: string;
   visitedIds: Set<string>;
   onSelect: (id: string) => void;
 };
@@ -69,6 +71,7 @@ type Props = {
 export function ConceptMap({
   concepts,
   focusedId,
+  inviteId,
   visitedIds,
   onSelect,
 }: Props) {
@@ -116,9 +119,10 @@ export function ConceptMap({
           path: focus?.pathIds.has(n.id) ?? false,
           visited: visitedIds.has(n.id),
           dimmed: focus?.dimmedIds.has(n.id) ?? false,
+          invite: Boolean(inviteId) && inviteId === n.id && !focusedId,
         } satisfies ConceptNodeData,
       })),
-    [graph.nodes, focusedId, focus, byId, visitedIds],
+    [graph.nodes, focusedId, focus, byId, visitedIds, inviteId],
   );
 
   const layoutEdges: Edge[] = useMemo(() => {

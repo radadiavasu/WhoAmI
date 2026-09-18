@@ -5,6 +5,7 @@ import { ReactFlowProvider } from "@xyflow/react";
 import type { ConceptNode } from "@/content/schema";
 import { indexById } from "@/content/load";
 import {
+  track,
   trackNextStep,
   trackNodeOpen,
 } from "@/lib/analytics";
@@ -12,6 +13,7 @@ import { chapterColor, resolveChapterId } from "@/lib/chapters";
 import { getTourNext } from "@/lib/tour";
 import { ConceptMap } from "@/components/map/ConceptMap";
 import { MapChrome } from "@/components/map/MapChrome";
+import { MapWelcome } from "@/components/map/MapWelcome";
 import { OrientationCard } from "@/components/card/OrientationCard";
 import { OrientationSheet } from "@/components/card/OrientationSheet";
 import { TreeAtmosphere } from "@/components/map/TreeAtmosphere";
@@ -41,12 +43,52 @@ function useIsMobile() {
   );
 }
 
-type OpenSource = "map" | "search" | "neighbor" | "next_step" | "url";
+const WELCOME_KEY = "whoami-welcome-done";
+const WELCOME_EVENT = "whoami-welcome";
+
+function subscribeWelcome(onChange: () => void) {
+  window.addEventListener(WELCOME_EVENT, onChange);
+  window.addEventListener("storage", onChange);
+  return () => {
+    window.removeEventListener(WELCOME_EVENT, onChange);
+    window.removeEventListener("storage", onChange);
+  };
+}
+
+function readWelcomeDone(skipWelcome: boolean): boolean {
+  if (skipWelcome) return true;
+  try {
+    return sessionStorage.getItem(WELCOME_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function writeWelcomeDone() {
+  try {
+    sessionStorage.setItem(WELCOME_KEY, "1");
+  } catch {
+    // ignore
+  }
+  window.dispatchEvent(new Event(WELCOME_EVENT));
+}
+
+function useWelcomeDone(skipWelcome: boolean) {
+  return useSyncExternalStore(
+    subscribeWelcome,
+    () => readWelcomeDone(skipWelcome),
+    () => skipWelcome,
+  );
+}
+
+type OpenSource = "map" | "search" | "neighbor" | "next_step" | "url" | "begin";
 
 type Props = {
   nodes: ConceptNode[];
   initialFocusId?: string;
 };
+
+const TOUR_ROOT_ID = "generative-ai";
 
 export function MapExperience({ nodes, initialFocusId }: Props) {
   const byId = useMemo(() => indexById(nodes), [nodes]);
@@ -55,7 +97,13 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
   const [visitedIds, setVisitedIds] = useState<Set<string>>(
     () => new Set(initialFocusId ? [initialFocusId] : []),
   );
+  const welcomeDone = useWelcomeDone(Boolean(initialFocusId));
   const didTrackLanding = useRef(false);
+
+  const markWelcomeDone = (choice: "orient" | "wander") => {
+    track("welcome_choice", { choice });
+    writeWelcomeDone();
+  };
 
   const openNode = (id: string, source: OpenSource) => {
     trackNodeOpen(id, source);
@@ -99,6 +147,7 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
   const accent = focused
     ? chapterColor(resolveChapterId(focused, byId))
     : "var(--map-accent)";
+  const showWelcome = !welcomeDone && !focused;
 
   const onClose = () => {
     setFocusedId(undefined);
@@ -132,23 +181,55 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
   ) : null;
 
   return (
-    <div className="map-field relative h-[100dvh] w-full overflow-hidden">
+    <div
+      className={[
+        "map-field relative h-[100dvh] w-full overflow-hidden",
+        showWelcome ? "is-welcoming" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <TreeAtmosphere />
       <MapChrome
         nodes={nodes}
         compactBrand={Boolean(focused)}
+        welcoming={showWelcome}
         onSelect={(id) => openNode(id, "search")}
       />
-      <div className="absolute inset-0 z-[1] pt-24 md:pt-28">
+      <div
+        className={[
+          "absolute inset-0 z-[1] pt-24 md:pt-28",
+          showWelcome ? "map-stage-dimmed" : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
         <ReactFlowProvider>
           <ConceptMap
             concepts={nodes}
             focusedId={focusedId}
+            inviteId={showWelcome ? TOUR_ROOT_ID : undefined}
             visitedIds={visitedIds}
-            onSelect={(id) => openNode(id, "map")}
+            onSelect={
+              showWelcome
+                ? () => {
+                    /* Welcome owns the first decision — ignore map clicks. */
+                  }
+                : (id) => openNode(id, "map")
+            }
           />
         </ReactFlowProvider>
       </div>
+
+      {showWelcome ? (
+        <MapWelcome
+          onOrient={() => {
+            markWelcomeDone("orient");
+            openNode(TOUR_ROOT_ID, "begin");
+          }}
+          onWander={() => markWelcomeDone("wander")}
+        />
+      ) : null}
 
       {focused && !isMobile ? (
         <div className="pointer-events-none absolute bottom-4 right-4 top-28 z-20 w-[min(26rem,calc(100%-2rem))]">
