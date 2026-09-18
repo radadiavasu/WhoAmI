@@ -9,6 +9,7 @@ import {
   trackNodeOpen,
 } from "@/lib/analytics";
 import { chapterColor, resolveChapterId } from "@/lib/chapters";
+import { getTourNext } from "@/lib/tour";
 import { ConceptMap } from "@/components/map/ConceptMap";
 import { MapChrome } from "@/components/map/MapChrome";
 import { OrientationCard } from "@/components/card/OrientationCard";
@@ -110,12 +111,17 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
       )
     : {};
 
+  const tourNext = focused
+    ? getTourNext(focused.id, nodes, visitedIds)
+    : undefined;
+
   const card = focused ? (
     <OrientationCard
       node={focused}
       breadcrumb={breadcrumbFor(focused.id, byId)}
       neighborNames={neighborNames}
       accent={accent}
+      tourNext={tourNext}
       onNavigate={(id) => openNode(id, "neighbor")}
       onNextStep={(targetId) => {
         trackNextStep(focused.id, targetId);

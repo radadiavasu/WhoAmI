@@ -14,6 +14,8 @@ type Props = {
   breadcrumb: string[];
   neighborNames: Record<string, string>;
   accent?: string;
+  /** Adaptive tour CTA — when set, replaces static nextStep button. */
+  tourNext?: { targetId: string; label: string; progressLabel: string } | null;
   onNavigate: (id: string) => void;
   onNextStep?: (targetId: string) => void;
   onClose?: () => void;
@@ -24,10 +26,14 @@ export function OrientationCard({
   breadcrumb,
   neighborNames,
   accent = "var(--glow)",
+  tourNext,
   onNavigate,
   onNextStep,
   onClose,
 }: Props) {
+  const nextTarget =
+    tourNext === null ? undefined : (tourNext?.targetId ?? node.nextStep.targetId);
+  const nextLabel = tourNext?.label ?? node.nextStep.label;
   return (
     <article className="flex h-full max-h-[min(80vh,42rem)] flex-col overflow-hidden rounded-[1.75rem] border border-[color-mix(in_oklab,var(--ink)_10%,transparent)] bg-[var(--panel)] shadow-[0_28px_70px_color-mix(in_oklab,black_55%,transparent)]">
       <div
@@ -111,18 +117,26 @@ export function OrientationCard({
           </div>
         ) : null}
 
+        {tourNext && tourNext.progressLabel ? (
+          <p className="text-xs text-[var(--ink-soft)]">
+            Tour · {tourNext.progressLabel} · pick any leaf anytime
+          </p>
+        ) : null}
+
         <button
           type="button"
           className="w-full rounded-full px-3 py-3 text-sm font-semibold text-[#07140f] shadow-[0_10px_28px_color-mix(in_oklab,black_40%,transparent)] disabled:opacity-40"
           style={{ background: accent }}
           onClick={() => {
-            if (!node.nextStep.targetId) return;
-            if (onNextStep) onNextStep(node.nextStep.targetId);
-            else onNavigate(node.nextStep.targetId);
+            if (!nextTarget) return;
+            if (onNextStep) onNextStep(nextTarget);
+            else onNavigate(nextTarget);
           }}
-          disabled={!node.nextStep.targetId}
+          disabled={Boolean(tourNext === null) || !nextTarget}
         >
-          {node.nextStep.label}
+          {tourNext === null
+            ? "Tour complete — pick any leaf on the map"
+            : nextLabel}
         </button>
 
         <details className="rounded-2xl bg-[var(--panel-lift)] px-3 py-2">

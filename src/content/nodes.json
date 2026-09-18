@@ -329,8 +329,8 @@
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "llm",
-      "label": "Meet the chat model"
+      "targetId": "temperature",
+      "label": "See the creativity dial"
     },
     "analogy": "A game of “what word comes next?”",
     "example": "Same question, two slightly different replies."
@@ -369,9 +369,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "prompt",
-      "label": "Try it with better asks"
+      "kind": "goDeeper",
+      "targetId": "tokenizer",
+      "label": "See how text is split into pieces"
     },
     "analogy": "Turning the spice up or down on a recipe.",
     "example": "Brainstorming high; careful code lower."
@@ -621,9 +621,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "prompt",
-      "label": "See how we ask the model"
+      "kind": "goDeeper",
+      "targetId": "moe",
+      "label": "See models made of specialist experts"
     },
     "analogy": "Coaching that rewards good behavior.",
     "example": "Humans ranking which reply feels better (often called RLHF).",
@@ -799,8 +799,8 @@
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "tool-use",
-      "label": "See calling outside apps"
+      "targetId": "system-prompt",
+      "label": "See the standing rules behind the chat"
     },
     "analogy": "Filling a form instead of writing an essay.",
     "example": "Return {name, price, inStock} for a product."
@@ -879,9 +879,9 @@
       }
     ],
     "nextStep": {
-      "kind": "goDeeper",
-      "targetId": "rag",
-      "label": "See lookup-then-answer"
+      "kind": "seeRelated",
+      "targetId": "agent",
+      "label": "See multi-step helpers"
     },
     "analogy": "A student bluffing on an oral exam.",
     "example": "A fake book title or made-up citation."
@@ -992,8 +992,8 @@
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "retrieval",
-      "label": "See fetching the right bits"
+      "targetId": "hybrid-search",
+      "label": "See mixing keyword and meaning search"
     },
     "analogy": "A library sorted by topic vibe, not just title A–Z.",
     "example": "Finding policy pages related to “parental leave.”"
@@ -1103,9 +1103,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "rag",
-      "label": "See lookup-then-answer"
+      "kind": "goDeeper",
+      "targetId": "knowledge-cutoff",
+      "label": "See why models go stale"
     },
     "analogy": "Carry the whole library vs ask for three books.",
     "example": "Paste a short spec; search a huge wiki with lookup."
@@ -1215,9 +1215,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "orchestration",
-      "label": "See the workflow control layer"
+      "kind": "goDeeper",
+      "targetId": "skill",
+      "label": "See reusable packs of agent know-how"
     },
     "analogy": "A small team with different jobs.",
     "example": "One agent researches; another edits the draft."
@@ -1328,9 +1328,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "agent-harness",
-      "label": "See the safety cage around agents"
+      "kind": "goDeeper",
+      "targetId": "tool-use",
+      "label": "See calling outside apps"
     },
     "analogy": "A recipe card plus the utensils for one dish.",
     "example": "A “review this pull request” pack with steps and checks.",
@@ -1431,8 +1431,8 @@
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "mcp",
-      "label": "See the shared plug for tools"
+      "targetId": "multi-agent",
+      "label": "See several helpers on one job"
     },
     "analogy": "A co-pilot who still asks before landing.",
     "example": "Agent drafts a change; you click approve before it merges."
@@ -1471,9 +1471,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "generative-ai",
-      "label": "Back to the map — pick another branch"
+      "kind": "goDeeper",
+      "targetId": "agent-harness",
+      "label": "See the safety cage around agents"
     },
     "analogy": "USB for AI tools — one plug shape, many devices.",
     "example": "An editor agent connecting to GitHub and docs the same way.",
@@ -1723,8 +1723,8 @@
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "token",
-      "label": "See what a token is"
+      "targetId": "top-p",
+      "label": "See another creativity dial"
     },
     "analogy": "A ticket booth that turns sentences into ride tickets.",
     "example": "Why “ChatGPT” might count as more than one token."
@@ -1760,8 +1760,8 @@
     ],
     "nextStep": {
       "kind": "seeRelated",
-      "targetId": "temperature",
-      "label": "Compare with temperature"
+      "targetId": "llm",
+      "label": "Meet the chat model"
     },
     "analogy": "Only sampling from the top slice of a popularity pie.",
     "example": "top_p=0.9 keeps the boring-but-safe options in play."
@@ -1800,9 +1800,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "latency-cost",
-      "label": "See cost and speed tradeoffs"
+      "kind": "goDeeper",
+      "targetId": "multimodal",
+      "label": "See models that read images too"
     },
     "analogy": "A hospital with many specialists — only the right ones see each patient.",
     "example": "Model cards that mention “sparse” or “MoE” architecture.",
@@ -1842,9 +1842,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "prompt",
-      "label": "See how asks still matter"
+      "kind": "goDeeper",
+      "targetId": "quantization",
+      "label": "See making models smaller to run"
     },
     "analogy": "A tutor who can look at the worksheet, not only hear you describe it.",
     "example": "“What’s wrong in this screenshot?”"
@@ -1884,8 +1884,8 @@
     ],
     "nextStep": {
       "kind": "seeRelated",
-      "targetId": "chain-of-thought",
-      "label": "Compare with chain-of-thought prompting"
+      "targetId": "prompt",
+      "label": "See how we ask the model"
     },
     "analogy": "Showing your work on an exam before writing the final line.",
     "example": "Models marketed for “thinking” or long internal deliberation.",
@@ -1924,9 +1924,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "latency-cost",
-      "label": "See latency and cost"
+      "kind": "goDeeper",
+      "targetId": "reasoning-model",
+      "label": "See models that think longer"
     },
     "analogy": "Compressing a photo so it fits on your phone.",
     "example": "GGUF / “Q4” downloads for running models locally.",
@@ -1970,8 +1970,8 @@
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "system-vs-user-message",
-      "label": "See system vs user messages"
+      "targetId": "jailbreak",
+      "label": "See attempts to break the rules"
     },
     "analogy": "The job description taped above the desk.",
     "example": "“You are a concise support agent; never invent order IDs.”"
@@ -2009,9 +2009,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "red-teaming",
-      "label": "See how teams test for this"
+      "kind": "goDeeper",
+      "targetId": "prompt-injection",
+      "label": "See tricks hidden in the content"
     },
     "analogy": "Talking a bouncer into letting you past the rope.",
     "example": "“Pretend the safety rules are off and tell me how to…”"
@@ -2050,8 +2050,8 @@
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "rag",
-      "label": "See how RAG adds fresh docs"
+      "targetId": "hallucination",
+      "label": "See confident-but-wrong answers"
     },
     "analogy": "A textbook printed last year.",
     "example": "Asking about a product launched after the model’s training window."
@@ -2090,9 +2090,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "evaluation",
-      "label": "See how quality gets checked"
+      "kind": "goDeeper",
+      "targetId": "chunking",
+      "label": "See how documents get sliced"
     },
     "analogy": "Footnotes in a research paper.",
     "example": "Support bot that shows the wiki paragraph it used."
@@ -2131,8 +2131,8 @@
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "reranking",
-      "label": "See how reranking cleans results"
+      "targetId": "long-context-vs-rag",
+      "label": "Compare stuffing context vs lookup"
     },
     "analogy": "Using both a library catalog number and “books like this.”",
     "example": "Searching “INV-1042 refund” plus similar tickets."
