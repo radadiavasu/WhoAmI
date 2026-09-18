@@ -34,7 +34,7 @@ export function chapterTourOrder(
   const seen = new Set<string>();
 
   const chapter = byId.get(chapterId);
-  let cursor =
+  let cursor: string | undefined =
     chapter?.nextStep.targetId && leafIds.has(chapter.nextStep.targetId)
       ? chapter.nextStep.targetId
       : leaves.slice().sort((a, b) => a.name.localeCompare(b.name))[0]?.id;
@@ -42,8 +42,9 @@ export function chapterTourOrder(
   while (cursor && leafIds.has(cursor) && !seen.has(cursor)) {
     ordered.push(cursor);
     seen.add(cursor);
-    const next = byId.get(cursor)?.nextStep.targetId;
-    cursor = next && leafIds.has(next) && !seen.has(next) ? next : undefined;
+    const nextId: string | undefined = byId.get(cursor)?.nextStep.targetId;
+    cursor =
+      nextId && leafIds.has(nextId) && !seen.has(nextId) ? nextId : undefined;
   }
 
   const rest = leaves
