@@ -474,12 +474,16 @@
       {
         "id": "context-window",
         "relation": "sibling"
+      },
+      {
+        "id": "pretraining",
+        "relation": "next"
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "transformer",
-      "label": "Back to that model design"
+      "kind": "goDeeper",
+      "targetId": "pretraining",
+      "label": "See how models get trained first"
     },
     "analogy": "Highlighting the important lines in a paragraph.",
     "example": "Linking “it” back to the right noun."
@@ -1375,9 +1379,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "skill",
-      "label": "See reusable job packs"
+      "kind": "goDeeper",
+      "targetId": "human-in-the-loop",
+      "label": "See where humans stay in control"
     },
     "analogy": "A workshop bench with tools bolted down and a kill switch.",
     "example": "A coding agent stuck to one folder that logs every tool call.",
@@ -1426,9 +1430,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "agent-harness",
-      "label": "See the safety cage around agents"
+      "kind": "goDeeper",
+      "targetId": "mcp",
+      "label": "See the shared plug for tools"
     },
     "analogy": "A co-pilot who still asks before landing.",
     "example": "Agent drafts a change; you click approve before it merges."
@@ -1636,9 +1640,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "guardrails",
-      "label": "See the safety filters"
+      "kind": "goDeeper",
+      "targetId": "pii-privacy",
+      "label": "See privacy and personal data"
     },
     "analogy": "Rules for a powerful tool in public hands.",
     "example": "Blocking help for phishing emails."
@@ -2287,9 +2291,9 @@
       }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "safety-misuse",
-      "label": "See safety and misuse"
+      "kind": "goDeeper",
+      "targetId": "observability",
+      "label": "See how teams watch prompts and logs"
     },
     "analogy": "Not leaving your passport on a café table.",
     "example": "Policies that strip emails and card numbers before logging prompts."
