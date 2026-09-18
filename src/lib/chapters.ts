@@ -1,15 +1,19 @@
 import type { ConceptNode } from "@/content/schema";
 import { CHAPTER_ORDER } from "@/lib/graph";
 
-/** Luminous limb colors for dark canopy — similar brightness so no chapter looks inactive. */
+/**
+ * Canopy limb colors — one hue per chapter so the six branches read apart
+ * at overview zoom. Similar lightness so none looks selected or dead.
+ * Trunk stays warm bark; brand amber (--sun) stays for AI + focus path.
+ */
 export const CHAPTER_COLORS: Record<string, string> = {
-  foundations: "#5ecf9a",
-  models: "#58c992",
-  "talking-to-models": "#4fc088",
-  "giving-models-knowledge": "#47b67f",
-  "building-with-models": "#52c996",
-  "trust-and-quality": "#6ad6a8",
-  "generative-ai": "#c4a574",
+  foundations: "#5ecf9a", // moss — ground / basics
+  models: "#4db8c9", // river teal — structure
+  "talking-to-models": "#d4b85c", // pollen gold — speech / asks
+  "giving-models-knowledge": "#6aa8e0", // clear sky — lookup / facts
+  "building-with-models": "#d4926a", // clay copper — making
+  "trust-and-quality": "#c97b8a", // dusty rose — caution / care
+  "generative-ai": "#c4a574", // bark — trunk
 };
 
 export function resolveChapterId(
@@ -29,5 +33,5 @@ export function resolveChapterId(
 }
 
 export function chapterColor(chapterId: string): string {
-  return CHAPTER_COLORS[chapterId] ?? "#2a8f6a";
+  return CHAPTER_COLORS[chapterId] ?? "#5ecf9a";
 }
