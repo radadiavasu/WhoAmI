@@ -51,6 +51,7 @@ function scoreField(query: string, field: string): number {
   if (field.includes(query)) return 75;
 
   // Token-level: "vector db" vs "vector database"
+  // Skip fuzzy/prefix on very short tokens — "cot" must not beat via "cost".
   const qTokens = query.split(" ");
   const fTokens = field.split(" ");
   let tokenHits = 0;
@@ -59,8 +60,8 @@ function scoreField(query: string, field: string): number {
       fTokens.some(
         (ft) =>
           ft === qt ||
-          ft.startsWith(qt) ||
-          (qt.length >= 3 && editDistance(qt, ft) <= 1),
+          (qt.length >= 4 &&
+            (ft.startsWith(qt) || editDistance(qt, ft) <= 1)),
       )
     ) {
       tokenHits += 1;
@@ -77,10 +78,12 @@ function scoreField(query: string, field: string): number {
     if (dist <= maxDist) return 65 - dist * 8;
 
     // Compare against each token in the field (aliases are long)
-    for (const ft of fTokens) {
-      if (ft.length < 3) continue;
-      const d = editDistance(query, ft);
-      if (d <= maxDist) return 60 - d * 8;
+    if (query.length >= 4) {
+      for (const ft of fTokens) {
+        if (ft.length < 3) continue;
+        const d = editDistance(query, ft);
+        if (d <= maxDist) return 60 - d * 8;
+      }
     }
   }
 

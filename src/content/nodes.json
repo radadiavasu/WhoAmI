@@ -217,7 +217,11 @@
       "label": "See how meaning is stored"
     },
     "analogy": "LEGO bricks that build a sentence.",
-    "example": "“Chatbot” might be one piece or two."
+    "example": "“Chatbot” might be one piece or two.",
+    "aliases": [
+      "tokens",
+      "subword"
+    ]
   },
   {
     "id": "embedding",
@@ -253,7 +257,12 @@
       "label": "See how much it can read at once"
     },
     "analogy": "A map where similar ideas live on nearby streets.",
-    "example": "“Doctor” and “physician” land close on that map."
+    "example": "“Doctor” and “physician” land close on that map.",
+    "alias": "embeddings",
+    "aliases": [
+      "text embedding",
+      "vector embedding"
+    ]
   },
   {
     "id": "context-window",
@@ -293,7 +302,12 @@
       "label": "See how it picks the next word"
     },
     "analogy": "A whiteboard that only fits so many notes.",
-    "example": "A long PDF may not fit in one go."
+    "example": "A long PDF may not fit in one go.",
+    "alias": "context length",
+    "aliases": [
+      "token limit",
+      "context size"
+    ]
   },
   {
     "id": "probability-next-token",
@@ -333,7 +347,11 @@
       "label": "See the creativity dial"
     },
     "analogy": "A game of “what word comes next?”",
-    "example": "Same question, two slightly different replies."
+    "example": "Same question, two slightly different replies.",
+    "aliases": [
+      "next token prediction",
+      "next-token"
+    ]
   },
   {
     "id": "temperature",
@@ -414,7 +432,12 @@
       "label": "See the design behind chat models"
     },
     "analogy": "A student who read a huge library and now finishes your sentences.",
-    "example": "The engine behind most chat assistants."
+    "example": "The engine behind most chat assistants.",
+    "alias": "chat model",
+    "aliases": [
+      "large language model",
+      "language model"
+    ]
   },
   {
     "id": "transformer",
@@ -450,7 +473,11 @@
       "label": "See how it focuses on words"
     },
     "analogy": "A seating chart that shows who should listen to whom in a room.",
-    "example": "The “T” in many model names you see online."
+    "example": "The “T” in many model names you see online.",
+    "aliases": [
+      "transformer architecture",
+      "attention architecture"
+    ]
   },
   {
     "id": "attention",
@@ -486,7 +513,11 @@
       "label": "See how models get trained first"
     },
     "analogy": "Highlighting the important lines in a paragraph.",
-    "example": "Linking “it” back to the right noun."
+    "example": "Linking “it” back to the right noun.",
+    "aliases": [
+      "self-attention",
+      "attention mechanism"
+    ]
   },
   {
     "id": "pretraining",
@@ -518,7 +549,11 @@
       "label": "See focused extra training"
     },
     "analogy": "Years of general school before a job.",
-    "example": "Training on books, websites, and code at huge scale."
+    "example": "Training on books, websites, and code at huge scale.",
+    "alias": "pre-training",
+    "aliases": [
+      "base model training"
+    ]
   },
   {
     "id": "fine-tuning",
@@ -554,7 +589,12 @@
       "label": "See how it learns to follow asks"
     },
     "analogy": "Job training after general school.",
-    "example": "Teaching a model your company’s support tone."
+    "example": "Teaching a model your company’s support tone.",
+    "alias": "finetune",
+    "aliases": [
+      "fine tune",
+      "SFT"
+    ]
   },
   {
     "id": "instruction-tuning",
@@ -590,7 +630,11 @@
       "label": "See how answers get steered"
     },
     "analogy": "Practice drills: “when asked X, answer like Y.”",
-    "example": "Chat models that wait for your request instead of rambling."
+    "example": "Chat models that wait for your request instead of rambling.",
+    "alias": "instruct tuning",
+    "aliases": [
+      "instruction following"
+    ]
   },
   {
     "id": "alignment",
@@ -671,7 +715,11 @@
       "label": "See system vs user messages"
     },
     "analogy": "A brief you hand to a contractor.",
-    "example": "“Explain this error in simple words.”"
+    "example": "“Explain this error in simple words.”",
+    "aliases": [
+      "prompting",
+      "prompt engineering"
+    ]
   },
   {
     "id": "system-vs-user-message",
@@ -707,7 +755,11 @@
       "label": "See learning from examples"
     },
     "analogy": "Employee handbook (system) vs today’s ticket (user).",
-    "example": "“You are a concise tutor” vs “Explain RAG.”"
+    "example": "“You are a concise tutor” vs “Explain RAG.”",
+    "aliases": [
+      "system message",
+      "user message"
+    ]
   },
   {
     "id": "few-shot",
@@ -739,7 +791,11 @@
       "label": "See step-by-step thinking"
     },
     "analogy": "Show two sample answers, then ask for a third.",
-    "example": "Two labeled emails, then “label this one.”"
+    "example": "Two labeled emails, then “label this one.”",
+    "alias": "few shot",
+    "aliases": [
+      "in-context examples"
+    ]
   },
   {
     "id": "chain-of-thought",
@@ -771,7 +827,12 @@
       "label": "See fixed-format answers"
     },
     "analogy": "Showing your work on a math test.",
-    "example": "“Think step by step, then give the total.”"
+    "example": "“Think step by step, then give the total.”",
+    "alias": "CoT",
+    "aliases": [
+      "chain of thought",
+      "thinking step by step"
+    ]
   },
   {
     "id": "structured-output",
@@ -803,7 +864,12 @@
       "label": "See the standing rules behind the chat"
     },
     "analogy": "Filling a form instead of writing an essay.",
-    "example": "Return {name, price, inStock} for a product."
+    "example": "Return {name, price, inStock} for a product.",
+    "alias": "JSON mode",
+    "aliases": [
+      "structured JSON",
+      "JSON output"
+    ]
   },
   {
     "id": "prompt-injection",
@@ -844,7 +910,11 @@
     },
     "analogy": "A sticky note on a recipe: “ignore the chef.”",
     "example": "A webpage telling a browsing bot to email secrets.",
-    "changing": "As bots read more untrusted pages, this becomes a day-one design worry."
+    "changing": "As bots read more untrusted pages, this becomes a day-one design worry.",
+    "aliases": [
+      "prompt inject",
+      "injection attack"
+    ]
   },
   {
     "id": "hallucination",
@@ -884,7 +954,11 @@
       "label": "See multi-step helpers"
     },
     "analogy": "A student bluffing on an oral exam.",
-    "example": "A fake book title or made-up citation."
+    "example": "A fake book title or made-up citation.",
+    "aliases": [
+      "making things up",
+      "confabulation"
+    ]
   },
   {
     "id": "rag",
@@ -924,7 +998,12 @@
       "label": "See fetching the right bits"
     },
     "analogy": "Open-book exam vs closed-book.",
-    "example": "A company bot that searches the internal wiki first."
+    "example": "A company bot that searches the internal wiki first.",
+    "alias": "Retrieval-Augmented Generation",
+    "aliases": [
+      "retrieval augmented",
+      "retrieval-augmented"
+    ]
   },
   {
     "id": "chunking",
@@ -960,7 +1039,11 @@
       "label": "See meaning-based search stores"
     },
     "analogy": "Cutting a book into chapters before shelving.",
-    "example": "Break a 50-page PDF into short sections."
+    "example": "Break a 50-page PDF into short sections.",
+    "aliases": [
+      "document chunking",
+      "split documents"
+    ]
   },
   {
     "id": "vector-database",
@@ -996,7 +1079,12 @@
       "label": "See mixing keyword and meaning search"
     },
     "analogy": "A library sorted by topic vibe, not just title A–Z.",
-    "example": "Finding policy pages related to “parental leave.”"
+    "example": "Finding policy pages related to “parental leave.”",
+    "alias": "vector DB",
+    "aliases": [
+      "vector store",
+      "embedding database"
+    ]
   },
   {
     "id": "retrieval",
@@ -1036,7 +1124,11 @@
       "label": "See ranking the best chunks"
     },
     "analogy": "A librarian fetching the best pages.",
-    "example": "Top matching paragraphs for your question."
+    "example": "Top matching paragraphs for your question.",
+    "aliases": [
+      "document retrieval",
+      "fetching chunks"
+    ]
   },
   {
     "id": "reranking",
@@ -1068,7 +1160,11 @@
       "label": "See pointing answers at sources"
     },
     "analogy": "Resorting a messy stack after a quick grab.",
-    "example": "Promote the paragraph that truly answers the ask."
+    "example": "Promote the paragraph that truly answers the ask.",
+    "aliases": [
+      "re-ranking",
+      "rerank"
+    ]
   },
   {
     "id": "long-context-vs-rag",
@@ -1108,7 +1204,11 @@
       "label": "See why models go stale"
     },
     "analogy": "Carry the whole library vs ask for three books.",
-    "example": "Paste a short spec; search a huge wiki with lookup."
+    "example": "Paste a short spec; search a huge wiki with lookup.",
+    "aliases": [
+      "long context",
+      "stuffing context"
+    ]
   },
   {
     "id": "tool-use",
@@ -1148,7 +1248,12 @@
       "label": "See multi-step helpers"
     },
     "analogy": "Asking an assistant to use a calculator app.",
-    "example": "Booking through an API from a chat."
+    "example": "Booking through an API from a chat.",
+    "alias": "function calling",
+    "aliases": [
+      "tool calling",
+      "tools"
+    ]
   },
   {
     "id": "agent",
@@ -1188,7 +1293,11 @@
       "label": "See remembering across chats"
     },
     "analogy": "An intern with a checklist and apps.",
-    "example": "Research something, then file a ticket."
+    "example": "Research something, then file a ticket.",
+    "aliases": [
+      "AI agent",
+      "autonomous agent"
+    ]
   },
   {
     "id": "multi-agent",
@@ -1220,7 +1329,11 @@
       "label": "See reusable packs of agent know-how"
     },
     "analogy": "A small team with different jobs.",
-    "example": "One agent researches; another edits the draft."
+    "example": "One agent researches; another edits the draft.",
+    "aliases": [
+      "multi agent",
+      "agent swarm"
+    ]
   },
   {
     "id": "memory",
@@ -1252,7 +1365,11 @@
       "label": "See how steps get coordinated"
     },
     "analogy": "A notebook the assistant keeps.",
-    "example": "Remembering your name between sessions."
+    "example": "Remembering your name between sessions.",
+    "aliases": [
+      "chat memory",
+      "long-term memory"
+    ]
   },
   {
     "id": "orchestration",
@@ -1292,7 +1409,11 @@
       "label": "Compare planned flows vs agents"
     },
     "analogy": "A stage manager for the show.",
-    "example": "Workflow builders and agent graphs."
+    "example": "Workflow builders and agent graphs.",
+    "aliases": [
+      "workflow orchestration",
+      "agent orchestration"
+    ]
   },
   {
     "id": "skill",
@@ -1525,7 +1646,12 @@
       "label": "See the safety filters"
     },
     "analogy": "Exams for the assistant.",
-    "example": "A fixed set of questions you re-run after each update."
+    "example": "A fixed set of questions you re-run after each update.",
+    "alias": "evals",
+    "aliases": [
+      "LLM eval",
+      "model evaluation"
+    ]
   },
   {
     "id": "guardrails",
@@ -1565,7 +1691,12 @@
       "label": "See misuse risks"
     },
     "analogy": "Bouncers at the door of the reply.",
-    "example": "Block requests for illegal how-tos."
+    "example": "Block requests for illegal how-tos.",
+    "alias": "guardrail",
+    "aliases": [
+      "safety filters",
+      "content filter"
+    ]
   },
   {
     "id": "latency-cost",
@@ -1605,7 +1736,12 @@
       "label": "Back to the map — pick another branch"
     },
     "analogy": "Taxi fare and travel time for each trip.",
-    "example": "A cheaper small model for drafts; a bigger one for finals."
+    "example": "A cheaper small model for drafts; a bigger one for finals.",
+    "aliases": [
+      "cost latency",
+      "tokens cost",
+      "inference cost"
+    ]
   },
   {
     "id": "safety-misuse",
@@ -1645,7 +1781,11 @@
       "label": "See how teams attack their own AI"
     },
     "analogy": "Rules for a powerful tool in public hands.",
-    "example": "Blocking help for phishing emails."
+    "example": "Blocking help for phishing emails.",
+    "aliases": [
+      "AI safety",
+      "misuse"
+    ]
   },
   {
     "id": "observability",
@@ -1727,7 +1867,11 @@
       "label": "See another creativity dial"
     },
     "analogy": "A ticket booth that turns sentences into ride tickets.",
-    "example": "Why “ChatGPT” might count as more than one token."
+    "example": "Why “ChatGPT” might count as more than one token.",
+    "aliases": [
+      "tokenization",
+      "BPE"
+    ]
   },
   {
     "id": "top-p",
@@ -1974,7 +2118,10 @@
       "label": "See attempts to break the rules"
     },
     "analogy": "The job description taped above the desk.",
-    "example": "“You are a concise support agent; never invent order IDs.”"
+    "example": "“You are a concise support agent; never invent order IDs.”",
+    "aliases": [
+      "system instructions"
+    ]
   },
   {
     "id": "jailbreak",
@@ -2014,7 +2161,11 @@
       "label": "See tricks hidden in the content"
     },
     "analogy": "Talking a bouncer into letting you past the rope.",
-    "example": "“Pretend the safety rules are off and tell me how to…”"
+    "example": "“Pretend the safety rules are off and tell me how to…”",
+    "aliases": [
+      "jail break",
+      "bypass safety"
+    ]
   },
   {
     "id": "knowledge-cutoff",
@@ -2054,7 +2205,11 @@
       "label": "See confident-but-wrong answers"
     },
     "analogy": "A textbook printed last year.",
-    "example": "Asking about a product launched after the model’s training window."
+    "example": "Asking about a product launched after the model’s training window.",
+    "aliases": [
+      "training cutoff",
+      "knowledge cut-off"
+    ]
   },
   {
     "id": "citations",
@@ -2135,7 +2290,11 @@
       "label": "Compare stuffing context vs lookup"
     },
     "analogy": "Using both a library catalog number and “books like this.”",
-    "example": "Searching “INV-1042 refund” plus similar tickets."
+    "example": "Searching “INV-1042 refund” plus similar tickets.",
+    "aliases": [
+      "hybrid retrieval",
+      "keyword plus vector"
+    ]
   },
   {
     "id": "workflows-vs-agents",
@@ -2175,7 +2334,11 @@
       "label": "See answers appear live"
     },
     "analogy": "A recipe with numbered steps vs a chef improvising with the pantry.",
-    "example": "Fixed “extract → validate → email” vs an agent that picks tools mid-flight."
+    "example": "Fixed “extract → validate → email” vs an agent that picks tools mid-flight.",
+    "aliases": [
+      "workflow vs agent",
+      "DAG vs agent"
+    ]
   },
   {
     "id": "streaming",
@@ -2215,7 +2378,11 @@
       "label": "See the shared plug for tools"
     },
     "analogy": "Watching a letter get typed instead of waiting for the envelope.",
-    "example": "Chat UIs that reveal words as they arrive."
+    "example": "Chat UIs that reveal words as they arrive.",
+    "aliases": [
+      "token streaming",
+      "stream response"
+    ]
   },
   {
     "id": "red-teaming",
@@ -2255,7 +2422,11 @@
       "label": "See privacy and personal data"
     },
     "analogy": "Hiring friendly hackers to poke your house locks.",
-    "example": "A weekly battery of “ignore the rules” and social-engineering prompts."
+    "example": "A weekly battery of “ignore the rules” and social-engineering prompts.",
+    "aliases": [
+      "red team",
+      "adversarial testing"
+    ]
   },
   {
     "id": "pii-privacy",

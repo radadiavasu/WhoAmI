@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { searchNodes } from "@/lib/search";
+import { loadNodes } from "@/content/load";
 import type { ConceptNode } from "@/content/schema";
 
 const rag: ConceptNode = {
@@ -58,5 +59,31 @@ describe("searchNodes", () => {
     };
     const ranked = searchNodes("agent", [rag, agent]).map((n) => n.id);
     expect(ranked[0]).toBe("agent");
+  });
+});
+
+describe("searchNodes against real content", () => {
+  const nodes = loadNodes();
+
+  function topId(q: string) {
+    return searchNodes(q, nodes)[0]?.id;
+  }
+
+  it("finds RAG by full name and typo of retrieval-augmented", () => {
+    expect(topId("retrieval augmented")).toBe("rag");
+    expect(topId("retreival augmented")).toBe("rag");
+  });
+
+  it("finds common shorthands and slang", () => {
+    expect(topId("cot")).toBe("chain-of-thought");
+    expect(topId("json mode")).toBe("structured-output");
+    expect(topId("chat model")).toBe("llm");
+    expect(topId("finetune")).toBe("fine-tuning");
+    expect(topId("vector db")).toBe("vector-database");
+    expect(topId("function calling")).toBe("tool-use");
+  });
+
+  it("does not let short fuzzy noise beat real acronyms", () => {
+    expect(topId("cot")).not.toBe("latency-cost");
   });
 });
