@@ -14,10 +14,29 @@ const sans = Figtree({
   subsets: ["latin"],
 });
 
+const siteUrl = "https://who-am-i-ebon.vercel.app";
+
 export const metadata: Metadata = {
-  title: "Who Am I — place yourself in AI",
-  description:
-    "An interactive living tree of Generative AI concepts. Find where an idea sits and what to explore next.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Who Am I",
+    template: "%s · Who Am I",
+  },
+  description: "Place yourself in AI.",
+  applicationName: "Who Am I",
+  openGraph: {
+    title: "Who Am I",
+    description: "Place yourself in AI.",
+    url: siteUrl,
+    siteName: "Who Am I",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Who Am I",
+    description: "Place yourself in AI.",
+  },
 };
 
 export default function RootLayout({
