@@ -622,6 +622,55 @@
       {
         "id": "prompt",
         "relation": "usedIn"
+      },
+      {
+        "id": "base-vs-instruct",
+        "relation": "next"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "base-vs-instruct",
+      "label": "Compare base vs chat-ready models"
+    },
+    "analogy": "Practice drills: “when asked X, answer like Y.”",
+    "example": "Chat models that wait for your request instead of rambling.",
+    "alias": "instruct tuning",
+    "aliases": [
+      "instruction following"
+    ]
+  },
+  {
+    "id": "base-vs-instruct",
+    "name": "Base vs instruct model",
+    "alias": "Base vs chat model",
+    "parentId": "models",
+    "level": "intro",
+    "oneBreath": "A base model continues text like a book; an instruct (chat) model is trained to answer asks and follow directions.",
+    "does": [
+      "Explain why some models chat and others just continue text",
+      "Clarify what instruction tuning is for"
+    ],
+    "doesNot": [
+      "Not two totally different inventions",
+      "Not a promise instruct models are always truthful"
+    ],
+    "neighbors": [
+      {
+        "id": "llm",
+        "relation": "prereq"
+      },
+      {
+        "id": "instruction-tuning",
+        "relation": "usedIn"
+      },
+      {
+        "id": "fine-tuning",
+        "relation": "sibling"
+      },
+      {
+        "id": "pretraining",
+        "relation": "prereq"
       }
     ],
     "nextStep": {
@@ -629,11 +678,13 @@
       "targetId": "alignment",
       "label": "See how answers get steered"
     },
-    "analogy": "Practice drills: “when asked X, answer like Y.”",
-    "example": "Chat models that wait for your request instead of rambling.",
-    "alias": "instruct tuning",
+    "analogy": "A raw autocomplete vs a trained helper at a help desk.",
+    "example": "Downloading a “base” weights file vs the “Instruct” / “Chat” version.",
     "aliases": [
-      "instruction following"
+      "base model",
+      "instruct model",
+      "chat vs base",
+      "foundation vs instruct"
     ]
   },
   {
@@ -653,6 +704,10 @@
     "neighbors": [
       {
         "id": "instruction-tuning",
+        "relation": "prereq"
+      },
+      {
+        "id": "base-vs-instruct",
         "relation": "prereq"
       },
       {
@@ -1777,14 +1832,59 @@
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "red-teaming",
-      "label": "See how teams attack their own AI"
+      "targetId": "bias",
+      "label": "See unfair slant in answers"
     },
     "analogy": "Rules for a powerful tool in public hands.",
     "example": "Blocking help for phishing emails.",
     "aliases": [
       "AI safety",
       "misuse"
+    ]
+  },
+  {
+    "id": "bias",
+    "name": "Bias",
+    "parentId": "trust-and-quality",
+    "level": "intro",
+    "oneBreath": "When answers lean unfairly — stereotyping people, favoring some groups, or repeating skewed patterns from training data.",
+    "does": [
+      "Show why “sounds normal” can still be unfair",
+      "Push teams to test across groups and topics"
+    ],
+    "doesNot": [
+      "Not only a politics debate",
+      "Not fixed by one polite system prompt"
+    ],
+    "neighbors": [
+      {
+        "id": "safety-misuse",
+        "relation": "sibling"
+      },
+      {
+        "id": "evaluation",
+        "relation": "usedIn"
+      },
+      {
+        "id": "alignment",
+        "relation": "sibling"
+      },
+      {
+        "id": "guardrails",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "red-teaming",
+      "label": "See how teams attack their own AI"
+    },
+    "analogy": "A mirror that reflects the uneven world it was trained on.",
+    "example": "Assuming a “doctor” is a man, or giving worse answers for some dialects.",
+    "aliases": [
+      "model bias",
+      "unfairness",
+      "stereotype"
     ]
   },
   {
