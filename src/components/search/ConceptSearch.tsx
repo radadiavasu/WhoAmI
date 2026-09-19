@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { ConceptNode } from "@/content/schema";
-import { trackSearchSelect } from "@/lib/analytics";
+import { trackSearchMiss, trackSearchSelect } from "@/lib/analytics";
 import { searchNodes } from "@/lib/search";
 
 type Props = {
@@ -16,12 +16,26 @@ export function ConceptSearch({ nodes, onSelect }: Props) {
     () => searchNodes(query, nodes).slice(0, 8),
     [query, nodes],
   );
+  const lastMiss = useRef("");
+
+  useEffect(() => {
+    const q = query.trim();
+    if (q.length < 2 || results.length > 0) return;
+    const handle = window.setTimeout(() => {
+      if (lastMiss.current === q) return;
+      lastMiss.current = q;
+      trackSearchMiss(q);
+    }, 700);
+    return () => window.clearTimeout(handle);
+  }, [query, results.length]);
 
   const pick = (id: string) => {
     trackSearchSelect(query, id);
     onSelect(id);
     setQuery("");
   };
+
+  const showEmpty = query.trim().length >= 2 && results.length === 0;
 
   return (
     <div className="relative w-full">
@@ -65,6 +79,14 @@ export function ConceptSearch({ nodes, onSelect }: Props) {
             </li>
           ))}
         </ul>
+      ) : null}
+      {showEmpty ? (
+        <p
+          className="absolute z-20 mt-2 w-full rounded-2xl border border-[color-mix(in_oklab,var(--ink)_10%,transparent)] bg-[var(--panel-lift)] px-4 py-3 text-sm text-[var(--ink-soft)] shadow-[0_20px_48px_color-mix(in_oklab,black_50%,transparent)]"
+          role="status"
+        >
+          No match yet — try another word, or pick a leaf on the map
+        </p>
       ) : null}
     </div>
   );

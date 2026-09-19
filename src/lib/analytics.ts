@@ -32,6 +32,13 @@ export function trackSearchSelect(query: string, nodeId: string): void {
   track("search_select", { query: query.slice(0, 80), nodeId });
 }
 
+/** Fired when a typed query settles with zero hits — silent content gaps. */
+export function trackSearchMiss(query: string): void {
+  const q = query.trim().slice(0, 80);
+  if (!q) return;
+  track("search_miss", { query: q });
+}
+
 export function trackNodeOpen(
   nodeId: string,
   source: "map" | "search" | "neighbor" | "next_step" | "url" | "begin",
