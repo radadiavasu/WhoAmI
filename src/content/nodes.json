@@ -4,7 +4,7 @@
     "name": "Generative AI",
     "parentId": null,
     "level": "intro",
-    "oneBreath": "AI that makes new things — text, images, code — instead of only sorting or labeling what already exists.",
+    "oneBreath": "AI that makes new things — text, images, code — instead of only sorting what already exists.",
     "does": [
       "Write or create from a request",
       "Power chat apps and copilots"
@@ -32,10 +32,10 @@
     "name": "Foundations",
     "parentId": "generative-ai",
     "level": "intro",
-    "oneBreath": "The basic building blocks: how these systems read text and pick what to say next.",
+    "oneBreath": "The small building blocks: how chat AI reads text and picks the next bit to say.",
     "does": [
-      "Explain the small pieces behind chat AI",
-      "Make later ideas easier"
+      "Explain the pieces behind chat AI",
+      "Make later ideas easier to place"
     ],
     "doesNot": [
       "Not a full math course",
@@ -58,7 +58,7 @@
     "name": "Models",
     "parentId": "generative-ai",
     "level": "intro",
-    "oneBreath": "How the big chat brains are built, trained, and taught to follow instructions.",
+    "oneBreath": "How the big chat brains are built, trained, and taught to follow asks.",
     "does": [
       "Name the main model ideas",
       "Show how training stages connect"
@@ -84,14 +84,14 @@
     "name": "Talking to models",
     "parentId": "generative-ai",
     "level": "intro",
-    "oneBreath": "How you write requests so the AI understands what you want — and what to avoid.",
+    "oneBreath": "How you write asks so the AI gets what you want — and what traps to avoid.",
     "does": [
       "Improve answers with clearer asks",
       "Show patterns like examples and step-by-step"
     ],
     "doesNot": [
       "Not changing the model’s core training",
-      "Not a guarantee of perfect answers"
+      "Not a promise of perfect answers"
     ],
     "neighbors": [
       {
@@ -110,10 +110,10 @@
     "name": "Giving models knowledge",
     "parentId": "generative-ai",
     "level": "intro",
-    "oneBreath": "Ways to give the AI fresh or private facts so it doesn’t only rely on what it memorized.",
+    "oneBreath": "Ways to give the AI fresh or private facts so it doesn’t only guess from memory.",
     "does": [
       "Connect answers to real documents",
-      "Reduce made-up confident answers"
+      "Cut down confident made-up answers"
     ],
     "doesNot": [
       "Not the same as retraining the whole model",
@@ -136,10 +136,10 @@
     "name": "Building with models",
     "parentId": "generative-ai",
     "level": "intro",
-    "oneBreath": "Turning a chat model into something that can take steps, use apps, and finish real jobs.",
+    "oneBreath": "Turning a chat model into something that can take steps, use apps, and finish jobs.",
     "does": [
       "Connect AI to actions and tools",
-      "Build multi-step helpers"
+      "Build helpers that do more than one step"
     ],
     "doesNot": [
       "Not always needed for a simple Q&A",
@@ -162,7 +162,7 @@
     "name": "Trust & quality",
     "parentId": "generative-ai",
     "level": "intro",
-    "oneBreath": "Checking whether the AI is safe, accurate, fast enough, and worth the cost.",
+    "oneBreath": "Checking whether the AI is safe enough, accurate enough, fast enough, and worth the cost.",
     "does": [
       "Catch bad or risky outputs",
       "Compare quality over time"
@@ -228,7 +228,7 @@
     "name": "Embedding",
     "parentId": "foundations",
     "level": "core",
-    "oneBreath": "A way to turn text into a list of numbers so similar meanings sit near each other.",
+    "oneBreath": "A way to turn text into numbers so similar meanings sit near each other.",
     "does": [
       "Help find related documents",
       "Power search that understands meaning"
@@ -271,7 +271,7 @@
     "level": "core",
     "oneBreath": "How much text the AI can see at once in this chat — like a limited desk size.",
     "does": [
-      "Hold the conversation and pasted files for a while",
+      "Hold the chat and pasted files for a while",
       "Set a hard length limit"
     ],
     "doesNot": [
@@ -314,13 +314,13 @@
     "name": "Probability / next-token",
     "parentId": "foundations",
     "level": "core",
-    "oneBreath": "The AI writes by repeatedly guessing the most likely next little piece of text.",
+    "oneBreath": "The AI writes by guessing the next little piece of text, again and again.",
     "does": [
       "Explain why answers can change each time",
-      "Underpin settings like temperature"
+      "Sit under settings like temperature"
     ],
     "doesNot": [
-      "Not a guarantee the answer is true",
+      "Not a promise the answer is true",
       "Not careful planning like a person"
     ],
     "neighbors": [
@@ -359,7 +359,7 @@
     "alias": "Sampling temperature",
     "parentId": "foundations",
     "level": "intro",
-    "oneBreath": "A creativity dial: low = safer and more repetitive; high = more surprising wording.",
+    "oneBreath": "A creativity dial: low = safer and more samey; high = more surprising wording.",
     "does": [
       "Change how random the wording feels",
       "Trade fun ideas vs steady answers"
@@ -399,7 +399,7 @@
     "name": "LLM",
     "parentId": "models",
     "level": "intro",
-    "oneBreath": "A large language model: software trained on lots of text to continue writing in a helpful way.",
+    "oneBreath": "A large language model: software trained on lots of text to keep writing in a helpful way.",
     "does": [
       "Chat, write, summarize, and draft",
       "Follow many kinds of instructions"
@@ -444,9 +444,9 @@
     "name": "Transformer",
     "parentId": "models",
     "level": "core",
-    "oneBreath": "The popular design pattern behind modern chat AIs — good at relating words across a sentence.",
+    "oneBreath": "The common design behind modern chat AIs — good at relating words across a sentence.",
     "does": [
-      "Handle long-ish text better than older designs",
+      "Handle longer text better than older designs",
       "Power most big chat models"
     ],
     "doesNot": [
@@ -560,7 +560,7 @@
     "name": "Fine-tuning",
     "parentId": "models",
     "level": "core",
-    "oneBreath": "Extra training on a smaller, focused set of examples so the model gets better at one job.",
+    "oneBreath": "Extra training on a smaller set of examples so the model gets better at one job.",
     "does": [
       "Specialize for a domain or style",
       "Change behavior more deeply than a prompt"
@@ -608,7 +608,7 @@
     ],
     "doesNot": [
       "Not teaching brand-new world facts alone",
-      "Not a substitute for safety checks"
+      "Not a stand-in for safety checks"
     ],
     "neighbors": [
       {
@@ -641,10 +641,10 @@
     "name": "Alignment (RLHF / preference)",
     "parentId": "models",
     "level": "frontier",
-    "oneBreath": "Shaping the model so it prefers helpful, honest, harmless answers — closer to what people want.",
+    "oneBreath": "Shaping the model so it prefers helpful, honest, safer answers — closer to what people want.",
     "does": [
       "Reduce rude or dangerous replies",
-      "Steer toward preferred human choices"
+      "Nudge answers toward preferred human choices"
     ],
     "doesNot": [
       "Not perfect safety",
@@ -684,7 +684,7 @@
     "level": "intro",
     "oneBreath": "The text you type (or send) that tells the AI what to do.",
     "does": [
-      "Steer the answer with clear goals",
+      "Guide the answer with clear goals",
       "Include context, rules, and examples"
     ],
     "doesNot": [
@@ -726,7 +726,7 @@
     "name": "System vs user message",
     "parentId": "talking-to-models",
     "level": "core",
-    "oneBreath": "Two roles in a chat: system = standing rules; user = your request this turn.",
+    "oneBreath": "Two roles in a chat: system = standing rules; user = your ask this turn.",
     "does": [
       "Set ongoing behavior with system text",
       "Keep your ask separate from the rules"
@@ -965,7 +965,7 @@
     "name": "RAG",
     "parentId": "giving-models-knowledge",
     "level": "core",
-    "oneBreath": "The assistant looks up info from your files or the web, then answers using that — like an open-book test instead of guessing from memory.",
+    "oneBreath": "The assistant looks up info from your files or the web, then answers using that — like an open-book test.",
     "does": [
       "Ground answers in your docs",
       "Cut down some made-up facts"
@@ -1013,7 +1013,7 @@
     "oneBreath": "Splitting long documents into smaller pieces so search and AI can handle them.",
     "does": [
       "Fit big files into workable bites",
-      "Improve find-the-right-paragraph search"
+      "Help find the right paragraph"
     ],
     "doesNot": [
       "Not deleting content on purpose",
@@ -1053,7 +1053,7 @@
     "oneBreath": "A store built to find text by meaning — “what’s similar?” — not only exact keywords.",
     "does": [
       "Speed up meaning-based search",
-      "Hold those number-maps of documents"
+      "Hold number-maps of documents"
     ],
     "doesNot": [
       "Not a regular spreadsheet",
@@ -1091,7 +1091,7 @@
     "name": "Retrieval",
     "parentId": "giving-models-knowledge",
     "level": "core",
-    "oneBreath": "The step that fetches the most relevant snippets before the AI writes an answer.",
+    "oneBreath": "The step that fetches the most useful snippets before the AI writes an answer.",
     "does": [
       "Pick evidence for the reply",
       "Rank which pieces matter most"
@@ -1171,10 +1171,10 @@
     "name": "Long context vs RAG",
     "parentId": "giving-models-knowledge",
     "level": "core",
-    "oneBreath": "Two ways to give more info: paste a lot into the chat window, or fetch only what’s needed. Often you mix both.",
+    "oneBreath": "Two ways to give more info: paste a lot into the chat, or fetch only what’s needed. Often you mix both.",
     "does": [
       "Clarify when to paste vs search",
-      "Frame cost, speed, and freshness tradeoffs"
+      "Show cost, speed, and freshness tradeoffs"
     ],
     "doesNot": [
       "Not a claim one method always wins",
@@ -1376,13 +1376,13 @@
     "name": "Orchestration",
     "parentId": "building-with-models",
     "level": "core",
-    "oneBreath": "The control layer that sequences prompts, lookups, tools, and agents into a reliable workflow.",
+    "oneBreath": "The control layer that lines up prompts, lookups, tools, and agents into a reliable workflow.",
     "does": [
       "Glue pieces together",
       "Add retries and routing"
     ],
     "doesNot": [
-      "Not the model’s brain weights",
+      "Not the model’s trained brain",
       "Can get overly complex"
     ],
     "neighbors": [
@@ -1567,7 +1567,7 @@
     "oneBreath": "A shared plug standard so apps and agents can connect to tools and data without a custom hookup each time.",
     "does": [
       "Make tools reusable across clients",
-      "Simplify how context is exposed"
+      "Simplify how context is shared"
     ],
     "doesNot": [
       "Not a model by itself",
@@ -1658,7 +1658,7 @@
     "name": "Guardrails",
     "parentId": "trust-and-quality",
     "level": "core",
-    "oneBreath": "Filters and rules that block or rewrite unsafe or off-policy outputs before users see them.",
+    "oneBreath": "Filters and rules that block or rewrite unsafe outputs before users see them.",
     "does": [
       "Catch toxic or disallowed content",
       "Enforce company policies"
@@ -1800,7 +1800,7 @@
     ],
     "doesNot": [
       "Not the same as grading answer quality",
-      "Not a substitute for safety rails"
+      "Not a stand-in for safety rails"
     ],
     "neighbors": [
       {
@@ -1838,7 +1838,7 @@
     "name": "Tokenizer",
     "parentId": "foundations",
     "level": "intro",
-    "oneBreath": "The tool that splits text into tokens the model can read — and stitches tokens back into words.",
+    "oneBreath": "The splitter that chops text into tokens the model can read — and stitches them back into words.",
     "does": [
       "Decide how text is chopped into pieces",
       "Affect how much fits in the context window"
@@ -1879,14 +1879,14 @@
     "alias": "Nucleus sampling",
     "parentId": "foundations",
     "level": "core",
-    "oneBreath": "Another creativity control: the model only picks from the smallest set of likely next tokens whose probabilities add up to p.",
+    "oneBreath": "Another creativity control: the model only picks from a short list of likely next words.",
     "does": [
-      "Limit wild word choices without only using temperature",
+      "Limit wild word choices",
       "Keep answers mostly on the likely path"
     ],
     "doesNot": [
       "Not a truth dial",
-      "Not the same setting as temperature (though they interact)"
+      "Not the same setting as temperature"
     ],
     "neighbors": [
       {
@@ -1916,10 +1916,10 @@
     "alias": "MoE",
     "parentId": "models",
     "level": "frontier",
-    "oneBreath": "A model design with many specialist “experts,” where only a few activate for each token — big capacity without always paying full cost.",
+    "oneBreath": "A big model made of many small specialists — only a few wake up for each word, so it stays cheaper to run.",
     "does": [
-      "Scale model skill efficiently",
-      "Route different inputs to different experts"
+      "Grow model skill without always paying full cost",
+      "Send different inputs to different specialists"
     ],
     "doesNot": [
       "Not a team of separate chatbots you talk to",
@@ -1958,14 +1958,14 @@
     "alias": "Vision-language model",
     "parentId": "models",
     "level": "core",
-    "oneBreath": "A model that can take more than text — often images, sometimes audio or video — and still answer in language.",
+    "oneBreath": "A model that can take more than text — often images, sometimes audio or video — and still answer in words.",
     "does": [
       "Describe or reason about pictures and screens",
-      "Combine text instructions with visual input"
+      "Mix text asks with what it sees"
     ],
     "doesNot": [
-      "Not magically perfect at reading tiny UI text",
-      "Not the same as a separate image-generator product"
+      "Not perfect at reading tiny UI text",
+      "Not the same as a separate image-maker product"
     ],
     "neighbors": [
       {
@@ -1999,10 +1999,10 @@
     "alias": "Thinking model",
     "parentId": "models",
     "level": "frontier",
-    "oneBreath": "A model tuned to spend more internal steps on hard problems before answering — slower, often stronger on puzzles and math-ish tasks.",
+    "oneBreath": "A model tuned to “think longer” on hard problems before answering — slower, often stronger on puzzles and math-ish tasks.",
     "does": [
-      "Improve multi-step problem solving",
-      "Trade latency for deeper attempts"
+      "Help with multi-step problem solving",
+      "Trade wait time for deeper attempts"
     ],
     "doesNot": [
       "Not a guarantee of truth",
@@ -2040,9 +2040,9 @@
     "name": "Quantization",
     "parentId": "models",
     "level": "core",
-    "oneBreath": "Shrinking a model’s numbers (like 4-bit or 8-bit) so it runs cheaper and fits on smaller machines — with some quality tradeoff.",
+    "oneBreath": "Shrinking a model’s numbers (like 4-bit) so it runs cheaper and fits on smaller machines — with some quality tradeoff.",
     "does": [
-      "Make local or edge deployment practical",
+      "Make running models on a laptop more practical",
       "Cut memory and often cost"
     ],
     "doesNot": [
@@ -2085,14 +2085,14 @@
     "name": "System prompt",
     "parentId": "talking-to-models",
     "level": "intro",
-    "oneBreath": "Standing instructions that shape the assistant’s role, tone, and rules across the chat — usually hidden from the end user.",
+    "oneBreath": "Hidden standing rules that set the assistant’s job, tone, and limits for the whole chat.",
     "does": [
       "Set default behavior and boundaries",
-      "Steer style without rewriting every ask"
+      "Guide style without rewriting every ask"
     ],
     "doesNot": [
-      "Not immune to prompt injection",
-      "Not a substitute for app-level guardrails"
+      "Not safe from prompt injection by itself",
+      "Not a stand-in for product safety filters"
     ],
     "neighbors": [
       {
@@ -2128,9 +2128,9 @@
     "name": "Jailbreak",
     "parentId": "talking-to-models",
     "level": "core",
-    "oneBreath": "A user attempt to talk the model into ignoring its safety or product rules — often with role-play or “ignore previous instructions.”",
+    "oneBreath": "A user trying to talk the model into ignoring its safety or product rules — often with role-play or “ignore previous instructions.”",
     "does": [
-      "Probe how strong the rules really are",
+      "Test how strong the rules really are",
       "Show why safety needs more than a polite system prompt"
     ],
     "doesNot": [
@@ -2172,7 +2172,7 @@
     "name": "Knowledge cutoff",
     "parentId": "giving-models-knowledge",
     "level": "intro",
-    "oneBreath": "The date after which the model’s training data mostly stops — so it may not know newer events unless you give it fresh info.",
+    "oneBreath": "The date after which the model’s training mostly stops — so it may miss newer events unless you give it fresh info.",
     "does": [
       "Explain outdated answers",
       "Motivate browse tools and RAG"
@@ -2217,7 +2217,7 @@
     "alias": "Grounding with sources",
     "parentId": "giving-models-knowledge",
     "level": "core",
-    "oneBreath": "Pointing answers back to the retrieved snippets or URLs so a human can check where a claim came from.",
+    "oneBreath": "Pointing answers back to the snippets or URLs used, so a human can check the claim.",
     "does": [
       "Build trust in RAG answers",
       "Help spot when the model wandered off-source"
@@ -2257,7 +2257,7 @@
     "name": "Hybrid search",
     "parentId": "giving-models-knowledge",
     "level": "core",
-    "oneBreath": "Finding documents with both keyword search and meaning (vector) search, then blending the results — often stronger than either alone.",
+    "oneBreath": "Finding documents with both keyword search and meaning search, then blending the results.",
     "does": [
       "Catch exact IDs and rare names",
       "Still find paraphrased meaning"
@@ -2301,14 +2301,14 @@
     "name": "Workflows vs agents",
     "parentId": "building-with-models",
     "level": "core",
-    "oneBreath": "Workflows follow a planned path of steps you designed; agents choose more of the path themselves with tools — more flexible, less predictable.",
+    "oneBreath": "Workflows follow a path you planned; agents choose more of the path themselves with tools — more flexible, less predictable.",
     "does": [
-      "Help you pick structure vs autonomy",
+      "Help you pick structure vs freedom",
       "Clarify when a flowchart beats “just let it decide”"
     ],
     "doesNot": [
-      "Not a moral judgment that agents are “smarter”",
-      "Not mutually exclusive — hybrids are common"
+      "Not a claim that agents are “smarter”",
+      "Not either/or — mixes are common"
     ],
     "neighbors": [
       {
@@ -2345,14 +2345,14 @@
     "name": "Streaming",
     "parentId": "building-with-models",
     "level": "intro",
-    "oneBreath": "Sending the answer token-by-token as it’s generated so the UI can show text appearing live.",
+    "oneBreath": "Sending the answer word-by-word as it’s made so the screen can show text appearing live.",
     "does": [
       "Make waits feel shorter",
       "Let users stop a bad answer early"
     ],
     "doesNot": [
       "Not faster total generation by itself",
-      "Not the same as a finished, validated JSON object"
+      "Not the same as a finished, checked JSON object"
     ],
     "neighbors": [
       {
@@ -2389,14 +2389,14 @@
     "name": "Red teaming",
     "parentId": "trust-and-quality",
     "level": "core",
-    "oneBreath": "Deliberately attacking your own AI product with tricky prompts to find safety and abuse holes before real users do.",
+    "oneBreath": "Deliberately attacking your own AI product with tricky prompts to find safety holes before real users do.",
     "does": [
-      "Surface jailbreaks and misuse paths",
-      "Feed fixes into guardrails and evals"
+      "Find jailbreaks and misuse paths",
+      "Feed fixes into filters and tests"
     ],
     "doesNot": [
       "Not a one-time checkbox",
-      "Not the same as normal happy-path QA"
+      "Not the same as normal happy-path testing"
     ],
     "neighbors": [
       {
@@ -2434,7 +2434,7 @@
     "alias": "Personal data in prompts",
     "parentId": "trust-and-quality",
     "level": "intro",
-    "oneBreath": "Personal or sensitive data in prompts, logs, and training — who can see it, how long it is kept, and what must never be pasted in.",
+    "oneBreath": "Personal or sensitive data in prompts, logs, and training — who can see it, how long it’s kept, and what must never be pasted in.",
     "does": [
       "Shape safe product defaults",
       "Explain “can I paste this customer file?” anxiety"

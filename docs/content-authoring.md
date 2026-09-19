@@ -14,6 +14,18 @@ MVP content lives in one file. No backend or migrations.
 
 The map layout is computed from `parentId`; you do not edit positions by hand.
 
+## Plain-language bar
+
+Write for a smart person who is new to the term — not for an AI engineer.
+
+- **oneBreath:** one idea, ~15–30 words. Everyday verbs. Keep the term name; explain it like a sharp friend.
+- **does / doesNot:** short bullets. Prefer “help / stop / show / pick” over “surface / steer / underpin / route.”
+- Avoid stacked clauses and insider shorthand (`happy-path QA`, `app-level`, `know-how packs`) unless you unpack them.
+- Accuracy stays; jargon goes only when the name itself is the jargon (then decode it once).
+
+Good: “How much text the AI can see at once in this chat — like a limited desk size.”  
+Too dense: “Standing instructions that shape the assistant’s role, tone, and rules across the chat — usually hidden from the end user.”
+
 ## Do not regenerate from script
 
 `scripts/gen-nodes.cjs` is **stale** and will refuse to run. It must not overwrite `nodes.json`.
