@@ -1,19 +1,10 @@
 /**
- * Lightweight product analytics for WhoAmI.
- *
- * Uses Vercel Web Analytics custom events when enabled on the project
- * (`window.va`). Safe no-op locally / when unavailable — no extra npm dep.
- *
- * Enable: Vercel → Project → Analytics.
+ * Product analytics for WhoAmI via Vercel Web Analytics.
+ * Safe no-op off Vercel / when the script isn’t loaded.
  */
-type Props = Record<string, string | number | boolean | null | undefined>;
+import { track as vaTrack } from "@vercel/analytics";
 
-declare global {
-  interface Window {
-    va?: (...args: unknown[]) => void;
-    vaq?: unknown[];
-  }
-}
+type Props = Record<string, string | number | boolean | null | undefined>;
 
 function cleanProps(
   props?: Props,
@@ -29,14 +20,9 @@ function cleanProps(
 
 export function track(event: string, props?: Props): void {
   if (typeof window === "undefined") return;
-  const data = cleanProps(props);
   try {
-    window.va =
-      window.va ||
-      function (...args: unknown[]) {
-        (window.vaq = window.vaq || []).push(args);
-      };
-    window.va("event", { name: event, ...(data ? { data } : {}) });
+    const data = cleanProps(props);
+    vaTrack(event, data);
   } catch {
     // Never break the map for analytics.
   }
