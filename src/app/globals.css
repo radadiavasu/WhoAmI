@@ -536,6 +536,7 @@ body {
     radial-gradient(ellipse at 50% 0%, color-mix(in oklab, #3a281c 35%, transparent), transparent 55%),
     linear-gradient(180deg, #1a120c 0%, #120c08 40%, #0a0705 100%);
   opacity: 0.9;
+  transition: opacity 280ms ease;
   /* Kill the hard black rule — fade soil in under the meadow */
   -webkit-mask-image: linear-gradient(
     to bottom,
@@ -640,6 +641,7 @@ body {
     0 0 32px color-mix(in oklab, #a67c52 55%, transparent),
     inset 0 0 0 1px color-mix(in oklab, #f0e6d4 45%, transparent);
   pointer-events: none;
+  transition: opacity 220ms ease;
 }
 
 /* Warm lantern pool where the trunk meets the meadow */

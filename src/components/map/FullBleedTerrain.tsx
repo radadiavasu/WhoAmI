@@ -8,6 +8,8 @@ type Props = {
   trunkFlowX: number;
   /** Hide meadow hint while viewing roots. */
   showHint?: boolean;
+  /** Soil bed + trunk collar — only when roots are open (avoids mid-scroll stub). */
+  showUnderground?: boolean;
 };
 
 function GrassClump({
@@ -140,6 +142,7 @@ export function FullBleedTerrain({
   bedFlowY,
   trunkFlowX,
   showHint = true,
+  showUnderground = false,
 }: Props) {
   const [tx, ty, zoom] = useStore((s) => s.transform);
   const fieldTop = fieldFlowY * zoom + ty;
@@ -155,6 +158,8 @@ export function FullBleedTerrain({
         style={{
           height: bedHeight,
           transform: `translate3d(0, ${bedTop}px, 0)`,
+          opacity: showUnderground ? 0.9 : 0,
+          pointerEvents: "none",
         }}
         aria-hidden
       />
@@ -368,7 +373,10 @@ export function FullBleedTerrain({
 
         <div
           className="ground-trunk-collar"
-          style={{ left: `${trunkX}px` }}
+          style={{
+            left: `${trunkX}px`,
+            opacity: showUnderground ? 1 : 0,
+          }}
         />
         {showHint ? (
           <p className="ground-field-hint">

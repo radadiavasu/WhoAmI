@@ -139,44 +139,6 @@ function FocusCamera({
   return null;
 }
 
-/**
- * Desktop only: soft atmosphere flip while panning.
- * Touch maps set underground only when goRoots/goCanopy run — avoids brown flash before the camera snap.
- */
-function UndergroundSense({
-  fieldFlowY,
-  touchMap,
-  onUndergroundChange,
-}: {
-  fieldFlowY: number;
-  touchMap: boolean;
-  onUndergroundChange?: (underground: boolean) => void;
-}) {
-  const transform = useStore((s) => s.transform);
-  const last = useRef<boolean | null>(null);
-  const armed = useRef(false);
-
-  useEffect(() => {
-    if (touchMap) return;
-    const t = window.setTimeout(() => {
-      armed.current = true;
-    }, 700);
-    return () => window.clearTimeout(t);
-  }, [touchMap]);
-
-  useEffect(() => {
-    if (touchMap || !onUndergroundChange || !armed.current) return;
-    const [, ty, zoom] = transform;
-    const fieldScreenY = fieldFlowY * zoom + ty;
-    const underground = fieldScreenY < window.innerHeight * 0.35;
-    if (last.current === underground) return;
-    last.current = underground;
-    onUndergroundChange(underground);
-  }, [transform, fieldFlowY, onUndergroundChange, touchMap]);
-
-  return null;
-}
-
 type LayerNav = {
   goRoots: () => void;
   goCanopy: () => void;
@@ -186,6 +148,9 @@ type LayerNav = {
  * Field is the zoom boundary:
  * - desktop: wheel on the field band
  * - touch: swipe vertically on a thin grass strip, or pan past the field
+ *
+ * Atmosphere + root visibility flip only inside goRoots/goCanopy (never mid-pan),
+ * and fitView waits until root nodes are un-hidden.
  */
 function FieldZoomGate({
   fieldFlowY,
@@ -208,43 +173,35 @@ function FieldZoomGate({
 }) {
   const { fitView } = useReactFlow();
   const [, ty, zoom] = useStore((s) => s.transform);
+  // Wait for RF store to actually unhide roots — parent setNodes runs after this child.
+  const rootsInStore = useStore((s) =>
+    rootIds.some((id) => {
+      const n = s.nodeLookup.get(id);
+      return Boolean(n && !n.hidden);
+    }),
+  );
   const fieldTop = fieldFlowY * zoom + ty;
-  // Desktop: tall hover band. Touch: thin grass crest so the rest of the map still pans.
   const fieldHeight = touchMap
     ? Math.max(72, 110 * zoom)
     : Math.max(200, 380 * zoom);
   const coolDown = useRef(false);
   const pointerOrigin = useRef<{ x: number; y: number } | null>(null);
+  const pendingLayer = useRef<"roots" | "canopy" | null>(null);
 
   const goRoots = () => {
     if (coolDown.current || rootIds.length === 0) return;
+    if (underground && pendingLayer.current == null) return;
     coolDown.current = true;
+    pendingLayer.current = "roots";
     onUndergroundChange?.(true);
-    fitView({
-      nodes: rootIds.map((id) => ({ id })),
-      padding: touchMap ? 0.16 : 0.14,
-      duration: touchMap ? 320 : 560,
-      maxZoom: touchMap ? 0.95 : 1.2,
-      minZoom: 0.45,
-    });
-    window.setTimeout(() => {
-      coolDown.current = false;
-    }, touchMap ? 380 : 650);
   };
 
   const goCanopy = () => {
     if (coolDown.current || overviewIds.length === 0) return;
+    if (!underground && pendingLayer.current == null) return;
     coolDown.current = true;
+    pendingLayer.current = "canopy";
     onUndergroundChange?.(false);
-    fitView({
-      nodes: overviewIds.map((id) => ({ id })),
-      padding: fitPadding,
-      duration: touchMap ? 320 : 560,
-      maxZoom: touchMap ? 1.35 : 1.1,
-    });
-    window.setTimeout(() => {
-      coolDown.current = false;
-    }, touchMap ? 380 : 650);
   };
 
   useEffect(() => {
@@ -254,7 +211,53 @@ function FieldZoomGate({
     };
   });
 
-  // Mobile pan-past-field = PC wheel-on-field (scroll into / out of roots).
+  // fitView only after root nodes are un-hidden in the RF store (setNodes is a beat later).
+  useEffect(() => {
+    const pending = pendingLayer.current;
+    if (!pending) return;
+    if (pending === "roots" && (!underground || !rootsInStore)) return;
+    if (pending === "canopy" && underground) return;
+
+    pendingLayer.current = null;
+    const duration = touchMap ? 280 : 480;
+    let timeoutId = 0;
+    const raf = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (pending === "roots") {
+          fitView({
+            nodes: rootIds.map((id) => ({ id })),
+            padding: touchMap ? 0.16 : 0.14,
+            duration,
+            maxZoom: touchMap ? 0.95 : 1.2,
+            minZoom: 0.45,
+          });
+        } else {
+          fitView({
+            nodes: overviewIds.map((id) => ({ id })),
+            padding: fitPadding,
+            duration,
+            maxZoom: touchMap ? 1.35 : 1.1,
+          });
+        }
+        timeoutId = window.setTimeout(() => {
+          coolDown.current = false;
+        }, duration + 100);
+      });
+    });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(timeoutId);
+    };
+  }, [
+    underground,
+    rootsInStore,
+    rootIds,
+    overviewIds,
+    fitView,
+    touchMap,
+    fitPadding,
+  ]);
+
   const lastFieldY = useRef<number | null>(null);
   const panArmed = useRef(false);
   useEffect(() => {
@@ -273,7 +276,6 @@ function FieldZoomGate({
     lastFieldY.current = fieldScreenY;
     if (prev == null) return;
 
-    // Drag the world down → field rises on screen → enter roots (immediate snap)
     if (!underground && prev > h * 0.5 && fieldScreenY < h * 0.38) {
       goRoots();
       return;
@@ -284,7 +286,6 @@ function FieldZoomGate({
   }, [ty, zoom, fieldFlowY, touchMap, underground]);
 
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (e.pointerType === "mouse" && !touchMap) return;
     if (!touchMap) return;
     pointerOrigin.current = { x: e.clientX, y: e.clientY };
   };
@@ -294,7 +295,6 @@ function FieldZoomGate({
     const dx = e.clientX - pointerOrigin.current.x;
     const dy = e.clientY - pointerOrigin.current.y;
     pointerOrigin.current = null;
-    // Finger moves down on the strip → roots (same direction as wheel down)
     if (dy > 40 && Math.abs(dy) > Math.abs(dx) * 1.1) goRoots();
     else if (dy < -40 && Math.abs(dy) > Math.abs(dx) * 1.1) goCanopy();
   };
@@ -614,6 +614,7 @@ export function ConceptMap({
           bedFlowY={bedTop}
           trunkFlowX={CANOPY_ORIGIN.x}
           showHint={!underground}
+          showUnderground={underground}
         />
         <FieldZoomGate
           fieldFlowY={fieldY}
@@ -624,11 +625,6 @@ export function ConceptMap({
           underground={underground}
           onUndergroundChange={onUndergroundChange}
           navRef={layerNav}
-        />
-        <UndergroundSense
-          fieldFlowY={fieldY}
-          touchMap={touchMap}
-          onUndergroundChange={onUndergroundChange}
         />
         {touchMap ? (
           <RootsToggle underground={underground} navRef={layerNav} />
