@@ -268,6 +268,53 @@ body {
   outline-offset: 3px;
 }
 
+.map-welcome-starters {
+  margin-top: 1.15rem;
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in oklab, var(--ink) 10%, transparent);
+}
+
+.map-welcome-starters-label {
+  margin: 0 0 0.65rem;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.map-welcome-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.map-welcome-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--ink) 14%, transparent);
+  background: color-mix(in oklab, var(--panel-lift) 70%, transparent);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 550;
+  letter-spacing: 0.01em;
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease;
+}
+
+.map-welcome-chip:hover {
+  background: color-mix(in oklab, var(--glow) 18%, var(--panel-lift));
+  border-color: color-mix(in oklab, var(--glow) 35%, transparent);
+  transform: translateY(-1px);
+}
+
+.map-welcome-chip:focus-visible {
+  outline: 2px solid var(--sun);
+  outline-offset: 2px;
+}
+
 @keyframes invite-breathe {
   0%,
   100% {

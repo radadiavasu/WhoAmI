@@ -1,11 +1,19 @@
 "use client";
 
+export const WELCOME_STARTERS = [
+  { id: "prompt", label: "Prompt" },
+  { id: "rag", label: "RAG" },
+  { id: "agent", label: "Agent" },
+  { id: "agent-harness", label: "Agent harness" },
+] as const;
+
 type Props = {
   onOrient: () => void;
   onWander: () => void;
+  onStarter: (id: string) => void;
 };
 
-export function MapWelcome({ onOrient, onWander }: Props) {
+export function MapWelcome({ onOrient, onWander, onStarter }: Props) {
   return (
     <div
       className="map-welcome"
@@ -40,6 +48,23 @@ export function MapWelcome({ onOrient, onWander }: Props) {
           >
             I’ll wander
           </button>
+        </div>
+        <div className="map-welcome-starters">
+          <p className="map-welcome-starters-label">
+            Or jump to a must-know word
+          </p>
+          <div className="map-welcome-chips">
+            {WELCOME_STARTERS.map((starter) => (
+              <button
+                key={starter.id}
+                type="button"
+                className="map-welcome-chip"
+                onClick={() => onStarter(starter.id)}
+              >
+                {starter.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>

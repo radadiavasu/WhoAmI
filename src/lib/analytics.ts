@@ -41,7 +41,14 @@ export function trackSearchMiss(query: string): void {
 
 export function trackNodeOpen(
   nodeId: string,
-  source: "map" | "search" | "neighbor" | "next_step" | "url" | "begin",
+  source:
+    | "map"
+    | "search"
+    | "neighbor"
+    | "next_step"
+    | "url"
+    | "begin"
+    | "starter",
 ): void {
   track("node_open", { nodeId, source });
 }

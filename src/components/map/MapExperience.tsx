@@ -81,7 +81,14 @@ function useWelcomeDone(skipWelcome: boolean) {
   );
 }
 
-type OpenSource = "map" | "search" | "neighbor" | "next_step" | "url" | "begin";
+type OpenSource =
+  | "map"
+  | "search"
+  | "neighbor"
+  | "next_step"
+  | "url"
+  | "begin"
+  | "starter";
 
 type Props = {
   nodes: ConceptNode[];
@@ -100,8 +107,11 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
   const welcomeDone = useWelcomeDone(Boolean(initialFocusId));
   const didTrackLanding = useRef(false);
 
-  const markWelcomeDone = (choice: "orient" | "wander") => {
-    track("welcome_choice", { choice });
+  const markWelcomeDone = (
+    choice: "orient" | "wander" | "starter",
+    nodeId?: string,
+  ) => {
+    track("welcome_choice", { choice, ...(nodeId ? { nodeId } : {}) });
     writeWelcomeDone();
   };
 
@@ -228,6 +238,10 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
             openNode(TOUR_ROOT_ID, "begin");
           }}
           onWander={() => markWelcomeDone("wander")}
+          onStarter={(id) => {
+            markWelcomeDone("starter", id);
+            openNode(id, "starter");
+          }}
         />
       ) : null}
 
