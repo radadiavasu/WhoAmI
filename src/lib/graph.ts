@@ -9,7 +9,10 @@ export const CHAPTER_ORDER = [
   "trust-and-quality",
 ] as const;
 
-export type TreeRole = "trunk" | "branch" | "leaf";
+/** Canopy join — chapters grow above; AI spine grows below. */
+export const CANOPY_TRUNK_ID = "generative-ai";
+
+export type TreeRole = "trunk" | "branch" | "leaf" | "root";
 
 export type FlowNode = {
   id: string;
@@ -26,11 +29,11 @@ export type FlowEdge = {
   id: string;
   source: string;
   target: string;
-  data?: { kind: "tree" | "neighbor"; weight: number };
+  data?: { kind: "tree" | "neighbor" | "root"; weight: number };
 };
 
-const ROOT_W = 240;
-const ROOT_H = 96;
+const ROOT_W = 268;
+const ROOT_H = 120;
 const CHAPTER_W = 176;
 const CHAPTER_H = 76;
 const LEAF_W = 196;
@@ -40,6 +43,30 @@ const LEAF_GAP = 268;
 /** Keep chapter hubs apart so neighboring canopies don't tangle. */
 const CHAPTER_GAP = 420;
 const LEAF_CHAPTER_GAP = 250;
+/** Vertical step between root knots on the tap. */
+const ROOT_SPINE_STEP = 210;
+/** Space reserved under the mound for the meadow / soil lip. */
+export const FIELD_BAND_GAP = 280;
+/** Flow-space origin — Generative AI mound sits here on the field line. */
+export const CANOPY_ORIGIN = { x: 1600, y: 1400 } as const;
+
+/**
+ * Taproot under the mound — gentle organic sway on the main spine.
+ * Side forks (CNN, RNN, RL) get placed after the spine walk.
+ */
+const ROOT_FAN = [
+  { dx: 0, dy: 0.9 }, // llm
+  { dx: -0.28, dy: 1.85 }, // transformer
+  { dx: 0.22, dy: 2.8 }, // neural network
+  { dx: -0.18, dy: 3.75 }, // deep learning
+  { dx: 0.14, dy: 4.7 }, // machine learning
+  { dx: 0, dy: 5.65 }, // artificial intelligence
+] as const;
+
+/** Horizontal sway scale for the main spine (not side forks). */
+const ROOT_FAN_RADIUS = 200;
+/** How far side-root arms reach left/right of their parent. */
+const SIDE_ROOT_REACH = 520;
 
 function offsetFrom(
   origin: { x: number; y: number },
@@ -129,7 +156,7 @@ function placeLeavesAroundBranch(
 }
 
 /**
- * Living canopy: trunk at bottom, chapters fanned out, leaves on spaced multi-rings.
+ * Living tree: GenAI canopy grows up; deeper AI roots hang below the trunk.
  */
 export function buildFlowGraph(nodes: ConceptNode[]): {
   nodes: FlowNode[];
@@ -145,17 +172,63 @@ export function buildFlowGraph(nodes: ConceptNode[]): {
     children.set(node.parentId, list);
   }
 
-  const root = nodes.find((n) => n.parentId === null);
+  const canopy =
+    byId.get(CANOPY_TRUNK_ID) ?? nodes.find((n) => n.parentId === null);
   const centers = new Map<string, { x: number; y: number }>();
   const angles = new Map<string, number>();
   const roles = new Map<string, TreeRole>();
 
-  const origin = { x: 1600, y: 1400 };
+  const origin = { ...CANOPY_ORIGIN };
 
-  if (root) {
-    centers.set(root.id, { ...origin });
-    angles.set(root.id, 0);
-    roles.set(root.id, "trunk");
+  if (canopy) {
+    centers.set(canopy.id, { ...origin });
+    angles.set(canopy.id, 0);
+    roles.set(canopy.id, "trunk");
+
+    // Roots fan wide under the field — sketch: thick L/R coverage, not a column.
+    let child: ConceptNode = canopy;
+    let depth = 1;
+    while (child.parentId) {
+      const parent = byId.get(child.parentId);
+      if (!parent) break;
+      const fan =
+        ROOT_FAN[depth - 1] ?? {
+          dx: depth % 2 === 0 ? -1 : 1,
+          dy: 1 + depth * 0.85,
+        };
+      centers.set(parent.id, {
+        x: origin.x + fan.dx * ROOT_FAN_RADIUS,
+        y: origin.y + FIELD_BAND_GAP + fan.dy * ROOT_SPINE_STEP,
+      });
+      angles.set(parent.id, fan.dx * 18);
+      roles.set(parent.id, "root");
+      child = parent;
+      depth += 1;
+    }
+
+    // Side forks off the spine — real labeled roots (CNN / RNN / RL), not empty art.
+    const sidePrefs: Record<string, number> = {
+      cnn: -1,
+      rnn: 1,
+      "reinforcement-learning": -1,
+    };
+    for (const [parentId, kids] of children) {
+      if (roles.get(parentId) !== "root") continue;
+      const hub = centers.get(parentId);
+      if (!hub) continue;
+      const unplaced = kids.filter((k) => !centers.has(k.id));
+      let autoSide = -1;
+      unplaced.forEach((kid, i) => {
+        const side = sidePrefs[kid.id] ?? (autoSide *= -1);
+        const slot = Math.floor(i / 2);
+        centers.set(kid.id, {
+          x: hub.x + side * (SIDE_ROOT_REACH + slot * 90),
+          y: hub.y + 70 + slot * 50,
+        });
+        angles.set(kid.id, side * 28);
+        roles.set(kid.id, "root");
+      });
+    }
   }
 
   const chapters = CHAPTER_ORDER.map((id) => byId.get(id)).filter(
@@ -223,6 +296,7 @@ export function buildFlowGraph(nodes: ConceptNode[]): {
 
   const sizeFor = (role: TreeRole) => {
     if (role === "trunk") return { w: ROOT_W, h: ROOT_H };
+    if (role === "root") return { w: 280, h: 100 };
     if (role === "branch") return { w: CHAPTER_W, h: CHAPTER_H };
     return { w: LEAF_W, h: LEAF_H };
   };
@@ -247,13 +321,23 @@ export function buildFlowGraph(nodes: ConceptNode[]): {
   for (const node of nodes) {
     if (node.parentId && byId.has(node.parentId)) {
       const parentRole = roles.get(node.parentId);
+      const childRole = roles.get(node.id);
+      const underground =
+        parentRole === "root" || childRole === "root";
       edges.push({
         id: `tree-${node.parentId}-${node.id}`,
         source: node.parentId,
         target: node.id,
         data: {
-          kind: "tree",
-          weight: parentRole === "trunk" ? 6 : 2.6,
+          kind: underground ? "root" : "tree",
+          weight:
+            childRole === "trunk" || parentRole === "trunk"
+              ? underground
+                ? 14
+                : 5.5
+              : underground
+                ? 11
+                : 2.6,
         },
       });
     }
@@ -282,3 +366,51 @@ export function buildFlowGraph(nodes: ConceptNode[]): {
 
   return { nodes: flowNodes, edges };
 }
+
+/** True when the node is Generative AI or lives in its canopy (not the deep roots). */
+export function isCanopyNode(
+  id: string,
+  byId: Map<string, ConceptNode>,
+): boolean {
+  let current: ConceptNode | undefined = byId.get(id);
+  while (current) {
+    if (current.id === CANOPY_TRUNK_ID) return true;
+    current = current.parentId ? byId.get(current.parentId) : undefined;
+  }
+  return false;
+}
+
+/** Meadow begins at the mound feet — grass is the ground GenAI sits on. */
+export function groundFieldY(canopyCenterY = CANOPY_ORIGIN.y): number {
+  return canopyCenterY + 28;
+}
+
+/** Deep soil wash only below the meadow face (avoids a hard seam under the canopy). */
+export function rootBedTopY(canopyCenterY = CANOPY_ORIGIN.y): number {
+  return canopyCenterY + 220;
+}
+
+/** Extra bottom padding so canopy fitView always shows meadow under the mound. */
+export const CANOPY_FIT_PADDING = {
+  top: 0.08,
+  left: 0.12,
+  right: 0.12,
+  bottom: 0.34,
+} as const;
+
+/** Ids to frame on first paint — canopy only, roots stay below the fold. */
+export function canopyOverviewIds(nodes: ConceptNode[]): string[] {
+  const byId = new Map(nodes.map((n) => [n.id, n]));
+  return nodes.filter((n) => isCanopyNode(n.id, byId)).map((n) => n.id);
+}
+
+/** Ids to frame when entering the underground — mound + root crown. */
+export function rootOverviewIds(nodes: ConceptNode[]): string[] {
+  const byId = new Map(nodes.map((n) => [n.id, n]));
+  return nodes
+    .filter(
+      (n) => n.id === CANOPY_TRUNK_ID || !isCanopyNode(n.id, byId),
+    )
+    .map((n) => n.id);
+}
+

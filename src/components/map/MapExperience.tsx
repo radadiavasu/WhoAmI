@@ -11,25 +11,13 @@ import {
 } from "@/lib/analytics";
 import { chapterColor, resolveChapterId } from "@/lib/chapters";
 import { getTourNext } from "@/lib/tour";
+import { breadcrumbFor } from "@/lib/focus";
 import { ConceptMap } from "@/components/map/ConceptMap";
 import { MapChrome } from "@/components/map/MapChrome";
 import { MapWelcome } from "@/components/map/MapWelcome";
 import { OrientationCard } from "@/components/card/OrientationCard";
 import { OrientationSheet } from "@/components/card/OrientationSheet";
 import { TreeAtmosphere } from "@/components/map/TreeAtmosphere";
-
-function breadcrumbFor(
-  id: string,
-  byId: Map<string, ConceptNode>,
-): string[] {
-  const parts: string[] = [];
-  let current: ConceptNode | undefined = byId.get(id);
-  while (current) {
-    parts.unshift(current.name);
-    current = current.parentId ? byId.get(current.parentId) : undefined;
-  }
-  return parts;
-}
 
 function useIsMobile() {
   return useSyncExternalStore(
@@ -104,6 +92,7 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
   const [visitedIds, setVisitedIds] = useState<Set<string>>(
     () => new Set(initialFocusId ? [initialFocusId] : []),
   );
+  const [underground, setUnderground] = useState(false);
   const welcomeDone = useWelcomeDone(Boolean(initialFocusId));
   const didTrackLanding = useRef(false);
 
@@ -195,11 +184,12 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
       className={[
         "map-field relative h-[100dvh] w-full overflow-hidden",
         showWelcome ? "is-welcoming" : "",
+        underground ? "is-underground" : "",
       ]
         .filter(Boolean)
         .join(" ")}
     >
-      <TreeAtmosphere />
+      <TreeAtmosphere underground={underground} />
       <MapChrome
         nodes={nodes}
         compactBrand={Boolean(focused)}
@@ -220,6 +210,8 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
             focusedId={focusedId}
             inviteId={showWelcome ? TOUR_ROOT_ID : undefined}
             visitedIds={visitedIds}
+            underground={underground}
+            onUndergroundChange={setUnderground}
             onSelect={
               showWelcome
                 ? () => {

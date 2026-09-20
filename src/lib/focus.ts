@@ -1,4 +1,5 @@
 import type { ConceptNode } from "@/content/schema";
+import { CANOPY_TRUNK_ID } from "@/lib/graph";
 
 /** Walk parentId chain from focused node up to the root (excludes focused). */
 export function ancestryPathIds(
@@ -12,6 +13,24 @@ export function ancestryPathIds(
     current = byId.get(current.parentId);
   }
   return path;
+}
+
+/**
+ * Card breadcrumb names, root → … → focused.
+ * Canopy cards stop at Generative AI so the underground spine doesn't bloat every leaf.
+ */
+export function breadcrumbFor(
+  id: string,
+  byId: Map<string, ConceptNode>,
+): string[] {
+  const parts: string[] = [];
+  let current: ConceptNode | undefined = byId.get(id);
+  while (current) {
+    parts.unshift(current.name);
+    if (current.id === CANOPY_TRUNK_ID) break;
+    current = current.parentId ? byId.get(current.parentId) : undefined;
+  }
+  return parts;
 }
 
 export function getFocusSet(

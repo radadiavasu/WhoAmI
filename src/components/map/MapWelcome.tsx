@@ -26,12 +26,13 @@ export function MapWelcome({ onOrient, onWander, onStarter }: Props) {
           pointer-events:none parent, so we must own the hit target ourselves. */}
       <div className="map-welcome-scrim" aria-hidden />
       <div className="map-welcome-card">
-        <p className="map-welcome-eyebrow">Generative AI map</p>
+        <p className="map-welcome-eyebrow">Who Am I</p>
         <h2 id="map-welcome-title" className="map-welcome-title">
           How do you want to enter?
         </h2>
         <p id="map-welcome-desc" className="map-welcome-desc">
-          The canopy stays free either way — this only picks your first step.
+        Start in the Generative AI canopy. Scroll to zoom the tree. Hover the
+        field and scroll down to enter the roots.
         </p>
         <div className="map-welcome-actions">
           <button

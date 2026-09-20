@@ -1,8 +1,213 @@
 [
   {
+    "id": "artificial-intelligence",
+    "name": "Artificial intelligence",
+    "parentId": null,
+    "level": "intro",
+    "oneBreath": "Machines doing tasks that usually need human-like judgment — spotting patterns, deciding, creating.",
+    "does": [
+      "Cover many kinds of smart software",
+      "Include learning systems and older rule systems"
+    ],
+    "doesNot": [
+      "Not only chatbots",
+      "Not one single product or company"
+    ],
+    "neighbors": [
+      { "id": "machine-learning", "relation": "next" }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "machine-learning",
+      "label": "See machine learning"
+    },
+    "analogy": "The whole umbrella — not just the rain that falls on you today.",
+    "example": "Spam filters, face unlock, chatbots, game AIs."
+  },
+  {
+    "id": "machine-learning",
+    "name": "Machine learning",
+    "parentId": "artificial-intelligence",
+    "level": "intro",
+    "oneBreath": "Software that improves from examples instead of only following hand-written rules.",
+    "does": [
+      "Learn patterns from data",
+      "Power many modern AI tools"
+    ],
+    "doesNot": [
+      "Not the only kind of AI",
+      "Not magic — bad data makes bad learning"
+    ],
+    "neighbors": [
+      { "id": "artificial-intelligence", "relation": "prereq" },
+      { "id": "deep-learning", "relation": "next" },
+      { "id": "reinforcement-learning", "relation": "sibling" }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "deep-learning",
+      "label": "See deep learning"
+    },
+    "analogy": "Practice with many flashcards until the pattern sticks.",
+    "example": "Recommend a movie from what you watched before."
+  },
+  {
+    "id": "deep-learning",
+    "name": "Deep learning",
+    "parentId": "machine-learning",
+    "level": "intro",
+    "oneBreath": "Machine learning that stacks many layers so the system builds richer features on its own.",
+    "does": [
+      "Handle images, speech, and language well",
+      "Sit under today’s big models"
+    ],
+    "doesNot": [
+      "Not every machine-learning method",
+      "Not always the simplest choice"
+    ],
+    "neighbors": [
+      { "id": "machine-learning", "relation": "prereq" },
+      { "id": "neural-network", "relation": "next" },
+      { "id": "cnn", "relation": "sibling" }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "neural-network",
+      "label": "See neural networks"
+    },
+    "analogy": "Many filters stacked — each layer notices something finer.",
+    "example": "Photo apps that recognize a dog without a hand-built dog checklist."
+  },
+  {
+    "id": "neural-network",
+    "name": "Neural network",
+    "parentId": "deep-learning",
+    "level": "intro",
+    "oneBreath": "A layered web of simple units that pass signals — the pattern behind most deep learning.",
+    "does": [
+      "Turn inputs into useful outputs",
+      "Get trained by adjusting connection strengths"
+    ],
+    "doesNot": [
+      "Not a copy of a biological brain",
+      "Not only for language"
+    ],
+    "neighbors": [
+      { "id": "deep-learning", "relation": "prereq" },
+      { "id": "transformer", "relation": "next" },
+      { "id": "rnn", "relation": "sibling" },
+      { "id": "cnn", "relation": "sibling" }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "transformer",
+      "label": "See transformers"
+    },
+    "analogy": "A spreadsheet of tiny dials that learn which mix works.",
+    "example": "Early image and speech recognizers."
+  },
+  {
+    "id": "cnn",
+    "name": "CNN",
+    "alias": "Convolutional network",
+    "parentId": "deep-learning",
+    "level": "intro",
+    "oneBreath": "A neural-net style built for images — it slides small filters across a photo to spot edges, shapes, then objects.",
+    "does": [
+      "Power many photo and video recognizers",
+      "Share the deep-learning family with language models"
+    ],
+    "doesNot": [
+      "Not the main design behind today’s chat AIs",
+      "Not only for medical scans — phones use them too"
+    ],
+    "neighbors": [
+      { "id": "deep-learning", "relation": "prereq" },
+      { "id": "neural-network", "relation": "sibling" },
+      { "id": "multimodal", "relation": "next" }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "multimodal",
+      "label": "See models that read images and text"
+    },
+    "analogy": "Looking at a picture through a moving peephole, patch by patch.",
+    "example": "Unlocking your phone with your face.",
+    "aliases": [
+      "convolutional neural network",
+      "convnet",
+      "computer vision network"
+    ]
+  },
+  {
+    "id": "rnn",
+    "name": "RNN",
+    "alias": "Recurrent network",
+    "parentId": "neural-network",
+    "level": "intro",
+    "oneBreath": "An older sequence design that reads one step at a time and carries a memory of what came before — common before transformers.",
+    "does": [
+      "Handle text, speech, and time series in order",
+      "Show why long memory was hard before attention"
+    ],
+    "doesNot": [
+      "Not what most new chat models use as their core",
+      "Not useless — still appears in some speech and sensor systems"
+    ],
+    "neighbors": [
+      { "id": "neural-network", "relation": "prereq" },
+      { "id": "transformer", "relation": "next" },
+      { "id": "cnn", "relation": "sibling" }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "transformer",
+      "label": "See what replaced most RNNs for language"
+    },
+    "analogy": "Reading a book one word at a time while whispering the plot to yourself.",
+    "example": "Early phone keyboards that guessed your next word.",
+    "aliases": [
+      "recurrent neural network",
+      "LSTM",
+      "sequence model"
+    ]
+  },
+  {
+    "id": "reinforcement-learning",
+    "name": "Reinforcement learning",
+    "parentId": "machine-learning",
+    "level": "intro",
+    "oneBreath": "Learning by trial and reward — try an action, see a score, lean toward what worked.",
+    "does": [
+      "Train game AIs and some robot skills",
+      "Help steer chat models with human preference scores"
+    ],
+    "doesNot": [
+      "Not the same as reading a giant text library",
+      "Not only for robots — chat “alignment” uses related ideas"
+    ],
+    "neighbors": [
+      { "id": "machine-learning", "relation": "prereq" },
+      { "id": "deep-learning", "relation": "sibling" },
+      { "id": "alignment", "relation": "usedIn" }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "alignment",
+      "label": "See how chat answers get steered"
+    },
+    "analogy": "Learning tennis by points, not by memorizing a textbook.",
+    "example": "A game bot that improves by playing itself.",
+    "aliases": [
+      "RL",
+      "RLHF",
+      "reward learning"
+    ]
+  },
+  {
     "id": "generative-ai",
     "name": "Generative AI",
-    "parentId": null,
+    "parentId": "llm",
     "level": "intro",
     "oneBreath": "AI that makes new things — text, images, code — instead of only sorting what already exists.",
     "does": [
@@ -14,6 +219,10 @@
       "Not magic — it predicts what usually comes next"
     ],
     "neighbors": [
+      {
+        "id": "llm",
+        "relation": "prereq"
+      },
       {
         "id": "foundations",
         "relation": "next"
@@ -69,14 +278,14 @@
     ],
     "neighbors": [
       {
-        "id": "llm",
+        "id": "attention",
         "relation": "next"
       }
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "llm",
-      "label": "Explore models"
+      "targetId": "attention",
+      "label": "See how models focus on words"
     }
   },
   {
@@ -397,7 +606,7 @@
   {
     "id": "llm",
     "name": "LLM",
-    "parentId": "models",
+    "parentId": "transformer",
     "level": "intro",
     "oneBreath": "A large language model: software trained on lots of text to keep writing in a helpful way.",
     "does": [
@@ -411,7 +620,11 @@
     "neighbors": [
       {
         "id": "transformer",
-        "relation": "usedIn"
+        "relation": "prereq"
+      },
+      {
+        "id": "generative-ai",
+        "relation": "next"
       },
       {
         "id": "prompt",
@@ -420,29 +633,27 @@
       {
         "id": "rag",
         "relation": "sibling"
-      },
-      {
-        "id": "multimodal",
-        "relation": "next"
       }
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "transformer",
-      "label": "See the design behind chat models"
+      "targetId": "generative-ai",
+      "label": "See Generative AI"
     },
     "analogy": "A student who read a huge library and now finishes your sentences.",
     "example": "The engine behind most chat assistants.",
     "alias": "chat model",
     "aliases": [
       "large language model",
-      "language model"
+      "language model",
+      "LLM",
+      "llms"
     ]
   },
   {
     "id": "transformer",
     "name": "Transformer",
-    "parentId": "models",
+    "parentId": "neural-network",
     "level": "core",
     "oneBreath": "The common design behind modern chat AIs — good at relating words across a sentence.",
     "does": [
@@ -455,12 +666,16 @@
     ],
     "neighbors": [
       {
-        "id": "attention",
-        "relation": "usedIn"
+        "id": "neural-network",
+        "relation": "prereq"
       },
       {
         "id": "llm",
-        "relation": "sibling"
+        "relation": "next"
+      },
+      {
+        "id": "attention",
+        "relation": "usedIn"
       },
       {
         "id": "pretraining",
@@ -469,8 +684,8 @@
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "attention",
-      "label": "See how it focuses on words"
+      "targetId": "llm",
+      "label": "See large language models"
     },
     "analogy": "A seating chart that shows who should listen to whom in a room.",
     "example": "The “T” in many model names you see online.",

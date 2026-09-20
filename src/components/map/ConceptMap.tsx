@@ -1,23 +1,40 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useSyncExternalStore } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useSyncExternalStore,
+  type MutableRefObject,
+} from "react";
 import {
   Controls,
   ReactFlow,
   useEdgesState,
   useNodesState,
   useReactFlow,
+  useStore,
   type Edge,
   type Node,
   type NodeMouseHandler,
   type OnNodeDrag,
 } from "@xyflow/react";
 import type { ConceptNode } from "@/content/schema";
-import { buildFlowGraph } from "@/lib/graph";
+import {
+  buildFlowGraph,
+  canopyOverviewIds,
+  CANOPY_FIT_PADDING,
+  CANOPY_ORIGIN,
+  CANOPY_TRUNK_ID,
+  groundFieldY,
+  rootBedTopY,
+  rootOverviewIds,
+} from "@/lib/graph";
 import { getFocusSet } from "@/lib/focus";
 import { chapterColor, resolveChapterId } from "@/lib/chapters";
 import { ConceptNodeView, type ConceptNodeData } from "./ConceptNode";
 import { BranchEdge } from "./BranchEdge";
+import { FullBleedTerrain } from "./FullBleedTerrain";
 
 const nodeTypes = { concept: ConceptNodeView };
 const edgeTypes = { branch: BranchEdge };
@@ -30,42 +47,170 @@ function useIsClient() {
   );
 }
 
+/** Frames canopy on first load; frames a focused node when one is open. */
 function FocusCamera({
   focusedId,
   contextIds,
+  overviewIds,
 }: {
   focusedId?: string;
   contextIds: string[];
+  overviewIds: string[];
 }) {
   const { fitView } = useReactFlow();
+  const didInit = useRef(false);
   const contextKey = contextIds.slice().sort().join("|");
 
   useEffect(() => {
-    if (!focusedId) {
-      fitView({ padding: 0.1, duration: 280 });
+    if (focusedId) {
+      const ids = contextIds.length > 0 ? contextIds : [focusedId];
+      fitView({
+        nodes: ids.map((id) => ({ id })),
+        padding: 0.28,
+        duration: 340,
+        maxZoom: 1.25,
+        minZoom: 0.4,
+      });
       return;
     }
-    const ids = contextIds.length > 0 ? contextIds : [focusedId];
-    // Frame the leaf with its chapter path so placement stays visible.
-    fitView({
-      nodes: ids.map((id) => ({ id })),
-      padding: 0.28,
-      duration: 340,
-      maxZoom: 1.15,
-      minZoom: 0.45,
-    });
-  }, [focusedId, contextKey, contextIds, fitView]);
+
+    if (!didInit.current && overviewIds.length > 0) {
+      didInit.current = true;
+      const frameCanopy = () => {
+        fitView({
+          nodes: overviewIds.map((id) => ({ id })),
+          padding: CANOPY_FIT_PADDING,
+          duration: 0,
+          maxZoom: 1.05,
+        });
+      };
+      // Two frames: RF pane size is often 0 on the first paint.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(frameCanopy);
+      });
+      window.setTimeout(frameCanopy, 120);
+    }
+  }, [focusedId, contextKey, contextIds, overviewIds, fitView]);
 
   return null;
+}
+
+/**
+ * Keep atmosphere/hint in sync when the user pans (not only field-scroll).
+ * Does not move the camera.
+ */
+function UndergroundSense({
+  fieldFlowY,
+  onUndergroundChange,
+}: {
+  fieldFlowY: number;
+  onUndergroundChange?: (underground: boolean) => void;
+}) {
+  const transform = useStore((s) => s.transform);
+  const last = useRef<boolean | null>(null);
+  const armed = useRef(false);
+
+  useEffect(() => {
+    const t = window.setTimeout(() => {
+      armed.current = true;
+    }, 700);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (!onUndergroundChange || !armed.current) return;
+    const [, ty, zoom] = transform;
+    const fieldScreenY = fieldFlowY * zoom + ty;
+    const underground = fieldScreenY < window.innerHeight * 0.35;
+    if (last.current === underground) return;
+    last.current = underground;
+    onUndergroundChange(underground);
+  }, [transform, fieldFlowY, onUndergroundChange]);
+
+  return null;
+}
+
+/**
+ * Field is the zoom boundary:
+ * - cursor on canopy → normal scroll zoom
+ * - cursor on field + scroll down → reveal roots
+ * - cursor on field + scroll up → return to canopy
+ */
+function FieldZoomGate({
+  fieldFlowY,
+  overviewIds,
+  rootIds,
+  onUndergroundChange,
+}: {
+  fieldFlowY: number;
+  overviewIds: string[];
+  rootIds: string[];
+  onUndergroundChange?: (underground: boolean) => void;
+}) {
+  const { fitView } = useReactFlow();
+  const [, ty, zoom] = useStore((s) => s.transform);
+  const fieldTop = fieldFlowY * zoom + ty;
+  const fieldHeight = Math.max(200, 380 * zoom);
+  const coolDown = useRef(false);
+
+  const goRoots = () => {
+    if (coolDown.current || rootIds.length === 0) return;
+    coolDown.current = true;
+    onUndergroundChange?.(true);
+    fitView({
+      nodes: rootIds.map((id) => ({ id })),
+      padding: 0.14,
+      duration: 560,
+      maxZoom: 1.2,
+      minZoom: 0.55,
+    });
+    window.setTimeout(() => {
+      coolDown.current = false;
+    }, 600);
+  };
+
+  const goCanopy = () => {
+    if (coolDown.current || overviewIds.length === 0) return;
+    coolDown.current = true;
+    onUndergroundChange?.(false);
+    fitView({
+      nodes: overviewIds.map((id) => ({ id })),
+      padding: CANOPY_FIT_PADDING,
+      duration: 560,
+      maxZoom: 1.1,
+    });
+    window.setTimeout(() => {
+      coolDown.current = false;
+    }, 600);
+  };
+
+  return (
+    <div
+      className="field-zoom-gate"
+      style={{
+        height: fieldHeight,
+        transform: `translate3d(0, ${fieldTop}px, 0)`,
+      }}
+      onWheel={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.deltaY > 8) goRoots();
+        else if (e.deltaY < -8) goCanopy();
+      }}
+      role="presentation"
+      title="Scroll here to enter or leave the roots"
+    />
+  );
 }
 
 type Props = {
   concepts: ConceptNode[];
   focusedId?: string;
-  /** Soft pulse on this node when the map is empty (first-visit hint). */
   inviteId?: string;
   visitedIds: Set<string>;
+  underground?: boolean;
   onSelect: (id: string) => void;
+  onUndergroundChange?: (underground: boolean) => void;
 };
 
 export function ConceptMap({
@@ -73,9 +218,10 @@ export function ConceptMap({
   focusedId,
   inviteId,
   visitedIds,
+  underground = false,
   onSelect,
+  onUndergroundChange,
 }: Props) {
-  // React Flow measures the viewport on the client; SSR HTML never matches.
   const mounted = useIsClient();
 
   const graph = useMemo(() => buildFlowGraph(concepts), [concepts]);
@@ -90,17 +236,21 @@ export function ConceptMap({
 
   const contextIds = useMemo(() => {
     if (!focusedId || !focus) return [] as string[];
-    return [
-      focusedId,
-      ...focus.pathIds,
-      ...focus.neighborIds,
-    ];
+    return [focusedId, ...focus.pathIds, ...focus.neighborIds];
   }, [focusedId, focus]);
 
-  /** User-moved node positions survive focus updates. */
+  const overviewIds = useMemo(
+    () => canopyOverviewIds(concepts),
+    [concepts],
+  );
+  const rootIds = useMemo(() => rootOverviewIds(concepts), [concepts]);
+
+  const fieldY = groundFieldY(CANOPY_ORIGIN.y);
+  const bedTop = rootBedTopY(CANOPY_ORIGIN.y);
+
   const draggedPositions = useRef(
     new Map<string, { x: number; y: number }>(),
-  );
+  ) as MutableRefObject<Map<string, { x: number; y: number }>>;
 
   const layoutNodes: Node[] = useMemo(
     () =>
@@ -109,6 +259,7 @@ export function ConceptMap({
         type: n.type,
         position: n.position,
         draggable: true,
+        zIndex: n.data.role === "root" ? 4 : 5,
         data: {
           node: n.data.node,
           role: n.data.role,
@@ -141,6 +292,7 @@ export function ConceptMap({
       })
       .map((e) => {
         const neighbor = e.data?.kind === "neighbor";
+        const isRoot = e.data?.kind === "root";
         const onPath =
           Boolean(focusedId) &&
           ((e.source === focusedId && focus?.pathIds.has(e.target)) ||
@@ -155,8 +307,15 @@ export function ConceptMap({
             onPath);
         const dimmed = Boolean(focusedId) && !involved;
         const sourceNode = byId.get(e.source);
-        const stroke =
-          neighbor || onPath
+        const toTrunk =
+          e.target === CANOPY_TRUNK_ID || e.source === CANOPY_TRUNK_ID;
+        const stroke = isRoot
+          ? onPath || involved
+            ? "#e8c989"
+            : toTrunk
+              ? "#d4b07a"
+              : "#c4a06a"
+          : neighbor || onPath
             ? "var(--sun)"
             : involved
               ? "var(--sun)"
@@ -172,8 +331,22 @@ export function ConceptMap({
           animated: Boolean(involved && neighbor),
           style: {
             stroke,
-            opacity: dimmed ? 0.08 : neighbor || onPath ? 0.9 : 0.88,
-            strokeWidth: onPath ? 2.4 : undefined,
+            opacity: dimmed
+              ? 0.08
+              : isRoot
+                ? 1
+                : neighbor || onPath
+                  ? 0.9
+                  : 0.88,
+            strokeWidth: isRoot
+              ? toTrunk
+                ? 52
+                : onPath
+                  ? 44
+                  : 40
+              : onPath
+                ? 2.4
+                : undefined,
             strokeDasharray: neighbor ? "6 8" : undefined,
           },
         };
@@ -183,7 +356,6 @@ export function ConceptMap({
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutEdges);
 
-  // Sync focus/dim styling without wiping dragged positions
   useEffect(() => {
     if (!mounted) return;
     setNodes((current) => {
@@ -232,9 +404,7 @@ export function ConceptMap({
         onNodeDragStop={onNodeDragStop}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        fitView
-        fitViewOptions={{ padding: 0.1 }}
-        minZoom={0.18}
+        minZoom={0.16}
         maxZoom={2.4}
         proOptions={{ hideAttribution: true }}
         onlyRenderVisibleElements
@@ -248,8 +418,29 @@ export function ConceptMap({
         zoomOnDoubleClick={false}
         selectionOnDrag={false}
         nodeDragThreshold={4}
+        defaultViewport={{ x: 0, y: 0, zoom: 0.55 }}
       >
-        <FocusCamera focusedId={focusedId} contextIds={contextIds} />
+        <FocusCamera
+          focusedId={focusedId}
+          contextIds={contextIds}
+          overviewIds={overviewIds}
+        />
+        <FullBleedTerrain
+          fieldFlowY={fieldY}
+          bedFlowY={bedTop}
+          trunkFlowX={CANOPY_ORIGIN.x}
+          showHint={!underground}
+        />
+        <FieldZoomGate
+          fieldFlowY={fieldY}
+          overviewIds={overviewIds}
+          rootIds={rootIds}
+          onUndergroundChange={onUndergroundChange}
+        />
+        <UndergroundSense
+          fieldFlowY={fieldY}
+          onUndergroundChange={onUndergroundChange}
+        />
         <Controls showInteractive={false} position="bottom-left" />
       </ReactFlow>
     </div>

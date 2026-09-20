@@ -1,5 +1,12 @@
 import { describe, it, expect } from "vitest";
-import { buildFlowGraph, CHAPTER_ORDER } from "@/lib/graph";
+import {
+  buildFlowGraph,
+  canopyOverviewIds,
+  CANOPY_FIT_PADDING,
+  CHAPTER_ORDER,
+  groundFieldY,
+  rootBedTopY,
+} from "@/lib/graph";
 import { loadNodes } from "@/content/load";
 import type { ConceptNode } from "@/content/schema";
 
@@ -82,5 +89,65 @@ describe("buildFlowGraph", () => {
         }
       }
     }
+  });
+
+  it("hangs AI roots below the Generative AI canopy trunk", () => {
+    const g = buildFlowGraph(loadNodes());
+    const ai = g.nodes.find((x) => x.id === "artificial-intelligence")!;
+    const gen = g.nodes.find((x) => x.id === "generative-ai")!;
+    const foundations = g.nodes.find((x) => x.id === "foundations")!;
+    expect(ai.position.y).toBeGreaterThan(gen.position.y);
+    expect(foundations.position.y).toBeLessThan(gen.position.y);
+  });
+
+  it("keeps the main root spine near the trunk", () => {
+    const g = buildFlowGraph(loadNodes());
+    const gen = g.nodes.find((x) => x.id === "generative-ai")!;
+    const trunkX = gen.position.x + 268 / 2;
+    const spineIds = [
+      "llm",
+      "transformer",
+      "neural-network",
+      "deep-learning",
+      "machine-learning",
+      "artificial-intelligence",
+    ];
+    for (const id of spineIds) {
+      const root = g.nodes.find((x) => x.id === id)!;
+      const cx = root.position.x + 280 / 2;
+      expect(Math.abs(cx - trunkX)).toBeLessThan(120);
+    }
+  });
+
+  it("fans side-root forks left and right of the spine", () => {
+    const g = buildFlowGraph(loadNodes());
+    const gen = g.nodes.find((x) => x.id === "generative-ai")!;
+    const trunkX = gen.position.x + 268 / 2;
+    const cnn = g.nodes.find((x) => x.id === "cnn")!;
+    const rnn = g.nodes.find((x) => x.id === "rnn")!;
+    const rl = g.nodes.find((x) => x.id === "reinforcement-learning")!;
+    expect(cnn.data.role).toBe("root");
+    expect(rnn.data.role).toBe("root");
+    expect(rl.data.role).toBe("root");
+    expect(cnn.position.x + 140).toBeLessThan(trunkX - 200);
+    expect(rnn.position.x + 140).toBeGreaterThan(trunkX + 200);
+    expect(rl.position.x + 140).toBeLessThan(trunkX - 200);
+  });
+
+  it("frames overview ids on the canopy only", () => {
+    const nodes = loadNodes();
+    const ids = new Set(canopyOverviewIds(nodes));
+    expect(ids.has("generative-ai")).toBe(true);
+    expect(ids.has("foundations")).toBe(true);
+    expect(ids.has("prompt")).toBe(true);
+    expect(ids.has("artificial-intelligence")).toBe(false);
+    expect(ids.has("machine-learning")).toBe(false);
+    expect(ids.has("llm")).toBe(false);
+  });
+
+  it("places the meadow band under the mound for canopy framing", () => {
+    expect(groundFieldY(1400)).toBeGreaterThan(1400);
+    expect(rootBedTopY(1400)).toBeGreaterThan(groundFieldY(1400));
+    expect(CANOPY_FIT_PADDING.bottom).toBeGreaterThan(CANOPY_FIT_PADDING.top);
   });
 });

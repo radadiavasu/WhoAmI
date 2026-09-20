@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { getFocusSet } from "@/lib/focus";
+import { breadcrumbFor, getFocusSet } from "@/lib/focus";
+import { loadNodes } from "@/content/load";
 import type { ConceptNode } from "@/content/schema";
 
 const nodes: ConceptNode[] = [
@@ -74,5 +75,25 @@ describe("getFocusSet", () => {
     expect(f.pathIds.has("root")).toBe(true);
     expect(f.dimmedIds.has("c")).toBe(false);
     expect(f.dimmedIds.has("root")).toBe(false);
+  });
+});
+
+describe("breadcrumbFor", () => {
+  it("stops canopy leaves at Generative AI — no underground spine bloat", () => {
+    const byId = new Map(loadNodes().map((n) => [n.id, n]));
+    const parts = breadcrumbFor("tool-use", byId);
+    expect(parts[0]).toBe("Generative AI");
+    expect(parts).toContain("Building with models");
+    expect(parts).toContain("Tool use / function calling");
+    expect(parts.join(" ")).not.toMatch(/Artificial intelligence/i);
+    expect(parts.join(" ")).not.toMatch(/\bLLM\b/);
+  });
+
+  it("keeps the full spine on underground root cards", () => {
+    const byId = new Map(loadNodes().map((n) => [n.id, n]));
+    const parts = breadcrumbFor("cnn", byId);
+    expect(parts[0]).toBe("Artificial intelligence");
+    expect(parts).toContain("Deep learning");
+    expect(parts.at(-1)).toBe("CNN");
   });
 });

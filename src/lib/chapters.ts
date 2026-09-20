@@ -1,5 +1,5 @@
 import type { ConceptNode } from "@/content/schema";
-import { CHAPTER_ORDER } from "@/lib/graph";
+import { CANOPY_TRUNK_ID, CHAPTER_ORDER } from "@/lib/graph";
 
 /**
  * Canopy limb colors — one hue per chapter so the six branches read apart
@@ -13,23 +13,33 @@ export const CHAPTER_COLORS: Record<string, string> = {
   "giving-models-knowledge": "#6aa8e0", // clear sky — lookup / facts
   "building-with-models": "#d4926a", // clay copper — making
   "trust-and-quality": "#c97b8a", // dusty rose — caution / care
-  "generative-ai": "#c4a574", // bark — trunk
+  [CANOPY_TRUNK_ID]: "#c4a574", // bark — canopy trunk
+  // Deep roots under the canopy
+  "artificial-intelligence": "#8f7350",
+  "machine-learning": "#9a8060",
+  "deep-learning": "#a48c68",
+  "neural-network": "#ae9870",
+  transformer: "#6aa8e0",
+  llm: "#4db8c9",
 };
 
 export function resolveChapterId(
   node: ConceptNode,
   byId: Map<string, ConceptNode>,
 ): string {
-  if (node.id === "generative-ai") return "generative-ai";
+  if (CHAPTER_COLORS[node.id]) return node.id;
   if ((CHAPTER_ORDER as readonly string[]).includes(node.id)) return node.id;
   let current: ConceptNode | undefined = node;
   while (current?.parentId) {
-    if ((CHAPTER_ORDER as readonly string[]).includes(current.parentId)) {
+    if (
+      (CHAPTER_ORDER as readonly string[]).includes(current.parentId) ||
+      CHAPTER_COLORS[current.parentId]
+    ) {
       return current.parentId;
     }
     current = byId.get(current.parentId);
   }
-  return "generative-ai";
+  return CANOPY_TRUNK_ID;
 }
 
 export function chapterColor(chapterId: string): string {

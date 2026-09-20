@@ -15,8 +15,9 @@ type Props = {
 
 const FIELD_KEYS = [
   { label: "drag node" },
-  { label: "pan space" },
+  { label: "pan · drag" },
   { label: "scroll zoom" },
+  { label: "field · scroll roots" },
   { label: "click open" },
 ] as const;
 
@@ -51,7 +52,7 @@ export function MapChrome({
               ]
                 .filter(Boolean)
                 .join(" ")}
-              aria-label="Map controls: drag a node to move it, drag empty space to pan, scroll to zoom, click a node to open its card"
+                aria-label="Map controls: drag a node to move it, drag empty space to pan, scroll to zoom the canopy, hover the field and scroll to enter roots, click a node to open its card"
             >
               {FIELD_KEYS.map((item, index) => (
                 <span key={item.label} className="field-key-item">

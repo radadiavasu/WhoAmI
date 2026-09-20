@@ -57,10 +57,22 @@ Skip anything that needs a new root (classic ML, diffusion-as-domain, speech-as-
 
 ## Explicitly not now
 
-- Classical ML / DL roots, CNNs, diffusion-as-whole-branch, speech-as-whole-branch  
+- Diffusion-as-whole-branch, speech-as-whole-branch
 - Framework brands as first-class nodes (LangChain, LlamaIndex) — optional aliases later  
 - Company/model brand nodes (GPT-5, Claude, Gemini) — too ephemeral for the spine  
 - Accounts, courses, quizzes
+
+## Side roots (shipped for underground sketch)
+
+Thin orientation forks off the AI spine — not new GenAI canopy chapters:
+
+| id | Name | Parent |
+|---|---|---|
+| `cnn` | CNN | deep-learning |
+| `rnn` | RNN | neural-network |
+| `reinforcement-learning` | Reinforcement learning | machine-learning |
+
+Do not densify these into full domains yet.
 
 ## Pause rule
 

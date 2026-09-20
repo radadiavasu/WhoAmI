@@ -43,6 +43,7 @@ function ConceptNodeComponent({ data, id }: NodeProps) {
         dimmed ? "is-dimmed" : "",
         invite ? "is-invite" : "",
         role === "leaf" ? "is-leaf" : "",
+        role === "root" ? "is-root" : "",
       ].join(" ")}
       style={
         {
@@ -54,13 +55,57 @@ function ConceptNodeComponent({ data, id }: NodeProps) {
       <Handle type="target" position={Position.Bottom} className="!opacity-0" />
 
       {role === "trunk" ? (
-        <div className="trunk-node px-7 py-5 text-center">
-          <div className="font-display text-[1.45rem] leading-none tracking-tight text-[var(--ink)]">
+        <div className="trunk-mound">
+          <svg className="trunk-mound-svg" viewBox="0 0 280 130" aria-hidden>
+            <defs>
+              <linearGradient id={`mound-${id}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#5a4030" />
+                <stop offset="45%" stopColor="#3a281c" />
+                <stop offset="100%" stopColor="#1a100a" />
+              </linearGradient>
+            </defs>
+            <ellipse
+              cx="140"
+              cy="108"
+              rx="128"
+              ry="18"
+              fill="color-mix(in oklab, #1a2a18 70%, black)"
+              opacity="0.55"
+            />
+            <path
+              d="M28,108 C40,48 90,18 140,16 C190,18 240,48 252,108 Z"
+              fill={`url(#mound-${id})`}
+              stroke="#c4a574"
+              strokeWidth="2.2"
+            />
+            <path
+              d="M70,100 C90,58 120,40 140,38 C160,40 190,58 210,100"
+              fill="none"
+              stroke="#d4b896"
+              strokeWidth="1.4"
+              opacity="0.35"
+            />
+          </svg>
+          <div className="trunk-mound-label px-5 text-center">
+            <div className="font-display text-[1.4rem] leading-none tracking-tight text-[#f5ecd8]">
+              {node.name}
+            </div>
+            <div className="mt-1 text-[11px] tracking-wide text-[#d4b896]/opacity-90">
+              start here
+            </div>
+          </div>
+        </div>
+      ) : role === "root" ? (
+        <div className="root-node px-6 py-4 text-center">
+          <div className="root-node-grain" aria-hidden />
+          <div className="root-node-label font-display text-[1.35rem] leading-tight text-[#f5ecd8]">
             {node.name}
           </div>
-          <div className="mt-1.5 text-[11px] tracking-wide text-[var(--ink-soft)]">
-            start here
-          </div>
+          {node.parentId === null ? (
+            <div className="mt-1.5 text-[11px] tracking-wide text-[#d4b896]/opacity-90">
+              deepest root
+            </div>
+          ) : null}
         </div>
       ) : role === "branch" ? (
         <div
