@@ -13,12 +13,19 @@ type Props = {
   onSelect: (id: string) => void;
 };
 
-const FIELD_KEYS = [
+const FIELD_KEYS_DESKTOP = [
   { label: "drag node" },
   { label: "pan · drag" },
   { label: "scroll zoom" },
   { label: "field · scroll roots" },
-  { label: "click open" },
+  { label: "tap open" },
+] as const;
+
+const FIELD_KEYS_TOUCH = [
+  { label: "drag to pan" },
+  { label: "pinch zoom" },
+  { label: "Enter roots" },
+  { label: "tap open" },
 ] as const;
 
 export function MapChrome({
@@ -28,6 +35,7 @@ export function MapChrome({
   onSelect,
 }: Props) {
   const [quietHints, setQuietHints] = useState(false);
+  const [touchHints, setTouchHints] = useState(false);
 
   useEffect(() => {
     const hush = () => setQuietHints(true);
@@ -38,6 +46,16 @@ export function MapChrome({
       window.removeEventListener("wheel", hush);
     };
   }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px), (pointer: coarse)");
+    const sync = () => setTouchHints(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  const fieldKeys = touchHints ? FIELD_KEYS_TOUCH : FIELD_KEYS_DESKTOP;
 
   return (
     <header className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 md:p-8">
@@ -52,9 +70,13 @@ export function MapChrome({
               ]
                 .filter(Boolean)
                 .join(" ")}
-                aria-label="Map controls: drag a node to move it, drag empty space to pan, scroll to zoom the canopy, hover the field and scroll to enter roots, click a node to open its card"
+              aria-label={
+                touchHints
+                  ? "Map controls: drag to pan, pinch to zoom, use Enter roots to go underground, tap a node to open its card"
+                  : "Map controls: drag a node to move it, drag empty space to pan, scroll to zoom the canopy, hover the field and scroll to enter roots, click a node to open its card"
+              }
             >
-              {FIELD_KEYS.map((item, index) => (
+              {fieldKeys.map((item, index) => (
                 <span key={item.label} className="field-key-item">
                   {index > 0 ? (
                     <span className="field-key-dot" aria-hidden>

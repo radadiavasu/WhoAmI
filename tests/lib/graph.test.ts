@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   buildFlowGraph,
+  canopyMobileOverviewIds,
   canopyOverviewIds,
   CANOPY_FIT_PADDING,
   CHAPTER_ORDER,
@@ -143,6 +144,22 @@ describe("buildFlowGraph", () => {
     expect(ids.has("artificial-intelligence")).toBe(false);
     expect(ids.has("machine-learning")).toBe(false);
     expect(ids.has("llm")).toBe(false);
+  });
+
+  it("frames a compact mobile canopy — trunk + chapters only", () => {
+    const nodes = loadNodes();
+    const ids = canopyMobileOverviewIds(nodes);
+    expect(ids).toEqual([
+      "generative-ai",
+      "foundations",
+      "models",
+      "talking-to-models",
+      "giving-models-knowledge",
+      "building-with-models",
+      "trust-and-quality",
+    ]);
+    expect(ids).not.toContain("prompt");
+    expect(ids).not.toContain("llm");
   });
 
   it("places the meadow band under the mound for canopy framing", () => {

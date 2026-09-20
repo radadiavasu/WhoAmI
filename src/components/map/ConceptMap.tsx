@@ -6,6 +6,7 @@ import {
   useRef,
   useSyncExternalStore,
   type MutableRefObject,
+  type PointerEvent as ReactPointerEvent,
 } from "react";
 import {
   Controls,
@@ -22,11 +23,14 @@ import {
 import type { ConceptNode } from "@/content/schema";
 import {
   buildFlowGraph,
+  canopyMobileOverviewIds,
   canopyOverviewIds,
   CANOPY_FIT_PADDING,
+  CANOPY_FIT_PADDING_MOBILE,
   CANOPY_ORIGIN,
   CANOPY_TRUNK_ID,
   groundFieldY,
+  isCanopyNode,
   rootBedTopY,
   rootOverviewIds,
 } from "@/lib/graph";
@@ -47,19 +51,44 @@ function useIsClient() {
   );
 }
 
+/** Phone-width or coarse pointer — touch-first map behavior. */
+function useTouchMap() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const width = window.matchMedia("(max-width: 767px)");
+      const coarse = window.matchMedia("(pointer: coarse)");
+      width.addEventListener("change", onChange);
+      coarse.addEventListener("change", onChange);
+      return () => {
+        width.removeEventListener("change", onChange);
+        coarse.removeEventListener("change", onChange);
+      };
+    },
+    () =>
+      window.matchMedia("(max-width: 767px)").matches ||
+      window.matchMedia("(pointer: coarse)").matches,
+    () => false,
+  );
+}
+
 /** Frames canopy on first load; frames a focused node when one is open. */
 function FocusCamera({
   focusedId,
   contextIds,
   overviewIds,
+  fitPadding,
+  maxOverviewZoom,
 }: {
   focusedId?: string;
   contextIds: string[];
   overviewIds: string[];
+  fitPadding: typeof CANOPY_FIT_PADDING | typeof CANOPY_FIT_PADDING_MOBILE;
+  maxOverviewZoom: number;
 }) {
   const { fitView } = useReactFlow();
   const didInit = useRef(false);
   const contextKey = contextIds.slice().sort().join("|");
+  const overviewKey = overviewIds.join("|");
 
   useEffect(() => {
     if (focusedId) {
@@ -79,9 +108,9 @@ function FocusCamera({
       const frameCanopy = () => {
         fitView({
           nodes: overviewIds.map((id) => ({ id })),
-          padding: CANOPY_FIT_PADDING,
+          padding: fitPadding,
           duration: 0,
-          maxZoom: 1.05,
+          maxZoom: maxOverviewZoom,
         });
       };
       // Two frames: RF pane size is often 0 on the first paint.
@@ -90,7 +119,16 @@ function FocusCamera({
       });
       window.setTimeout(frameCanopy, 120);
     }
-  }, [focusedId, contextKey, contextIds, overviewIds, fitView]);
+  }, [
+    focusedId,
+    contextKey,
+    contextIds,
+    overviewIds,
+    overviewKey,
+    fitView,
+    fitPadding,
+    maxOverviewZoom,
+  ]);
 
   return null;
 }
@@ -130,28 +168,38 @@ function UndergroundSense({
   return null;
 }
 
+type LayerNav = {
+  goRoots: () => void;
+  goCanopy: () => void;
+};
+
 /**
- * Field is the zoom boundary:
- * - cursor on canopy → normal scroll zoom
- * - cursor on field + scroll down → reveal roots
- * - cursor on field + scroll up → return to canopy
+ * Field is the zoom boundary on desktop (wheel).
+ * On touch maps the gate does not steal pans — RootsToggle owns layer changes.
  */
 function FieldZoomGate({
   fieldFlowY,
   overviewIds,
   rootIds,
+  fitPadding,
+  touchMap,
   onUndergroundChange,
+  navRef,
 }: {
   fieldFlowY: number;
   overviewIds: string[];
   rootIds: string[];
+  fitPadding: typeof CANOPY_FIT_PADDING | typeof CANOPY_FIT_PADDING_MOBILE;
+  touchMap: boolean;
   onUndergroundChange?: (underground: boolean) => void;
+  navRef: MutableRefObject<LayerNav | null>;
 }) {
   const { fitView } = useReactFlow();
   const [, ty, zoom] = useStore((s) => s.transform);
   const fieldTop = fieldFlowY * zoom + ty;
   const fieldHeight = Math.max(200, 380 * zoom);
   const coolDown = useRef(false);
+  const touchStartY = useRef<number | null>(null);
 
   const goRoots = () => {
     if (coolDown.current || rootIds.length === 0) return;
@@ -159,10 +207,10 @@ function FieldZoomGate({
     onUndergroundChange?.(true);
     fitView({
       nodes: rootIds.map((id) => ({ id })),
-      padding: 0.14,
+      padding: touchMap ? 0.18 : 0.14,
       duration: 560,
-      maxZoom: 1.2,
-      minZoom: 0.55,
+      maxZoom: touchMap ? 0.95 : 1.2,
+      minZoom: 0.45,
     });
     window.setTimeout(() => {
       coolDown.current = false;
@@ -175,31 +223,86 @@ function FieldZoomGate({
     onUndergroundChange?.(false);
     fitView({
       nodes: overviewIds.map((id) => ({ id })),
-      padding: CANOPY_FIT_PADDING,
+      padding: fitPadding,
       duration: 560,
-      maxZoom: 1.1,
+      maxZoom: touchMap ? 1.35 : 1.1,
     });
     window.setTimeout(() => {
       coolDown.current = false;
     }, 600);
   };
 
+  useEffect(() => {
+    navRef.current = { goRoots, goCanopy };
+    return () => {
+      navRef.current = null;
+    };
+  });
+
+  const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if (!touchMap || e.pointerType === "mouse") return;
+    touchStartY.current = e.clientY;
+  };
+
+  const onPointerUp = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if (!touchMap || touchStartY.current == null) return;
+    const dy = e.clientY - touchStartY.current;
+    touchStartY.current = null;
+    // Vertical swipe on the field band (doesn't block pan — gate is none on touch)
+    if (dy > 48) goRoots();
+    else if (dy < -48) goCanopy();
+  };
+
   return (
     <div
-      className="field-zoom-gate"
+      className={[
+        "field-zoom-gate",
+        touchMap ? "is-touch-map" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
       style={{
         height: fieldHeight,
         transform: `translate3d(0, ${fieldTop}px, 0)`,
       }}
       onWheel={(e) => {
+        if (touchMap) return;
         e.preventDefault();
         e.stopPropagation();
         if (e.deltaY > 8) goRoots();
         else if (e.deltaY < -8) goCanopy();
       }}
+      onPointerDown={onPointerDown}
+      onPointerUp={onPointerUp}
       role="presentation"
-      title="Scroll here to enter or leave the roots"
+      title={
+        touchMap
+          ? "Use Enter roots / Back to canopy"
+          : "Scroll here to enter or leave the roots"
+      }
     />
+  );
+}
+
+/** Explicit layer control — required on phones (no hover+wheel). */
+function RootsToggle({
+  underground,
+  navRef,
+}: {
+  underground: boolean;
+  navRef: MutableRefObject<LayerNav | null>;
+}) {
+  return (
+    <button
+      type="button"
+      className="roots-toggle"
+      onClick={() => {
+        if (underground) navRef.current?.goCanopy();
+        else navRef.current?.goRoots();
+      }}
+    >
+      {underground ? "Back to canopy" : "Enter roots"}
+    </button>
   );
 }
 
@@ -223,6 +326,8 @@ export function ConceptMap({
   onUndergroundChange,
 }: Props) {
   const mounted = useIsClient();
+  const touchMap = useTouchMap();
+  const layerNav = useRef<LayerNav | null>(null);
 
   const graph = useMemo(() => buildFlowGraph(concepts), [concepts]);
   const byId = useMemo(
@@ -236,14 +341,31 @@ export function ConceptMap({
 
   const contextIds = useMemo(() => {
     if (!focusedId || !focus) return [] as string[];
+    // On phones, framing the full spine+neighbors zooms out too far.
+    if (touchMap) {
+      const node = byId.get(focusedId);
+      if (!node) return [focusedId];
+      const ids = [focusedId];
+      if (node.parentId) ids.push(node.parentId);
+      if (isCanopyNode(focusedId, byId) && byId.has(CANOPY_TRUNK_ID)) {
+        ids.push(CANOPY_TRUNK_ID);
+      }
+      return ids;
+    }
     return [focusedId, ...focus.pathIds, ...focus.neighborIds];
-  }, [focusedId, focus]);
+  }, [focusedId, focus, touchMap, byId]);
 
   const overviewIds = useMemo(
-    () => canopyOverviewIds(concepts),
-    [concepts],
+    () =>
+      touchMap
+        ? canopyMobileOverviewIds(concepts)
+        : canopyOverviewIds(concepts),
+    [concepts, touchMap],
   );
   const rootIds = useMemo(() => rootOverviewIds(concepts), [concepts]);
+  const fitPadding = touchMap
+    ? CANOPY_FIT_PADDING_MOBILE
+    : CANOPY_FIT_PADDING;
 
   const fieldY = groundFieldY(CANOPY_ORIGIN.y);
   const bedTop = rootBedTopY(CANOPY_ORIGIN.y);
@@ -258,7 +380,7 @@ export function ConceptMap({
         id: n.id,
         type: n.type,
         position: n.position,
-        draggable: true,
+        draggable: !touchMap,
         zIndex: n.data.role === "root" ? 4 : 5,
         data: {
           node: n.data.node,
@@ -273,7 +395,7 @@ export function ConceptMap({
           invite: Boolean(inviteId) && inviteId === n.id && !focusedId,
         } satisfies ConceptNodeData,
       })),
-    [graph.nodes, focusedId, focus, byId, visitedIds, inviteId],
+    [graph.nodes, focusedId, focus, byId, visitedIds, inviteId, touchMap],
   );
 
   const layoutEdges: Edge[] = useMemo(() => {
@@ -394,7 +516,7 @@ export function ConceptMap({
   }
 
   return (
-    <div className="h-full w-full">
+    <div className={["h-full w-full", touchMap ? "is-touch-map" : ""].join(" ")}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -408,39 +530,47 @@ export function ConceptMap({
         maxZoom={2.4}
         proOptions={{ hideAttribution: true }}
         onlyRenderVisibleElements
-        nodesDraggable
+        nodesDraggable={!touchMap}
         nodesConnectable={false}
         elementsSelectable={false}
         panOnDrag
         panOnScroll={false}
-        zoomOnScroll
+        zoomOnScroll={!touchMap}
         zoomOnPinch
         zoomOnDoubleClick={false}
         selectionOnDrag={false}
-        nodeDragThreshold={4}
-        defaultViewport={{ x: 0, y: 0, zoom: 0.55 }}
+        nodeDragThreshold={touchMap ? 12 : 4}
+        defaultViewport={{ x: 0, y: 0, zoom: touchMap ? 0.7 : 0.55 }}
       >
         <FocusCamera
           focusedId={focusedId}
           contextIds={contextIds}
           overviewIds={overviewIds}
+          fitPadding={fitPadding}
+          maxOverviewZoom={touchMap ? 1.4 : 1.05}
         />
         <FullBleedTerrain
           fieldFlowY={fieldY}
           bedFlowY={bedTop}
           trunkFlowX={CANOPY_ORIGIN.x}
-          showHint={!underground}
+          showHint={!underground && !touchMap}
         />
         <FieldZoomGate
           fieldFlowY={fieldY}
           overviewIds={overviewIds}
           rootIds={rootIds}
+          fitPadding={fitPadding}
+          touchMap={touchMap}
           onUndergroundChange={onUndergroundChange}
+          navRef={layerNav}
         />
         <UndergroundSense
           fieldFlowY={fieldY}
           onUndergroundChange={onUndergroundChange}
         />
+        {touchMap ? (
+          <RootsToggle underground={underground} navRef={layerNav} />
+        ) : null}
         <Controls showInteractive={false} position="bottom-left" />
       </ReactFlow>
     </div>

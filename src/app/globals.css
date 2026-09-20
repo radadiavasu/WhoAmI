@@ -488,8 +488,38 @@ body {
   background: transparent;
 }
 
+/* Phones: never steal pan/pinch — roots entry is the RootsToggle button */
+.field-zoom-gate.is-touch-map {
+  pointer-events: none;
+  cursor: default;
+}
+
 .field-zoom-gate:hover {
   background: color-mix(in oklab, #6a8f55 10%, transparent);
+}
+
+.field-zoom-gate.is-touch-map:hover {
+  background: transparent;
+}
+
+.roots-toggle {
+  position: absolute;
+  right: 1rem;
+  bottom: 5.5rem;
+  z-index: 6;
+  border: 1px solid color-mix(in oklab, var(--ink) 16%, transparent);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--panel-lift) 88%, transparent);
+  color: var(--ink);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  padding: 0.7rem 1.1rem;
+  box-shadow: 0 12px 32px color-mix(in oklab, black 45%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.roots-toggle:active {
+  transform: scale(0.98);
 }
 
 .soil-bleed {

@@ -31,8 +31,9 @@ export function MapWelcome({ onOrient, onWander, onStarter }: Props) {
           How do you want to enter?
         </h2>
         <p id="map-welcome-desc" className="map-welcome-desc">
-        Start in the Generative AI canopy. Scroll to zoom the tree. Hover the
-        field and scroll down to enter the roots.
+          Start in the Generative AI canopy. On a phone: drag to pan, pinch to
+          zoom, tap Enter roots for the underground. On a computer: scroll to
+          zoom, hover the field and scroll down for roots.
         </p>
         <div className="map-welcome-actions">
           <button

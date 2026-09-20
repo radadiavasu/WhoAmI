@@ -398,10 +398,28 @@ export const CANOPY_FIT_PADDING = {
   bottom: 0.34,
 } as const;
 
+/** Tighter frame for phones — trunk + chapter hubs only (leaves stay reachable by pinch/pan). */
+export const CANOPY_FIT_PADDING_MOBILE = {
+  top: 0.12,
+  left: 0.08,
+  right: 0.08,
+  bottom: 0.28,
+} as const;
+
 /** Ids to frame on first paint — canopy only, roots stay below the fold. */
 export function canopyOverviewIds(nodes: ConceptNode[]): string[] {
   const byId = new Map(nodes.map((n) => [n.id, n]));
   return nodes.filter((n) => isCanopyNode(n.id, byId)).map((n) => n.id);
+}
+
+/**
+ * Mobile overview — GenAI mound + six chapter hubs.
+ * Framing every leaf on a phone zooms out until the tree is unusable.
+ */
+export function canopyMobileOverviewIds(nodes: ConceptNode[]): string[] {
+  const byId = new Map(nodes.map((n) => [n.id, n]));
+  const ids = [CANOPY_TRUNK_ID, ...CHAPTER_ORDER].filter((id) => byId.has(id));
+  return ids;
 }
 
 /** Ids to frame when entering the underground — mound + root crown. */
