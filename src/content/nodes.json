@@ -1545,7 +1545,7 @@
         "relation": "prereq"
       },
       {
-        "id": "agent-harness",
+        "id": "agent-loop",
         "relation": "next"
       },
       {
@@ -1559,14 +1559,65 @@
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "memory",
-      "label": "See remembering across chats"
+      "targetId": "agent-loop",
+      "label": "See the think → act → observe cycle"
     },
     "analogy": "An intern with a checklist and apps.",
     "example": "Research something, then file a ticket.",
     "aliases": [
       "AI agent",
       "autonomous agent"
+    ]
+  },
+  {
+    "id": "agent-loop",
+    "name": "Agent loop",
+    "parentId": "building-with-models",
+    "level": "core",
+    "oneBreath": "The cycle an agent repeats: think, plan, act with tools, observe the result, update context, then go again until the goal is done — or it stops.",
+    "does": [
+      "Turn a goal into repeated small steps",
+      "Feed tool results back into the next decision"
+    ],
+    "doesNot": [
+      "Not a guarantee it finishes cleanly",
+      "Not the same as one-shot chat"
+    ],
+    "neighbors": [
+      {
+        "id": "agent",
+        "relation": "prereq"
+      },
+      {
+        "id": "tool-use",
+        "relation": "prereq"
+      },
+      {
+        "id": "agent-harness",
+        "relation": "next"
+      },
+      {
+        "id": "human-in-the-loop",
+        "relation": "sibling"
+      }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "agent-harness",
+      "label": "See the safety cage around the loop"
+    },
+    "analogy": "A cook tasting and adjusting after each stir.",
+    "example": "Think → Plan → Act → Observe → Update context → Repeat.",
+    "aliases": [
+      "agent cycle",
+      "ReAct loop",
+      "think-act-observe",
+      "tool-calling loop"
+    ],
+    "relatedTechniques": [
+      "tool-use",
+      "agent",
+      "agent-harness"
     ]
   },
   {
@@ -1757,15 +1808,15 @@
         "relation": "prereq"
       },
       {
+        "id": "agent-loop",
+        "relation": "prereq"
+      },
+      {
         "id": "orchestration",
         "relation": "sibling"
       },
       {
         "id": "tool-use",
-        "relation": "usedIn"
-      },
-      {
-        "id": "evaluation",
         "relation": "usedIn"
       }
     ],
@@ -1777,8 +1828,7 @@
     "analogy": "A workshop bench with tools bolted down and a kill switch.",
     "example": "A coding agent stuck to one folder that logs every tool call.",
     "aliases": [
-      "agent runtime",
-      "agent loop"
+      "agent runtime"
     ],
     "relatedTechniques": [
       "tool-use",
@@ -1863,8 +1913,8 @@
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "agent-harness",
-      "label": "See the safety cage around agents"
+      "targetId": "memory",
+      "label": "See remembering across chats"
     },
     "analogy": "USB for AI tools — one plug shape, many devices.",
     "example": "An editor agent connecting to GitHub and docs the same way.",

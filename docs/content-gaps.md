@@ -1,6 +1,6 @@
 # GenAI slice — content gap list
 
-Current tree: **63 nodes** (1 root + 6 chapters + 56 concepts). Priority A filled; **two Priority B** leaves authored (`base-vs-instruct`, `bias`).
+Current tree: **64 nodes** (1 root + 6 chapters + 57 concepts). Priority A filled; **two Priority B** leaves authored (`base-vs-instruct`, `bias`).
 
 Target band for Phase 1: **~60–70 nodes** — we are inside it. Prefer quality + neighbor wiring over more leaves.
 
@@ -42,6 +42,12 @@ Skip anything that needs a new root (classic ML, diffusion-as-domain, speech-as-
 | `base-vs-instruct` | Base vs instruct model | models |
 | `bias` | Bias | trust-and-quality |
 
+## Also shipped
+
+| id | Name | Chapter |
+|---|---|---|
+| `agent-loop` | Agent loop | building-with-models |
+
 ## Priority B — still optional
 
 | Proposed id | Name | Chapter | Notes |
@@ -50,7 +56,7 @@ Skip anything that needs a new root (classic ML, diffusion-as-domain, speech-as-
 | `distillation` | Distillation | models | Small model from big model |
 | `graph-rag` | GraphRAG | giving-models-knowledge | Frontier; only if RAG neighbors stay clear |
 | `eval-harness` | Eval harness | trust-and-quality | Links evaluation ↔ observability |
-| `tool-calling-loop` | Tool-calling loop | building-with-models | Deepens tool-use without new chapter |
+| `tool-calling-loop` | Tool-calling loop | building-with-models | Covered by `agent-loop` |
 | `context-stuffing` | Context stuffing | giving-models-knowledge | Anti-pattern vs RAG / long context |
 | `prompt-template` | Prompt template | talking-to-models | Product/builder term |
 | `rate-limits` | Rate limits | trust-and-quality | Sibling of latency & cost |
