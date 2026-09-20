@@ -182,7 +182,7 @@ function FieldZoomGate({
   );
   const fieldTop = fieldFlowY * zoom + ty;
   const fieldHeight = touchMap
-    ? Math.max(72, 110 * zoom)
+    ? Math.max(96, 140 * zoom)
     : Math.max(200, 380 * zoom);
   const coolDown = useRef(false);
   const pointerOrigin = useRef<{ x: number; y: number } | null>(null);
@@ -260,10 +260,14 @@ function FieldZoomGate({
 
   const lastFieldY = useRef<number | null>(null);
   const panArmed = useRef(false);
+  const sawFieldLow = useRef(false);
+  const upwardTravel = useRef(0);
   useEffect(() => {
     const t = window.setTimeout(() => {
       panArmed.current = true;
       lastFieldY.current = null;
+      sawFieldLow.current = false;
+      upwardTravel.current = 0;
     }, 900);
     return () => window.clearTimeout(t);
   }, []);
@@ -276,27 +280,70 @@ function FieldZoomGate({
     lastFieldY.current = fieldScreenY;
     if (prev == null) return;
 
-    if (!underground && prev > h * 0.5 && fieldScreenY < h * 0.38) {
-      goRoots();
-      return;
-    }
-    if (underground && prev < h * 0.4 && fieldScreenY > h * 0.58) {
-      goCanopy();
+    // Gradual finger pans never jump 50%→38% in one frame — track travel + hysteresis.
+    if (!underground) {
+      if (fieldScreenY > h * 0.52) sawFieldLow.current = true;
+      if (fieldScreenY < prev) upwardTravel.current += prev - fieldScreenY;
+      else upwardTravel.current = Math.max(0, upwardTravel.current - (fieldScreenY - prev) * 0.5);
+
+      if (
+        (sawFieldLow.current && fieldScreenY < h * 0.42) ||
+        (upwardTravel.current > 90 && fieldScreenY < h * 0.5)
+      ) {
+        sawFieldLow.current = false;
+        upwardTravel.current = 0;
+        goRoots();
+        return;
+      }
+    } else {
+      if (fieldScreenY < h * 0.35) sawFieldLow.current = false;
+      if (prev < h * 0.4 && fieldScreenY > h * 0.55) {
+        upwardTravel.current = 0;
+        goCanopy();
+      }
     }
   }, [ty, zoom, fieldFlowY, touchMap, underground]);
 
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     if (!touchMap) return;
+    // Keep the gesture even after the finger leaves the thin grass strip.
+    e.currentTarget.setPointerCapture(e.pointerId);
+    e.stopPropagation();
     pointerOrigin.current = { x: e.clientX, y: e.clientY };
   };
 
-  const onPointerUp = (e: ReactPointerEvent<HTMLDivElement>) => {
+  const finishSwipe = (e: ReactPointerEvent<HTMLDivElement>) => {
     if (!touchMap || !pointerOrigin.current) return;
     const dx = e.clientX - pointerOrigin.current.x;
     const dy = e.clientY - pointerOrigin.current.y;
     pointerOrigin.current = null;
-    if (dy > 40 && Math.abs(dy) > Math.abs(dx) * 1.1) goRoots();
-    else if (dy < -40 && Math.abs(dy) > Math.abs(dx) * 1.1) goCanopy();
+    if (dy > 36 && Math.abs(dy) > Math.abs(dx) * 1.05) goRoots();
+    else if (dy < -36 && Math.abs(dy) > Math.abs(dx) * 1.05) goCanopy();
+  };
+
+  const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if (!touchMap || !pointerOrigin.current) return;
+    e.stopPropagation();
+    const dx = e.clientX - pointerOrigin.current.x;
+    const dy = e.clientY - pointerOrigin.current.y;
+    // Fire mid-swipe so RF pan never has to "complete" first.
+    if (dy > 48 && Math.abs(dy) > Math.abs(dx) * 1.05) {
+      pointerOrigin.current = null;
+      try {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      } catch {
+        // already released
+      }
+      goRoots();
+    } else if (dy < -48 && Math.abs(dy) > Math.abs(dx) * 1.05) {
+      pointerOrigin.current = null;
+      try {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      } catch {
+        // already released
+      }
+      goCanopy();
+    }
   };
 
   return (
@@ -318,7 +365,9 @@ function FieldZoomGate({
         else if (e.deltaY < -8) goCanopy();
       }}
       onPointerDown={onPointerDown}
-      onPointerUp={onPointerUp}
+      onPointerMove={onPointerMove}
+      onPointerUp={finishSwipe}
+      onPointerCancel={finishSwipe}
       role="presentation"
       title={
         touchMap

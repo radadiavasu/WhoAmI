@@ -492,12 +492,12 @@ body {
   background: color-mix(in oklab, #6a8f55 10%, transparent);
 }
 
-/* Touch: thin grass crest stays interactive for vertical swipe; does not cover the whole map */
+/* Touch: grass crest stays interactive for vertical swipe; taller hit target */
 .field-zoom-gate.is-touch-map {
   pointer-events: auto;
   cursor: ns-resize;
   touch-action: none;
-  background: color-mix(in oklab, #6a8f55 8%, transparent);
+  background: color-mix(in oklab, #6a8f55 10%, transparent);
 }
 
 .field-zoom-gate.is-touch-map:hover {
