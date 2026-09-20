@@ -174,8 +174,9 @@ type LayerNav = {
 };
 
 /**
- * Field is the zoom boundary on desktop (wheel).
- * On touch maps the gate does not steal pans — RootsToggle owns layer changes.
+ * Field is the zoom boundary:
+ * - desktop: wheel on the field band
+ * - touch: swipe vertically on a thin grass strip, or pan past the field
  */
 function FieldZoomGate({
   fieldFlowY,
@@ -183,6 +184,7 @@ function FieldZoomGate({
   rootIds,
   fitPadding,
   touchMap,
+  underground,
   onUndergroundChange,
   navRef,
 }: {
@@ -191,15 +193,19 @@ function FieldZoomGate({
   rootIds: string[];
   fitPadding: typeof CANOPY_FIT_PADDING | typeof CANOPY_FIT_PADDING_MOBILE;
   touchMap: boolean;
+  underground: boolean;
   onUndergroundChange?: (underground: boolean) => void;
   navRef: MutableRefObject<LayerNav | null>;
 }) {
   const { fitView } = useReactFlow();
   const [, ty, zoom] = useStore((s) => s.transform);
   const fieldTop = fieldFlowY * zoom + ty;
-  const fieldHeight = Math.max(200, 380 * zoom);
+  // Desktop: tall hover band. Touch: thin grass crest so the rest of the map still pans.
+  const fieldHeight = touchMap
+    ? Math.max(72, 110 * zoom)
+    : Math.max(200, 380 * zoom);
   const coolDown = useRef(false);
-  const touchStartY = useRef<number | null>(null);
+  const pointerOrigin = useRef<{ x: number; y: number } | null>(null);
 
   const goRoots = () => {
     if (coolDown.current || rootIds.length === 0) return;
@@ -214,7 +220,7 @@ function FieldZoomGate({
     });
     window.setTimeout(() => {
       coolDown.current = false;
-    }, 600);
+    }, 650);
   };
 
   const goCanopy = () => {
@@ -229,7 +235,7 @@ function FieldZoomGate({
     });
     window.setTimeout(() => {
       coolDown.current = false;
-    }, 600);
+    }, 650);
   };
 
   useEffect(() => {
@@ -239,18 +245,49 @@ function FieldZoomGate({
     };
   });
 
+  // Mobile pan-past-field = PC wheel-on-field (scroll into / out of roots).
+  const lastFieldY = useRef<number | null>(null);
+  const panArmed = useRef(false);
+  useEffect(() => {
+    const t = window.setTimeout(() => {
+      panArmed.current = true;
+    }, 750);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (!touchMap || !panArmed.current || coolDown.current) return;
+    const fieldScreenY = fieldFlowY * zoom + ty;
+    const h = window.innerHeight;
+    const prev = lastFieldY.current;
+    lastFieldY.current = fieldScreenY;
+    if (prev == null) return;
+
+    // Drag the world down → field rises on screen → enter roots
+    if (!underground && prev > h * 0.48 && fieldScreenY < h * 0.34) {
+      goRoots();
+      return;
+    }
+    // Drag the world up → field drops → return to canopy
+    if (underground && prev < h * 0.42 && fieldScreenY > h * 0.58) {
+      goCanopy();
+    }
+  }, [ty, zoom, fieldFlowY, touchMap, underground]);
+
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (!touchMap || e.pointerType === "mouse") return;
-    touchStartY.current = e.clientY;
+    if (e.pointerType === "mouse" && !touchMap) return;
+    if (!touchMap) return;
+    pointerOrigin.current = { x: e.clientX, y: e.clientY };
   };
 
   const onPointerUp = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (!touchMap || touchStartY.current == null) return;
-    const dy = e.clientY - touchStartY.current;
-    touchStartY.current = null;
-    // Vertical swipe on the field band (doesn't block pan — gate is none on touch)
-    if (dy > 48) goRoots();
-    else if (dy < -48) goCanopy();
+    if (!touchMap || !pointerOrigin.current) return;
+    const dx = e.clientX - pointerOrigin.current.x;
+    const dy = e.clientY - pointerOrigin.current.y;
+    pointerOrigin.current = null;
+    // Finger moves down on the strip → roots (same direction as wheel down)
+    if (dy > 40 && Math.abs(dy) > Math.abs(dx) * 1.1) goRoots();
+    else if (dy < -40 && Math.abs(dy) > Math.abs(dx) * 1.1) goCanopy();
   };
 
   return (
@@ -266,7 +303,6 @@ function FieldZoomGate({
         transform: `translate3d(0, ${fieldTop}px, 0)`,
       }}
       onWheel={(e) => {
-        if (touchMap) return;
         e.preventDefault();
         e.stopPropagation();
         if (e.deltaY > 8) goRoots();
@@ -277,7 +313,7 @@ function FieldZoomGate({
       role="presentation"
       title={
         touchMap
-          ? "Use Enter roots / Back to canopy"
+          ? "Swipe the field down for roots, up for canopy — or drag past the ground"
           : "Scroll here to enter or leave the roots"
       }
     />
@@ -553,7 +589,7 @@ export function ConceptMap({
           fieldFlowY={fieldY}
           bedFlowY={bedTop}
           trunkFlowX={CANOPY_ORIGIN.x}
-          showHint={!underground && !touchMap}
+          showHint={!underground}
         />
         <FieldZoomGate
           fieldFlowY={fieldY}
@@ -561,6 +597,7 @@ export function ConceptMap({
           rootIds={rootIds}
           fitPadding={fitPadding}
           touchMap={touchMap}
+          underground={underground}
           onUndergroundChange={onUndergroundChange}
           navRef={layerNav}
         />

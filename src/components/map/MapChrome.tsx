@@ -24,7 +24,7 @@ const FIELD_KEYS_DESKTOP = [
 const FIELD_KEYS_TOUCH = [
   { label: "drag to pan" },
   { label: "pinch zoom" },
-  { label: "Enter roots" },
+  { label: "swipe field · roots" },
   { label: "tap open" },
 ] as const;
 
@@ -72,7 +72,7 @@ export function MapChrome({
                 .join(" ")}
               aria-label={
                 touchHints
-                  ? "Map controls: drag to pan, pinch to zoom, use Enter roots to go underground, tap a node to open its card"
+                  ? "Map controls: drag to pan, pinch to zoom, swipe the field or drag past the ground for roots, tap a node to open its card"
                   : "Map controls: drag a node to move it, drag empty space to pan, scroll to zoom the canopy, hover the field and scroll to enter roots, click a node to open its card"
               }
             >

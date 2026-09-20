@@ -488,18 +488,20 @@ body {
   background: transparent;
 }
 
-/* Phones: never steal pan/pinch — roots entry is the RootsToggle button */
-.field-zoom-gate.is-touch-map {
-  pointer-events: none;
-  cursor: default;
-}
-
 .field-zoom-gate:hover {
   background: color-mix(in oklab, #6a8f55 10%, transparent);
 }
 
+/* Touch: thin grass crest stays interactive for vertical swipe; does not cover the whole map */
+.field-zoom-gate.is-touch-map {
+  pointer-events: auto;
+  cursor: ns-resize;
+  touch-action: none;
+  background: color-mix(in oklab, #6a8f55 8%, transparent);
+}
+
 .field-zoom-gate.is-touch-map:hover {
-  background: transparent;
+  background: color-mix(in oklab, #6a8f55 14%, transparent);
 }
 
 .roots-toggle {
@@ -584,6 +586,19 @@ body {
   white-space: nowrap;
   animation: hint-breathe 2.8s ease-in-out infinite;
   text-shadow: 0 2px 14px color-mix(in oklab, black 75%, transparent);
+}
+
+.ground-field-hint .hint-touch {
+  display: none;
+}
+
+@media (max-width: 767px), (pointer: coarse) {
+  .ground-field-hint .hint-desktop {
+    display: none;
+  }
+  .ground-field-hint .hint-touch {
+    display: inline;
+  }
 }
 
 .ground-tufts path {

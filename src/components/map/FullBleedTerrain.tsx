@@ -372,7 +372,12 @@ export function FullBleedTerrain({
         />
         {showHint ? (
           <p className="ground-field-hint">
-            hover the field · scroll down for roots
+            <span className="hint-desktop">
+              hover the field · scroll down for roots
+            </span>
+            <span className="hint-touch">
+              swipe the field down · or drag past the ground
+            </span>
           </p>
         ) : null}
       </div>
