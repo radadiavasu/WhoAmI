@@ -87,6 +87,7 @@ function FocusCamera({
 }) {
   const { fitView } = useReactFlow();
   const didInit = useRef(false);
+  const framedKey = useRef<string>("");
   const contextKey = contextIds.slice().sort().join("|");
   const overviewKey = overviewIds.join("|");
 
@@ -103,22 +104,27 @@ function FocusCamera({
       return;
     }
 
-    if (!didInit.current && overviewIds.length > 0) {
-      didInit.current = true;
-      const frameCanopy = () => {
-        fitView({
-          nodes: overviewIds.map((id) => ({ id })),
-          padding: fitPadding,
-          duration: 0,
-          maxZoom: maxOverviewZoom,
-        });
-      };
-      // Two frames: RF pane size is often 0 on the first paint.
-      requestAnimationFrame(() => {
-        requestAnimationFrame(frameCanopy);
+    if (overviewIds.length === 0) return;
+
+    // Re-frame if mobile overview arrives after a wrong first desktop frame.
+    const already = didInit.current && framedKey.current === overviewKey;
+    if (already) return;
+
+    didInit.current = true;
+    framedKey.current = overviewKey;
+    const frameCanopy = () => {
+      fitView({
+        nodes: overviewIds.map((id) => ({ id })),
+        padding: fitPadding,
+        duration: 0,
+        maxZoom: maxOverviewZoom,
       });
-      window.setTimeout(frameCanopy, 120);
-    }
+    };
+    requestAnimationFrame(() => {
+      requestAnimationFrame(frameCanopy);
+    });
+    window.setTimeout(frameCanopy, 80);
+    window.setTimeout(frameCanopy, 280);
   }, [
     focusedId,
     contextKey,
@@ -134,14 +140,16 @@ function FocusCamera({
 }
 
 /**
- * Keep atmosphere/hint in sync when the user pans (not only field-scroll).
- * Does not move the camera.
+ * Desktop only: soft atmosphere flip while panning.
+ * Touch maps set underground only when goRoots/goCanopy run — avoids brown flash before the camera snap.
  */
 function UndergroundSense({
   fieldFlowY,
+  touchMap,
   onUndergroundChange,
 }: {
   fieldFlowY: number;
+  touchMap: boolean;
   onUndergroundChange?: (underground: boolean) => void;
 }) {
   const transform = useStore((s) => s.transform);
@@ -149,21 +157,22 @@ function UndergroundSense({
   const armed = useRef(false);
 
   useEffect(() => {
+    if (touchMap) return;
     const t = window.setTimeout(() => {
       armed.current = true;
     }, 700);
     return () => window.clearTimeout(t);
-  }, []);
+  }, [touchMap]);
 
   useEffect(() => {
-    if (!onUndergroundChange || !armed.current) return;
+    if (touchMap || !onUndergroundChange || !armed.current) return;
     const [, ty, zoom] = transform;
     const fieldScreenY = fieldFlowY * zoom + ty;
     const underground = fieldScreenY < window.innerHeight * 0.35;
     if (last.current === underground) return;
     last.current = underground;
     onUndergroundChange(underground);
-  }, [transform, fieldFlowY, onUndergroundChange]);
+  }, [transform, fieldFlowY, onUndergroundChange, touchMap]);
 
   return null;
 }
@@ -213,14 +222,14 @@ function FieldZoomGate({
     onUndergroundChange?.(true);
     fitView({
       nodes: rootIds.map((id) => ({ id })),
-      padding: touchMap ? 0.18 : 0.14,
-      duration: 560,
+      padding: touchMap ? 0.16 : 0.14,
+      duration: touchMap ? 320 : 560,
       maxZoom: touchMap ? 0.95 : 1.2,
       minZoom: 0.45,
     });
     window.setTimeout(() => {
       coolDown.current = false;
-    }, 650);
+    }, touchMap ? 380 : 650);
   };
 
   const goCanopy = () => {
@@ -230,12 +239,12 @@ function FieldZoomGate({
     fitView({
       nodes: overviewIds.map((id) => ({ id })),
       padding: fitPadding,
-      duration: 560,
+      duration: touchMap ? 320 : 560,
       maxZoom: touchMap ? 1.35 : 1.1,
     });
     window.setTimeout(() => {
       coolDown.current = false;
-    }, 650);
+    }, touchMap ? 380 : 650);
   };
 
   useEffect(() => {
@@ -251,7 +260,8 @@ function FieldZoomGate({
   useEffect(() => {
     const t = window.setTimeout(() => {
       panArmed.current = true;
-    }, 750);
+      lastFieldY.current = null;
+    }, 900);
     return () => window.clearTimeout(t);
   }, []);
 
@@ -263,13 +273,12 @@ function FieldZoomGate({
     lastFieldY.current = fieldScreenY;
     if (prev == null) return;
 
-    // Drag the world down → field rises on screen → enter roots
-    if (!underground && prev > h * 0.48 && fieldScreenY < h * 0.34) {
+    // Drag the world down → field rises on screen → enter roots (immediate snap)
+    if (!underground && prev > h * 0.5 && fieldScreenY < h * 0.38) {
       goRoots();
       return;
     }
-    // Drag the world up → field drops → return to canopy
-    if (underground && prev < h * 0.42 && fieldScreenY > h * 0.58) {
+    if (underground && prev < h * 0.4 && fieldScreenY > h * 0.58) {
       goCanopy();
     }
   }, [ty, zoom, fieldFlowY, touchMap, underground]);
@@ -412,31 +421,46 @@ export function ConceptMap({
 
   const layoutNodes: Node[] = useMemo(
     () =>
-      graph.nodes.map((n) => ({
-        id: n.id,
-        type: n.type,
-        position: n.position,
-        draggable: !touchMap,
-        zIndex: n.data.role === "root" ? 4 : 5,
-        data: {
-          node: n.data.node,
-          role: n.data.role,
-          angle: n.data.angle,
-          limbColor: chapterColor(resolveChapterId(n.data.node, byId)),
-          focused: focusedId === n.id,
-          neighbor: focus?.neighborIds.has(n.id) ?? false,
-          path: focus?.pathIds.has(n.id) ?? false,
-          visited: visitedIds.has(n.id),
-          dimmed: focus?.dimmedIds.has(n.id) ?? false,
-          invite: Boolean(inviteId) && inviteId === n.id && !focusedId,
-        } satisfies ConceptNodeData,
-      })),
-    [graph.nodes, focusedId, focus, byId, visitedIds, inviteId, touchMap],
+      graph.nodes.map((n) => {
+        const isRoot = n.data.role === "root";
+        return {
+          id: n.id,
+          type: n.type,
+          position: n.position,
+          draggable: !touchMap,
+          // Canopy-first: roots stay hidden until the user enters underground
+          hidden: isRoot && !underground,
+          zIndex: isRoot ? 4 : 5,
+          data: {
+            node: n.data.node,
+            role: n.data.role,
+            angle: n.data.angle,
+            limbColor: chapterColor(resolveChapterId(n.data.node, byId)),
+            focused: focusedId === n.id,
+            neighbor: focus?.neighborIds.has(n.id) ?? false,
+            path: focus?.pathIds.has(n.id) ?? false,
+            visited: visitedIds.has(n.id),
+            dimmed: focus?.dimmedIds.has(n.id) ?? false,
+            invite: Boolean(inviteId) && inviteId === n.id && !focusedId,
+          } satisfies ConceptNodeData,
+        };
+      }),
+    [
+      graph.nodes,
+      focusedId,
+      focus,
+      byId,
+      visitedIds,
+      inviteId,
+      touchMap,
+      underground,
+    ],
   );
 
   const layoutEdges: Edge[] = useMemo(() => {
     return graph.edges
       .filter((e) => {
+        if (e.data?.kind === "root" && !underground) return false;
         if (e.data?.kind === "neighbor") {
           if (!focusedId) return false;
           return (
@@ -509,7 +533,7 @@ export function ConceptMap({
           },
         };
       });
-  }, [graph.edges, focusedId, focus, byId]);
+  }, [graph.edges, focusedId, focus, byId, underground]);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutEdges);
@@ -576,7 +600,7 @@ export function ConceptMap({
         zoomOnDoubleClick={false}
         selectionOnDrag={false}
         nodeDragThreshold={touchMap ? 12 : 4}
-        defaultViewport={{ x: 0, y: 0, zoom: touchMap ? 0.7 : 0.55 }}
+        defaultViewport={{ x: -900, y: -600, zoom: touchMap ? 0.85 : 0.55 }}
       >
         <FocusCamera
           focusedId={focusedId}
@@ -603,6 +627,7 @@ export function ConceptMap({
         />
         <UndergroundSense
           fieldFlowY={fieldY}
+          touchMap={touchMap}
           onUndergroundChange={onUndergroundChange}
         />
         {touchMap ? (

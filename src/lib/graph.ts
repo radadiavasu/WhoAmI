@@ -400,10 +400,10 @@ export const CANOPY_FIT_PADDING = {
 
 /** Tighter frame for phones — trunk + chapter hubs only (leaves stay reachable by pinch/pan). */
 export const CANOPY_FIT_PADDING_MOBILE = {
-  top: 0.12,
-  left: 0.08,
-  right: 0.08,
-  bottom: 0.28,
+  top: 0.14,
+  left: 0.06,
+  right: 0.06,
+  bottom: 0.16,
 } as const;
 
 /** Ids to frame on first paint — canopy only, roots stay below the fold. */
