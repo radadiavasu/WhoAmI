@@ -261,16 +261,29 @@ function FieldZoomGate({
   const lastFieldY = useRef<number | null>(null);
   const panArmed = useRef(false);
   const sawFieldLow = useRef(false);
+  const sawFieldHigh = useRef(false);
   const upwardTravel = useRef(0);
+  const downwardTravel = useRef(0);
   useEffect(() => {
     const t = window.setTimeout(() => {
       panArmed.current = true;
       lastFieldY.current = null;
       sawFieldLow.current = false;
+      sawFieldHigh.current = false;
       upwardTravel.current = 0;
+      downwardTravel.current = 0;
     }, 900);
     return () => window.clearTimeout(t);
   }, []);
+
+  // Reset travel markers when the layer flips (fitView animates the field).
+  useEffect(() => {
+    lastFieldY.current = null;
+    sawFieldLow.current = false;
+    sawFieldHigh.current = false;
+    upwardTravel.current = 0;
+    downwardTravel.current = 0;
+  }, [underground]);
 
   useEffect(() => {
     if (!touchMap || !panArmed.current || coolDown.current) return;
@@ -280,11 +293,16 @@ function FieldZoomGate({
     lastFieldY.current = fieldScreenY;
     if (prev == null) return;
 
-    // Gradual finger pans never jump 50%→38% in one frame — track travel + hysteresis.
+    const rising = fieldScreenY < prev;
+    const falling = fieldScreenY > prev;
+    const rise = rising ? prev - fieldScreenY : 0;
+    const fall = falling ? fieldScreenY - prev : 0;
+
+    // Gradual finger pans never clear a wide band in one frame — travel + hysteresis.
     if (!underground) {
       if (fieldScreenY > h * 0.52) sawFieldLow.current = true;
-      if (fieldScreenY < prev) upwardTravel.current += prev - fieldScreenY;
-      else upwardTravel.current = Math.max(0, upwardTravel.current - (fieldScreenY - prev) * 0.5);
+      if (rising) upwardTravel.current += rise;
+      else upwardTravel.current = Math.max(0, upwardTravel.current - fall * 0.5);
 
       if (
         (sawFieldLow.current && fieldScreenY < h * 0.42) ||
@@ -293,14 +311,22 @@ function FieldZoomGate({
         sawFieldLow.current = false;
         upwardTravel.current = 0;
         goRoots();
-        return;
       }
-    } else {
-      if (fieldScreenY < h * 0.35) sawFieldLow.current = false;
-      if (prev < h * 0.4 && fieldScreenY > h * 0.55) {
-        upwardTravel.current = 0;
-        goCanopy();
-      }
+      return;
+    }
+
+    // Underground → canopy: field must travel back down the screen.
+    if (fieldScreenY < h * 0.4) sawFieldHigh.current = true;
+    if (falling) downwardTravel.current += fall;
+    else downwardTravel.current = Math.max(0, downwardTravel.current - rise * 0.5);
+
+    if (
+      (sawFieldHigh.current && fieldScreenY > h * 0.52) ||
+      (downwardTravel.current > 90 && fieldScreenY > h * 0.45)
+    ) {
+      sawFieldHigh.current = false;
+      downwardTravel.current = 0;
+      goCanopy();
     }
   }, [ty, zoom, fieldFlowY, touchMap, underground]);
 
