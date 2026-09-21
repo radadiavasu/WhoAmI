@@ -166,6 +166,8 @@ export function FullBleedTerrain({
         style={{
           height: fieldHeight,
           transform: `translate3d(0, ${fieldTop}px, 0)`,
+          opacity: showUnderground ? 0 : 1,
+          transition: "opacity 280ms ease",
         }}
         aria-hidden
       >

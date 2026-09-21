@@ -32,7 +32,7 @@ export function MapWelcome({ onOrient, onWander, onStarter }: Props) {
         </h2>
         <p id="map-welcome-desc" className="map-welcome-desc">
           Start in the Generative AI canopy. On a phone: drag to pan, pinch to
-          zoom, swipe the green band under Generative AI down for roots.
+          zoom, scroll down on the green band for roots (finger swipes up).
           On a computer: scroll to zoom, hover the field and scroll down for
           roots.
         </p>

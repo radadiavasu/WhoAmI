@@ -492,7 +492,7 @@ body {
   background: color-mix(in oklab, #6a8f55 10%, transparent);
 }
 
-/* Touch: meadow band is the swipe target — tint it so “green band” matches the hit area */
+/* Touch: meadow band is the swipe target — tint it so it matches the hint */
 .field-zoom-gate.is-touch-map {
   pointer-events: auto;
   cursor: ns-resize;
@@ -503,6 +503,12 @@ body {
 
 .field-zoom-gate.is-touch-map:hover {
   background: color-mix(in oklab, #4f8a45 34%, transparent);
+}
+
+/* Underground: no green overlay on top of roots */
+.field-zoom-gate.is-touch-map.is-underground {
+  background: transparent;
+  box-shadow: none;
 }
 
 .roots-toggle {

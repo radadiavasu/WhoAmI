@@ -181,12 +181,12 @@ function FieldZoomGate({
     }),
   );
   const fieldTop = fieldFlowY * zoom + ty;
-  // Canopy: tall enough to cover the visible meadow (roots hidden, so LLM isn't under it).
-  // Underground: thin strip so the first root stays tappable.
+  // Canopy: match the visible meadow height so the green hit-target isn't a thin strip
+  // above the brown. Underground: thin strip so LLM stays tappable.
   const fieldHeight = touchMap
     ? underground
       ? Math.max(72, 100 * zoom)
-      : Math.max(200, 300 * zoom)
+      : Math.max(200, 380 * zoom)
     : underground
       ? Math.max(56, 80 * zoom)
       : Math.max(88, 140 * zoom);
@@ -349,8 +349,9 @@ function FieldZoomGate({
     const dx = e.clientX - pointerOrigin.current.x;
     const dy = e.clientY - pointerOrigin.current.y;
     pointerOrigin.current = null;
-    if (dy > 36 && Math.abs(dy) > Math.abs(dx) * 1.05) goRoots();
-    else if (dy < -36 && Math.abs(dy) > Math.abs(dx) * 1.05) goCanopy();
+    // Match “scroll down into roots”: finger moves up (dy < 0), same as pan-past.
+    if (dy < -36 && Math.abs(dy) > Math.abs(dx) * 1.05) goRoots();
+    else if (dy > 36 && Math.abs(dy) > Math.abs(dx) * 1.05) goCanopy();
   };
 
   const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
@@ -359,7 +360,7 @@ function FieldZoomGate({
     const dx = e.clientX - pointerOrigin.current.x;
     const dy = e.clientY - pointerOrigin.current.y;
     // Fire mid-swipe so RF pan never has to "complete" first.
-    if (dy > 48 && Math.abs(dy) > Math.abs(dx) * 1.05) {
+    if (dy < -48 && Math.abs(dy) > Math.abs(dx) * 1.05) {
       pointerOrigin.current = null;
       try {
         e.currentTarget.releasePointerCapture(e.pointerId);
@@ -367,7 +368,7 @@ function FieldZoomGate({
         // already released
       }
       goRoots();
-    } else if (dy < -48 && Math.abs(dy) > Math.abs(dx) * 1.05) {
+    } else if (dy > 48 && Math.abs(dy) > Math.abs(dx) * 1.05) {
       pointerOrigin.current = null;
       try {
         e.currentTarget.releasePointerCapture(e.pointerId);
@@ -383,6 +384,7 @@ function FieldZoomGate({
       className={[
         "field-zoom-gate",
         touchMap ? "is-touch-map" : "",
+        touchMap && underground ? "is-underground" : "",
       ]
         .filter(Boolean)
         .join(" ")}
@@ -403,7 +405,7 @@ function FieldZoomGate({
       role="presentation"
       title={
         touchMap
-          ? "Swipe the green band down for roots, up for canopy"
+          ? "Scroll down on the green band for roots — swipe up with your finger"
           : "Scroll here to enter or leave the roots"
       }
     />
@@ -428,7 +430,7 @@ function FieldRootsHint({
       }}
     >
       {touchMap
-        ? "swipe this green band down for roots"
+        ? "scroll down on the green band for roots"
         : "hover the field · scroll down for roots"}
     </p>
   );
