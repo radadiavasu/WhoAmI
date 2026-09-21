@@ -6,7 +6,6 @@ import {
   useRef,
   useSyncExternalStore,
   type MutableRefObject,
-  type PointerEvent as ReactPointerEvent,
 } from "react";
 import {
   Controls,
@@ -181,17 +180,13 @@ function FieldZoomGate({
     }),
   );
   const fieldTop = fieldFlowY * zoom + ty;
-  // Thin crest under GenAI — never a full-meadow green sheet that swallows the canopy.
-  // Underground: even thinner so LLM stays tappable.
+  // Desktop only: thin crest for wheel. Touch uses the Enter roots button — no overlay.
   const fieldHeight = touchMap
-    ? underground
-      ? Math.max(64, 88 * zoom)
-      : Math.max(88, 120 * zoom)
+    ? 0
     : underground
       ? Math.max(56, 80 * zoom)
       : Math.max(88, 140 * zoom);
   const coolDown = useRef(false);
-  const pointerOrigin = useRef<{ x: number; y: number } | null>(null);
   const pendingLayer = useRef<"roots" | "canopy" | null>(null);
 
   const goRoots = () => {
@@ -264,130 +259,16 @@ function FieldZoomGate({
     fitPadding,
   ]);
 
-  const lastFieldY = useRef<number | null>(null);
-  const panArmed = useRef(false);
-  const sawFieldLow = useRef(false);
-  const sawFieldHigh = useRef(false);
-  const upwardTravel = useRef(0);
-  const downwardTravel = useRef(0);
-  useEffect(() => {
-    const t = window.setTimeout(() => {
-      panArmed.current = true;
-      lastFieldY.current = null;
-      sawFieldLow.current = false;
-      sawFieldHigh.current = false;
-      upwardTravel.current = 0;
-      downwardTravel.current = 0;
-    }, 900);
-    return () => window.clearTimeout(t);
-  }, []);
+  // Touch: no pan-past layer flips — Enter roots / Back to canopy owns the switch.
+  // Desktop keeps wheel on the field crest only.
 
-  // Reset travel markers when the layer flips (fitView animates the field).
-  useEffect(() => {
-    lastFieldY.current = null;
-    sawFieldLow.current = false;
-    sawFieldHigh.current = false;
-    upwardTravel.current = 0;
-    downwardTravel.current = 0;
-  }, [underground]);
-
-  useEffect(() => {
-    if (!touchMap || !panArmed.current || coolDown.current) return;
-    const fieldScreenY = fieldFlowY * zoom + ty;
-    const h = window.innerHeight;
-    const prev = lastFieldY.current;
-    lastFieldY.current = fieldScreenY;
-    if (prev == null) return;
-
-    const rising = fieldScreenY < prev;
-    const falling = fieldScreenY > prev;
-    const rise = rising ? prev - fieldScreenY : 0;
-    const fall = falling ? fieldScreenY - prev : 0;
-
-    // Gradual finger pans never clear a wide band in one frame — travel + hysteresis.
-    if (!underground) {
-      if (fieldScreenY > h * 0.52) sawFieldLow.current = true;
-      if (rising) upwardTravel.current += rise;
-      else upwardTravel.current = Math.max(0, upwardTravel.current - fall * 0.5);
-
-      if (
-        (sawFieldLow.current && fieldScreenY < h * 0.42) ||
-        (upwardTravel.current > 90 && fieldScreenY < h * 0.5)
-      ) {
-        sawFieldLow.current = false;
-        upwardTravel.current = 0;
-        goRoots();
-      }
-      return;
-    }
-
-    // Underground → canopy: field must travel back down the screen.
-    if (fieldScreenY < h * 0.4) sawFieldHigh.current = true;
-    if (falling) downwardTravel.current += fall;
-    else downwardTravel.current = Math.max(0, downwardTravel.current - rise * 0.5);
-
-    if (
-      (sawFieldHigh.current && fieldScreenY > h * 0.52) ||
-      (downwardTravel.current > 90 && fieldScreenY > h * 0.45)
-    ) {
-      sawFieldHigh.current = false;
-      downwardTravel.current = 0;
-      goCanopy();
-    }
-  }, [ty, zoom, fieldFlowY, touchMap, underground]);
-
-  const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (!touchMap) return;
-    // Keep the gesture even after the finger leaves the thin grass strip.
-    e.currentTarget.setPointerCapture(e.pointerId);
-    e.stopPropagation();
-    pointerOrigin.current = { x: e.clientX, y: e.clientY };
-  };
-
-  const finishSwipe = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (!touchMap || !pointerOrigin.current) return;
-    const dx = e.clientX - pointerOrigin.current.x;
-    const dy = e.clientY - pointerOrigin.current.y;
-    pointerOrigin.current = null;
-    // Match “scroll down into roots”: finger moves up (dy < 0), same as pan-past.
-    if (dy < -36 && Math.abs(dy) > Math.abs(dx) * 1.05) goRoots();
-    else if (dy > 36 && Math.abs(dy) > Math.abs(dx) * 1.05) goCanopy();
-  };
-
-  const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (!touchMap || !pointerOrigin.current) return;
-    e.stopPropagation();
-    const dx = e.clientX - pointerOrigin.current.x;
-    const dy = e.clientY - pointerOrigin.current.y;
-    // Fire mid-swipe so RF pan never has to "complete" first.
-    if (dy < -48 && Math.abs(dy) > Math.abs(dx) * 1.05) {
-      pointerOrigin.current = null;
-      try {
-        e.currentTarget.releasePointerCapture(e.pointerId);
-      } catch {
-        // already released
-      }
-      goRoots();
-    } else if (dy > 48 && Math.abs(dy) > Math.abs(dx) * 1.05) {
-      pointerOrigin.current = null;
-      try {
-        e.currentTarget.releasePointerCapture(e.pointerId);
-      } catch {
-        // already released
-      }
-      goCanopy();
-    }
-  };
+  if (touchMap) {
+    return null;
+  }
 
   return (
     <div
-      className={[
-        "field-zoom-gate",
-        touchMap ? "is-touch-map" : "",
-        touchMap && underground ? "is-underground" : "",
-      ]
-        .filter(Boolean)
-        .join(" ")}
+      className="field-zoom-gate"
       style={{
         height: fieldHeight,
         transform: `translate3d(0, ${fieldTop}px, 0)`,
@@ -398,16 +279,8 @@ function FieldZoomGate({
         if (e.deltaY > 8) goRoots();
         else if (e.deltaY < -8) goCanopy();
       }}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={finishSwipe}
-      onPointerCancel={finishSwipe}
       role="presentation"
-      title={
-        touchMap
-          ? "Scroll the field under Generative AI for roots"
-          : "Scroll here to enter or leave the roots"
-      }
+      title="Scroll here to enter or leave the roots"
     />
   );
 }
@@ -430,7 +303,7 @@ function FieldRootsHint({
       }}
     >
       {touchMap
-        ? "scroll the field under GenAI for roots"
+        ? "tap Enter roots (bottom right)"
         : "hover the field · scroll down for roots"}
     </p>
   );
