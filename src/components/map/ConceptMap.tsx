@@ -181,10 +181,12 @@ function FieldZoomGate({
     }),
   );
   const fieldTop = fieldFlowY * zoom + ty;
-  // Desktop used a tall meadow hit-box that covered the first root (LLM) and stole clicks.
-  // Keep a thin crest for wheel/swipe; underground only needs a return strip.
+  // Canopy: tall enough to cover the visible meadow (roots hidden, so LLM isn't under it).
+  // Underground: thin strip so the first root stays tappable.
   const fieldHeight = touchMap
-    ? Math.max(96, 140 * zoom)
+    ? underground
+      ? Math.max(72, 100 * zoom)
+      : Math.max(200, 300 * zoom)
     : underground
       ? Math.max(56, 80 * zoom)
       : Math.max(88, 140 * zoom);
@@ -401,7 +403,7 @@ function FieldZoomGate({
       role="presentation"
       title={
         touchMap
-          ? "Swipe the field down for roots, up for canopy — or drag past the ground"
+          ? "Swipe the green band down for roots, up for canopy"
           : "Scroll here to enter or leave the roots"
       }
     />
@@ -426,8 +428,8 @@ function FieldRootsHint({
       }}
     >
       {touchMap
-        ? "swipe the green field down for roots"
-        : "hover the green field · scroll down for roots"}
+        ? "swipe this green band down for roots"
+        : "hover the field · scroll down for roots"}
     </p>
   );
 }
