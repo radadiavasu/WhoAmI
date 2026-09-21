@@ -492,20 +492,20 @@ body {
   background: color-mix(in oklab, #6a8f55 10%, transparent);
 }
 
-/* Touch: meadow band is the swipe target — tint it so it matches the hint */
+/* Touch: thin crest under GenAI — light tint only, not a full-field green sheet */
 .field-zoom-gate.is-touch-map {
   pointer-events: auto;
   cursor: ns-resize;
   touch-action: none;
-  background: color-mix(in oklab, #4f8a45 28%, transparent);
-  box-shadow: inset 0 0 0 1px color-mix(in oklab, #9dcc7a 30%, transparent);
+  background: color-mix(in oklab, #4f8a45 12%, transparent);
+  box-shadow: none;
 }
 
 .field-zoom-gate.is-touch-map:hover {
-  background: color-mix(in oklab, #4f8a45 34%, transparent);
+  background: color-mix(in oklab, #4f8a45 16%, transparent);
 }
 
-/* Underground: no green overlay on top of roots */
+/* Underground: invisible hit strip — no green over roots */
 .field-zoom-gate.is-touch-map.is-underground {
   background: transparent;
   box-shadow: none;

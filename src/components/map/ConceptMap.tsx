@@ -181,12 +181,12 @@ function FieldZoomGate({
     }),
   );
   const fieldTop = fieldFlowY * zoom + ty;
-  // Canopy: match the visible meadow height so the green hit-target isn't a thin strip
-  // above the brown. Underground: thin strip so LLM stays tappable.
+  // Thin crest under GenAI — never a full-meadow green sheet that swallows the canopy.
+  // Underground: even thinner so LLM stays tappable.
   const fieldHeight = touchMap
     ? underground
-      ? Math.max(72, 100 * zoom)
-      : Math.max(200, 380 * zoom)
+      ? Math.max(64, 88 * zoom)
+      : Math.max(88, 120 * zoom)
     : underground
       ? Math.max(56, 80 * zoom)
       : Math.max(88, 140 * zoom);
@@ -405,7 +405,7 @@ function FieldZoomGate({
       role="presentation"
       title={
         touchMap
-          ? "Scroll down on the green band for roots — swipe up with your finger"
+          ? "Scroll the field under Generative AI for roots"
           : "Scroll here to enter or leave the roots"
       }
     />
@@ -430,7 +430,7 @@ function FieldRootsHint({
       }}
     >
       {touchMap
-        ? "scroll down on the green band for roots"
+        ? "scroll the field under GenAI for roots"
         : "hover the field · scroll down for roots"}
     </p>
   );
