@@ -11,11 +11,15 @@ function organicRootPath(
 ): string {
   const dy = targetY - sourceY;
   const dx = targetX - sourceX;
+  // Near-vertical spine: gentle sway only — big bulges look like a second tube beside the bark.
+  const isSpine = Math.abs(dx) < 48;
   const side = dx === 0 ? (sourceY > targetY ? 1 : -1) : Math.sign(dx) || 1;
-  const bulge = Math.max(56, Math.abs(dy) * 0.22) * side;
-  const c1x = sourceX + dx * 0.18 + bulge * 0.6;
+  const bulge = isSpine
+    ? Math.max(18, Math.abs(dy) * 0.06) * side
+    : Math.max(56, Math.abs(dy) * 0.22) * side;
+  const c1x = sourceX + dx * 0.18 + bulge * (isSpine ? 0.35 : 0.6);
   const c1y = sourceY + dy * 0.3;
-  const c2x = targetX - dx * 0.12 - bulge * 0.28;
+  const c2x = targetX - dx * 0.12 - bulge * (isSpine ? 0.2 : 0.28);
   const c2y = targetY - dy * 0.26;
   return `M ${sourceX},${sourceY} C ${c1x},${c1y} ${c2x},${c2y} ${targetX},${targetY}`;
 }

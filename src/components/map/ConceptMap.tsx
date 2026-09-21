@@ -181,9 +181,13 @@ function FieldZoomGate({
     }),
   );
   const fieldTop = fieldFlowY * zoom + ty;
+  // Desktop used a tall meadow hit-box that covered the first root (LLM) and stole clicks.
+  // Keep a thin crest for wheel/swipe; underground only needs a return strip.
   const fieldHeight = touchMap
     ? Math.max(96, 140 * zoom)
-    : Math.max(200, 380 * zoom);
+    : underground
+      ? Math.max(56, 80 * zoom)
+      : Math.max(88, 140 * zoom);
   const coolDown = useRef(false);
   const pointerOrigin = useRef<{ x: number; y: number } | null>(null);
   const pendingLayer = useRef<"roots" | "canopy" | null>(null);
@@ -404,6 +408,30 @@ function FieldZoomGate({
   );
 }
 
+/** Readable chip on the meadow — lives above the RF viewport so it isn't lost in the terrain. */
+function FieldRootsHint({
+  fieldFlowY,
+  touchMap,
+}: {
+  fieldFlowY: number;
+  touchMap: boolean;
+}) {
+  const [, ty, zoom] = useStore((s) => s.transform);
+  const fieldTop = fieldFlowY * zoom + ty;
+  return (
+    <p
+      className="ground-field-hint"
+      style={{
+        transform: `translate3d(-50%, ${fieldTop + Math.max(36, 52 * zoom)}px, 0)`,
+      }}
+    >
+      {touchMap
+        ? "swipe the green field down for roots"
+        : "hover the green field · scroll down for roots"}
+    </p>
+  );
+}
+
 /** Explicit layer control — required on phones (no hover+wheel). */
 function RootsToggle({
   underground,
@@ -597,9 +625,9 @@ export function ConceptMap({
                   : 0.88,
             strokeWidth: isRoot
               ? toTrunk
-                ? 52
+                ? 44
                 : onPath
-                  ? 44
+                  ? 42
                   : 40
               : onPath
                 ? 2.4
@@ -688,9 +716,11 @@ export function ConceptMap({
           fieldFlowY={fieldY}
           bedFlowY={bedTop}
           trunkFlowX={CANOPY_ORIGIN.x}
-          showHint={!underground}
           showUnderground={underground}
         />
+        {!underground ? (
+          <FieldRootsHint fieldFlowY={fieldY} touchMap={touchMap} />
+        ) : null}
         <FieldZoomGate
           fieldFlowY={fieldY}
           overviewIds={overviewIds}

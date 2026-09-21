@@ -6,9 +6,7 @@ type Props = {
   fieldFlowY: number;
   bedFlowY: number;
   trunkFlowX: number;
-  /** Hide meadow hint while viewing roots. */
-  showHint?: boolean;
-  /** Soil bed + trunk collar — only when roots are open (avoids mid-scroll stub). */
+  /** Soil bed — only when roots are open (avoids mid-scroll brown flash). */
   showUnderground?: boolean;
 };
 
@@ -141,7 +139,6 @@ export function FullBleedTerrain({
   fieldFlowY,
   bedFlowY,
   trunkFlowX,
-  showHint = true,
   showUnderground = false,
 }: Props) {
   const [tx, ty, zoom] = useStore((s) => s.transform);
@@ -370,24 +367,6 @@ export function FullBleedTerrain({
         <div className="field-firefly ff-4" />
         <div className="field-firefly ff-5" />
         <div className="field-firefly ff-6" />
-
-        <div
-          className="ground-trunk-collar"
-          style={{
-            left: `${trunkX}px`,
-            opacity: showUnderground ? 1 : 0,
-          }}
-        />
-        {showHint ? (
-          <p className="ground-field-hint">
-            <span className="hint-desktop">
-              hover the field · scroll down for roots
-            </span>
-            <span className="hint-touch">
-              swipe the field down · or drag past the ground
-            </span>
-          </p>
-        ) : null}
       </div>
     </>
   );
