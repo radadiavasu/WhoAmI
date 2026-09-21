@@ -68,7 +68,7 @@
     "neighbors": [
       { "id": "machine-learning", "relation": "prereq" },
       { "id": "neural-network", "relation": "next" },
-      { "id": "cnn", "relation": "sibling" }
+      { "id": "computer-vision", "relation": "sibling" }
     ],
     "nextStep": {
       "kind": "goDeeper",
@@ -96,7 +96,7 @@
       { "id": "deep-learning", "relation": "prereq" },
       { "id": "transformer", "relation": "next" },
       { "id": "rnn", "relation": "sibling" },
-      { "id": "cnn", "relation": "sibling" }
+      { "id": "computer-vision", "relation": "sibling" }
     ],
     "nextStep": {
       "kind": "goDeeper",
@@ -107,10 +107,43 @@
     "example": "Early image and speech recognizers."
   },
   {
+    "id": "computer-vision",
+    "name": "Computer vision",
+    "parentId": "deep-learning",
+    "level": "intro",
+    "oneBreath": "Teaching computers to make sense of pictures and video — what’s in a frame, where it is, and sometimes what happens next.",
+    "does": [
+      "Power photo, camera, and video features",
+      "Sit under deep learning with CNNs as a common engine"
+    ],
+    "doesNot": [
+      "Not the same as a chat model that only reads text",
+      "Not only self-driving cars — phones use it constantly"
+    ],
+    "neighbors": [
+      { "id": "deep-learning", "relation": "prereq" },
+      { "id": "cnn", "relation": "next" },
+      { "id": "multimodal", "relation": "next" },
+      { "id": "neural-network", "relation": "sibling" }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "cnn",
+      "label": "See the usual engine for images"
+    },
+    "analogy": "Giving a machine eyes — then teaching it what “cat” looks like.",
+    "example": "A gallery app that groups photos by face or place.",
+    "aliases": [
+      "CV",
+      "vision AI",
+      "image AI"
+    ]
+  },
+  {
     "id": "cnn",
     "name": "CNN",
     "alias": "Convolutional network",
-    "parentId": "deep-learning",
+    "parentId": "computer-vision",
     "level": "intro",
     "oneBreath": "A neural-net style built for images — it slides small filters across a photo to spot edges, shapes, then objects.",
     "does": [
@@ -119,17 +152,18 @@
     ],
     "doesNot": [
       "Not the main design behind today’s chat AIs",
-      "Not only for medical scans — phones use them too"
+      "Not the whole of computer vision — just a common engine"
     ],
     "neighbors": [
-      { "id": "deep-learning", "relation": "prereq" },
-      { "id": "neural-network", "relation": "sibling" },
-      { "id": "multimodal", "relation": "next" }
+      { "id": "computer-vision", "relation": "prereq" },
+      { "id": "image-classification", "relation": "next" },
+      { "id": "object-detection", "relation": "sibling" },
+      { "id": "neural-network", "relation": "sibling" }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "multimodal",
-      "label": "See models that read images and text"
+      "kind": "goDeeper",
+      "targetId": "image-classification",
+      "label": "See labeling a whole photo"
     },
     "analogy": "Looking at a picture through a moving peephole, patch by patch.",
     "example": "Unlocking your phone with your face.",
@@ -137,6 +171,70 @@
       "convolutional neural network",
       "convnet",
       "computer vision network"
+    ]
+  },
+  {
+    "id": "image-classification",
+    "name": "Image classification",
+    "parentId": "computer-vision",
+    "level": "intro",
+    "oneBreath": "Giving a whole image one (or a few) labels — “dog,” “invoice,” “spam screenshot” — without saying where in the frame.",
+    "does": [
+      "Sort photos and documents into buckets",
+      "Often the first vision job people ship"
+    ],
+    "doesNot": [
+      "Not drawing boxes around each object",
+      "Not generating a new picture from a prompt"
+    ],
+    "neighbors": [
+      { "id": "computer-vision", "relation": "prereq" },
+      { "id": "cnn", "relation": "usedIn" },
+      { "id": "object-detection", "relation": "next" }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "object-detection",
+      "label": "See finding where objects are"
+    },
+    "analogy": "Sticking one sticky note on a photo: “this is a beach.”",
+    "example": "A camera roll that auto-tags “food” vs “pets.”",
+    "aliases": [
+      "image recognition",
+      "photo classification"
+    ]
+  },
+  {
+    "id": "object-detection",
+    "name": "Object detection",
+    "parentId": "computer-vision",
+    "level": "core",
+    "oneBreath": "Finding objects in an image and where they are — usually a label plus a box (or mask) for each one.",
+    "does": [
+      "Count and locate things in a frame",
+      "Feed cameras, retail, and safety features"
+    ],
+    "doesNot": [
+      "Not the same as one label for the whole photo",
+      "Not magic on tiny or heavily blocked objects"
+    ],
+    "neighbors": [
+      { "id": "computer-vision", "relation": "prereq" },
+      { "id": "image-classification", "relation": "prereq" },
+      { "id": "cnn", "relation": "usedIn" },
+      { "id": "multimodal", "relation": "next" }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "multimodal",
+      "label": "See models that talk about what they see"
+    },
+    "analogy": "Circling every apple in a fruit-bowl photo and naming them.",
+    "example": "A dashcam that flags a pedestrian in the crosswalk.",
+    "aliases": [
+      "detection",
+      "bounding boxes",
+      "object recognition"
     ]
   },
   {
@@ -157,7 +255,7 @@
     "neighbors": [
       { "id": "neural-network", "relation": "prereq" },
       { "id": "transformer", "relation": "next" },
-      { "id": "cnn", "relation": "sibling" }
+      { "id": "computer-vision", "relation": "sibling" }
     ],
     "nextStep": {
       "kind": "goDeeper",
@@ -2338,15 +2436,15 @@
         "relation": "prereq"
       },
       {
+        "id": "computer-vision",
+        "relation": "prereq"
+      },
+      {
         "id": "prompt",
         "relation": "usedIn"
       },
       {
         "id": "tool-use",
-        "relation": "sibling"
-      },
-      {
-        "id": "reasoning-model",
         "relation": "sibling"
       }
     ],

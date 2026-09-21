@@ -94,6 +94,7 @@ describe("breadcrumbFor", () => {
     const parts = breadcrumbFor("cnn", byId);
     expect(parts[0]).toBe("Artificial intelligence");
     expect(parts).toContain("Deep learning");
+    expect(parts).toContain("Computer vision");
     expect(parts.at(-1)).toBe("CNN");
   });
 });

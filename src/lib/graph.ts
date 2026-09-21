@@ -206,28 +206,75 @@ export function buildFlowGraph(nodes: ConceptNode[]): {
       depth += 1;
     }
 
-    // Side forks off the spine — real labeled roots (CNN / RNN / RL), not empty art.
+    // Spine ids — used so nested domain kids cascade off the hub, not the trunk.
+    const spineIds = new Set(centers.keys());
+
+    // Side forks off the spine — nested domains (e.g. Vision) place in passes.
     const sidePrefs: Record<string, number> = {
-      cnn: -1,
+      "computer-vision": -1,
       rnn: 1,
       "reinforcement-learning": -1,
     };
-    for (const [parentId, kids] of children) {
-      if (roles.get(parentId) !== "root") continue;
-      const hub = centers.get(parentId);
-      if (!hub) continue;
-      const unplaced = kids.filter((k) => !centers.has(k.id));
-      let autoSide = -1;
-      unplaced.forEach((kid, i) => {
-        const side = sidePrefs[kid.id] ?? (autoSide *= -1);
-        const slot = Math.floor(i / 2);
-        centers.set(kid.id, {
-          x: hub.x + side * (SIDE_ROOT_REACH + slot * 90),
-          y: hub.y + 70 + slot * 50,
+    /** Preferred fan around a domain hub — degrees in offsetFrom space (270 = left). */
+    const nestedFan: Record<string, { angle: number; radius: number }> = {
+      "object-detection": { angle: 292, radius: 460 },
+      cnn: { angle: 270, radius: 430 },
+      "image-classification": { angle: 248, radius: 460 },
+    };
+    /** Center-to-center gap so 280px root ovals never sit on top of each other. */
+    const ROOT_SIDE_GAP = 320;
+    let placedSide = true;
+    while (placedSide) {
+      placedSide = false;
+      for (const [parentId, kids] of children) {
+        if (roles.get(parentId) !== "root") continue;
+        const hub = centers.get(parentId);
+        if (!hub) continue;
+        const unplaced = kids.filter((k) => !centers.has(k.id));
+        if (unplaced.length === 0) continue;
+        placedSide = true;
+        const nested = !spineIds.has(parentId);
+        let autoSide = -1;
+        unplaced.forEach((kid, i) => {
+          const side = sidePrefs[kid.id] ?? (autoSide *= -1);
+          if (nested) {
+            const fan = nestedFan[kid.id];
+            if (fan) {
+              const p = offsetFrom(hub, fan.angle, fan.radius);
+              centers.set(kid.id, p);
+              angles.set(kid.id, fan.angle - 270);
+            } else {
+              // Generic nest: fan on the parent's side, unique angles per kid.
+              const base = side < 0 ? 270 : 90;
+              const spread = 28;
+              const mid = (unplaced.length - 1) / 2;
+              const angle = base + (i - mid) * spread;
+              centers.set(kid.id, offsetFrom(hub, angle, 420 + i * 20));
+              angles.set(kid.id, angle - 270);
+            }
+          } else {
+            centers.set(kid.id, {
+              x: hub.x + side * SIDE_ROOT_REACH,
+              y: hub.y + 80,
+            });
+            angles.set(kid.id, side * 28);
+          }
+          roles.set(kid.id, "root");
         });
-        angles.set(kid.id, side * 28);
-        roles.set(kid.id, "root");
-      });
+      }
+    }
+
+    const sideRootIds = [...centers.keys()].filter(
+      (id) => roles.get(id) === "root" && !spineIds.has(id),
+    );
+    separateCenters(centers, sideRootIds, ROOT_SIDE_GAP, 100);
+    // Keep side roots from sliding into the main spine column.
+    for (const id of sideRootIds) {
+      const c = centers.get(id)!;
+      const minLeft = origin.x - SIDE_ROOT_REACH * 0.35;
+      const minRight = origin.x + SIDE_ROOT_REACH * 0.35;
+      if (c.x < origin.x && c.x > minLeft) c.x = minLeft - 40;
+      if (c.x > origin.x && c.x < minRight) c.x = minRight + 40;
     }
   }
 

@@ -124,15 +124,49 @@ describe("buildFlowGraph", () => {
     const g = buildFlowGraph(loadNodes());
     const gen = g.nodes.find((x) => x.id === "generative-ai")!;
     const trunkX = gen.position.x + 268 / 2;
+    const vision = g.nodes.find((x) => x.id === "computer-vision")!;
     const cnn = g.nodes.find((x) => x.id === "cnn")!;
     const rnn = g.nodes.find((x) => x.id === "rnn")!;
     const rl = g.nodes.find((x) => x.id === "reinforcement-learning")!;
+    expect(vision.data.role).toBe("root");
     expect(cnn.data.role).toBe("root");
     expect(rnn.data.role).toBe("root");
     expect(rl.data.role).toBe("root");
-    expect(cnn.position.x + 140).toBeLessThan(trunkX - 200);
+    expect(vision.position.x + 140).toBeLessThan(trunkX - 200);
+    expect(Math.abs(cnn.position.x - vision.position.x)).toBeLessThan(600);
+    expect(cnn.position.x + 140).toBeLessThan(trunkX);
     expect(rnn.position.x + 140).toBeGreaterThan(trunkX + 200);
     expect(rl.position.x + 140).toBeLessThan(trunkX - 200);
+  });
+
+  it("nests Vision domain leaves under computer-vision", () => {
+    const g = buildFlowGraph(loadNodes());
+    const vision = g.nodes.find((x) => x.id === "computer-vision")!;
+    const kids = ["cnn", "image-classification", "object-detection"].map(
+      (id) => g.nodes.find((x) => x.id === id)!,
+    );
+    for (const leaf of kids) {
+      expect(leaf.data.role).toBe("root");
+      // Fan lives to the left of the Vision hub.
+      expect(leaf.position.x).toBeLessThan(vision.position.x - 80);
+    }
+    const od = kids.find((k) => k.id === "object-detection")!;
+    const ic = kids.find((k) => k.id === "image-classification")!;
+    // Object detection above, image classification below (flow y grows downward).
+    expect(od.position.y).toBeLessThan(vision.position.y);
+    expect(ic.position.y).toBeGreaterThan(vision.position.y);
+    // No two Vision leaves share nearly the same center.
+    for (let i = 0; i < kids.length; i++) {
+      for (let j = i + 1; j < kids.length; j++) {
+        const a = kids[i]!;
+        const b = kids[j]!;
+        const dist = Math.hypot(
+          a.position.x - b.position.x,
+          a.position.y - b.position.y,
+        );
+        expect(dist).toBeGreaterThan(280);
+      }
+    }
   });
 
   it("frames overview ids on the canopy only", () => {

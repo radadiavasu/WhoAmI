@@ -1,6 +1,6 @@
 # GenAI slice — content gap list
 
-Current tree: **64 nodes** (1 root + 6 chapters + 57 concepts). Priority A filled; **two Priority B** leaves authored (`base-vs-instruct`, `bias`).
+Current tree: **67 nodes** (1 root + 6 chapters + 60 concepts). Priority A filled; **two Priority B** leaves authored (`base-vs-instruct`, `bias`).
 
 Target band for Phase 1: **~60–70 nodes** — we are inside it. Prefer quality + neighbor wiring over more leaves.
 
@@ -68,17 +68,29 @@ Skip anything that needs a new root (classic ML, diffusion-as-domain, speech-as-
 - Company/model brand nodes (GPT-5, Claude, Gemini) — too ephemeral for the spine  
 - Accounts, courses, quizzes
 
-## Side roots (shipped for underground sketch)
+## Side roots
 
-Thin orientation forks off the AI spine — not new GenAI canopy chapters:
+### Vision domain — shipped
+
+Proper fork under deep learning (not a lone CNN leaf):
 
 | id | Name | Parent |
 |---|---|---|
-| `cnn` | CNN | deep-learning |
-| `rnn` | RNN | neural-network |
-| `reinforcement-learning` | Reinforcement learning | machine-learning |
+| `computer-vision` | Computer vision | deep-learning |
+| `cnn` | CNN | computer-vision |
+| `image-classification` | Image classification | computer-vision |
+| `object-detection` | Object detection | computer-vision |
 
-Do not densify these into full domains yet.
+Bridge back to canopy: `multimodal` ↔ `computer-vision`.
+
+### Still thin (next domains)
+
+| id | Name | Parent | Notes |
+|---|---|---|---|
+| `rnn` | RNN | neural-network | Next domain: sequences before transformers |
+| `reinforcement-learning` | Reinforcement learning | machine-learning | Later: reward learning |
+
+Do not densify RNN/RL until Vision feels clear in user tests.
 
 ## Pause rule
 
