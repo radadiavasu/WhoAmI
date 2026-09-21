@@ -262,9 +262,78 @@ function FieldZoomGate({
     fitPadding,
   ]);
 
-  // Touch: no pan-past layer flips — Enter roots / Back to canopy owns the switch.
-  // Desktop keeps wheel on the field crest only.
+  // Touch: drag the map past the meadow to enter/leave roots (no green overlay).
+  const lastFieldY = useRef<number | null>(null);
+  const panArmed = useRef(false);
+  const sawFieldLow = useRef(false);
+  const sawFieldHigh = useRef(false);
+  const upwardTravel = useRef(0);
+  const downwardTravel = useRef(0);
 
+  useEffect(() => {
+    const t = window.setTimeout(() => {
+      panArmed.current = true;
+      lastFieldY.current = null;
+      sawFieldLow.current = false;
+      sawFieldHigh.current = false;
+      upwardTravel.current = 0;
+      downwardTravel.current = 0;
+    }, 900);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    lastFieldY.current = null;
+    sawFieldLow.current = false;
+    sawFieldHigh.current = false;
+    upwardTravel.current = 0;
+    downwardTravel.current = 0;
+  }, [underground]);
+
+  useEffect(() => {
+    if (!touchMap || !panArmed.current || coolDown.current) return;
+    const fieldScreenY = fieldFlowY * zoom + ty;
+    const h = window.innerHeight;
+    const prev = lastFieldY.current;
+    lastFieldY.current = fieldScreenY;
+    if (prev == null) return;
+
+    const rising = fieldScreenY < prev;
+    const falling = fieldScreenY > prev;
+    const rise = rising ? prev - fieldScreenY : 0;
+    const fall = falling ? fieldScreenY - prev : 0;
+
+    if (!underground) {
+      if (fieldScreenY > h * 0.52) sawFieldLow.current = true;
+      if (rising) upwardTravel.current += rise;
+      else upwardTravel.current = Math.max(0, upwardTravel.current - fall * 0.5);
+
+      if (
+        (sawFieldLow.current && fieldScreenY < h * 0.42) ||
+        (upwardTravel.current > 90 && fieldScreenY < h * 0.5)
+      ) {
+        sawFieldLow.current = false;
+        upwardTravel.current = 0;
+        goRoots();
+      }
+      return;
+    }
+
+    if (fieldScreenY < h * 0.4) sawFieldHigh.current = true;
+    if (falling) downwardTravel.current += fall;
+    else downwardTravel.current = Math.max(0, downwardTravel.current - rise * 0.5);
+
+    if (
+      (sawFieldHigh.current && fieldScreenY > h * 0.52) ||
+      (downwardTravel.current > 90 && fieldScreenY > h * 0.45)
+    ) {
+      sawFieldHigh.current = false;
+      downwardTravel.current = 0;
+      goCanopy();
+    }
+  }, [ty, zoom, fieldFlowY, touchMap, underground]);
+
+  // Touch: no overlay — pan-past + Enter roots button. Desktop: thin wheel crest.
   if (touchMap) {
     return null;
   }
@@ -302,10 +371,10 @@ function FieldRootsHint({
   const fieldTop = fieldFlowY * zoom + ty;
   const label = underground
     ? touchMap
-      ? "tap Back to canopy"
+      ? "drag up to the field · or Back to canopy"
       : "scroll up on the field for the canopy"
     : touchMap
-      ? "tap Enter roots (bottom right)"
+      ? "drag down past the field for roots"
       : "hover the field · scroll down for roots";
   return (
     <p
