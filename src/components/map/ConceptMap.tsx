@@ -225,9 +225,12 @@ function FieldZoomGate({
     const raf = requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         if (pending === "roots") {
+          // Keep GenAI + meadow in frame — the field is the landmark to return by.
           fitView({
             nodes: rootIds.map((id) => ({ id })),
-            padding: touchMap ? 0.16 : 0.14,
+            padding: touchMap
+              ? { top: 0.3, bottom: 0.1, left: 0.1, right: 0.1 }
+              : { top: 0.34, bottom: 0.1, left: 0.12, right: 0.12 },
             duration,
             maxZoom: touchMap ? 0.95 : 1.2,
             minZoom: 0.45,
@@ -285,16 +288,25 @@ function FieldZoomGate({
   );
 }
 
-/** Readable chip on the meadow — lives above the RF viewport so it isn't lost in the terrain. */
+/** Meadow landmark chip — enter from canopy, or return from roots (desktop scroll). */
 function FieldRootsHint({
   fieldFlowY,
   touchMap,
+  underground,
 }: {
   fieldFlowY: number;
   touchMap: boolean;
+  underground: boolean;
 }) {
   const [, ty, zoom] = useStore((s) => s.transform);
   const fieldTop = fieldFlowY * zoom + ty;
+  const label = underground
+    ? touchMap
+      ? "tap Back to canopy"
+      : "scroll up on the field for the canopy"
+    : touchMap
+      ? "tap Enter roots (bottom right)"
+      : "hover the field · scroll down for roots";
   return (
     <p
       className="ground-field-hint"
@@ -302,9 +314,7 @@ function FieldRootsHint({
         transform: `translate3d(-50%, ${fieldTop + Math.max(36, 52 * zoom)}px, 0)`,
       }}
     >
-      {touchMap
-        ? "tap Enter roots (bottom right)"
-        : "hover the field · scroll down for roots"}
+      {label}
     </p>
   );
 }
@@ -595,9 +605,11 @@ export function ConceptMap({
           trunkFlowX={CANOPY_ORIGIN.x}
           showUnderground={underground}
         />
-        {!underground ? (
-          <FieldRootsHint fieldFlowY={fieldY} touchMap={touchMap} />
-        ) : null}
+        <FieldRootsHint
+          fieldFlowY={fieldY}
+          touchMap={touchMap}
+          underground={underground}
+        />
         <FieldZoomGate
           fieldFlowY={fieldY}
           overviewIds={overviewIds}
