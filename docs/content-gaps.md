@@ -1,6 +1,6 @@
 # GenAI slice — content gap list
 
-Current tree: **67 nodes** (1 root + 6 chapters + 60 concepts). Priority A filled; **two Priority B** leaves authored (`base-vs-instruct`, `bias`).
+Current tree: **70 nodes** (1 root + 6 chapters + 63 concepts). Priority A filled; **two Priority B** leaves authored (`base-vs-instruct`, `bias`).
 
 Target band for Phase 1: **~60–70 nodes** — we are inside it. Prefer quality + neighbor wiring over more leaves.
 
@@ -83,14 +83,24 @@ Proper fork under deep learning (not a lone CNN leaf):
 
 Bridge back to canopy: `multimodal` ↔ `computer-vision`.
 
-### Still thin (next domains)
+### Sequences domain — shipped
+
+Proper fork under neural network (path to transformers):
+
+| id | Name | Parent |
+|---|---|---|
+| `sequence-models` | Sequence models | neural-network |
+| `rnn` | RNN | sequence-models |
+| `lstm` | LSTM | sequence-models |
+| `seq2seq` | Seq2seq | sequence-models |
+
+Bridge back to spine: all point toward `transformer`.
+
+### Still thin (next domain)
 
 | id | Name | Parent | Notes |
 |---|---|---|---|
-| `rnn` | RNN | neural-network | Next domain: sequences before transformers |
-| `reinforcement-learning` | Reinforcement learning | machine-learning | Later: reward learning |
-
-Do not densify RNN/RL until Vision feels clear in user tests.
+| `reinforcement-learning` | Reinforcement learning | machine-learning | Next: reward learning |
 
 ## Pause rule
 

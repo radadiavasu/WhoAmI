@@ -212,14 +212,17 @@ export function buildFlowGraph(nodes: ConceptNode[]): {
     // Side forks off the spine — nested domains (e.g. Vision) place in passes.
     const sidePrefs: Record<string, number> = {
       "computer-vision": -1,
-      rnn: 1,
+      "sequence-models": 1,
       "reinforcement-learning": -1,
     };
-    /** Preferred fan around a domain hub — degrees in offsetFrom space (270 = left). */
+    /** Preferred fan around a domain hub — 270 = left, 90 = right. */
     const nestedFan: Record<string, { angle: number; radius: number }> = {
       "object-detection": { angle: 292, radius: 460 },
       cnn: { angle: 270, radius: 430 },
       "image-classification": { angle: 248, radius: 460 },
+      lstm: { angle: 68, radius: 460 },
+      rnn: { angle: 90, radius: 430 },
+      seq2seq: { angle: 112, radius: 460 },
     };
     /** Center-to-center gap so 280px root ovals never sit on top of each other. */
     const ROOT_SIDE_GAP = 320;

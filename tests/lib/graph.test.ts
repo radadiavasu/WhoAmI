@@ -125,17 +125,20 @@ describe("buildFlowGraph", () => {
     const gen = g.nodes.find((x) => x.id === "generative-ai")!;
     const trunkX = gen.position.x + 268 / 2;
     const vision = g.nodes.find((x) => x.id === "computer-vision")!;
+    const sequences = g.nodes.find((x) => x.id === "sequence-models")!;
     const cnn = g.nodes.find((x) => x.id === "cnn")!;
     const rnn = g.nodes.find((x) => x.id === "rnn")!;
     const rl = g.nodes.find((x) => x.id === "reinforcement-learning")!;
     expect(vision.data.role).toBe("root");
+    expect(sequences.data.role).toBe("root");
     expect(cnn.data.role).toBe("root");
     expect(rnn.data.role).toBe("root");
     expect(rl.data.role).toBe("root");
     expect(vision.position.x + 140).toBeLessThan(trunkX - 200);
+    expect(sequences.position.x + 140).toBeGreaterThan(trunkX + 200);
     expect(Math.abs(cnn.position.x - vision.position.x)).toBeLessThan(600);
     expect(cnn.position.x + 140).toBeLessThan(trunkX);
-    expect(rnn.position.x + 140).toBeGreaterThan(trunkX + 200);
+    expect(rnn.position.x + 140).toBeGreaterThan(trunkX + 100);
     expect(rl.position.x + 140).toBeLessThan(trunkX - 200);
   });
 
@@ -156,6 +159,33 @@ describe("buildFlowGraph", () => {
     expect(od.position.y).toBeLessThan(vision.position.y);
     expect(ic.position.y).toBeGreaterThan(vision.position.y);
     // No two Vision leaves share nearly the same center.
+    for (let i = 0; i < kids.length; i++) {
+      for (let j = i + 1; j < kids.length; j++) {
+        const a = kids[i]!;
+        const b = kids[j]!;
+        const dist = Math.hypot(
+          a.position.x - b.position.x,
+          a.position.y - b.position.y,
+        );
+        expect(dist).toBeGreaterThan(280);
+      }
+    }
+  });
+
+  it("nests Sequences domain leaves under sequence-models", () => {
+    const g = buildFlowGraph(loadNodes());
+    const hub = g.nodes.find((x) => x.id === "sequence-models")!;
+    const kids = ["rnn", "lstm", "seq2seq"].map(
+      (id) => g.nodes.find((x) => x.id === id)!,
+    );
+    for (const leaf of kids) {
+      expect(leaf.data.role).toBe("root");
+      expect(leaf.position.x).toBeGreaterThan(hub.position.x + 80);
+    }
+    const lstm = kids.find((k) => k.id === "lstm")!;
+    const seq2seq = kids.find((k) => k.id === "seq2seq")!;
+    expect(lstm.position.y).toBeLessThan(hub.position.y);
+    expect(seq2seq.position.y).toBeGreaterThan(hub.position.y);
     for (let i = 0; i < kids.length; i++) {
       for (let j = i + 1; j < kids.length; j++) {
         const a = kids[i]!;

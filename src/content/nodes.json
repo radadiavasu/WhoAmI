@@ -95,7 +95,7 @@
     "neighbors": [
       { "id": "deep-learning", "relation": "prereq" },
       { "id": "transformer", "relation": "next" },
-      { "id": "rnn", "relation": "sibling" },
+      { "id": "sequence-models", "relation": "sibling" },
       { "id": "computer-vision", "relation": "sibling" }
     ],
     "nextStep": {
@@ -238,10 +238,43 @@
     ]
   },
   {
+    "id": "sequence-models",
+    "name": "Sequence models",
+    "parentId": "neural-network",
+    "level": "intro",
+    "oneBreath": "Models built to handle things in order — words, sounds, sensor ticks — step by step through time.",
+    "does": [
+      "Read or write sequences like text and speech",
+      "Sit on the path that led to today’s transformers"
+    ],
+    "doesNot": [
+      "Not only chatbots — any ordered data can use them",
+      "Not the only modern approach — attention mostly took over language"
+    ],
+    "neighbors": [
+      { "id": "neural-network", "relation": "prereq" },
+      { "id": "rnn", "relation": "next" },
+      { "id": "transformer", "relation": "next" },
+      { "id": "computer-vision", "relation": "sibling" }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "rnn",
+      "label": "See the classic step-by-step design"
+    },
+    "analogy": "Following a recipe one line at a time, remembering what you already did.",
+    "example": "Predicting the next word while you type.",
+    "aliases": [
+      "sequential models",
+      "sequence learning",
+      "time-series models"
+    ]
+  },
+  {
     "id": "rnn",
     "name": "RNN",
     "alias": "Recurrent network",
-    "parentId": "neural-network",
+    "parentId": "sequence-models",
     "level": "intro",
     "oneBreath": "An older sequence design that reads one step at a time and carries a memory of what came before — common before transformers.",
     "does": [
@@ -253,21 +286,89 @@
       "Not useless — still appears in some speech and sensor systems"
     ],
     "neighbors": [
-      { "id": "neural-network", "relation": "prereq" },
-      { "id": "transformer", "relation": "next" },
-      { "id": "computer-vision", "relation": "sibling" }
+      { "id": "sequence-models", "relation": "prereq" },
+      { "id": "lstm", "relation": "next" },
+      { "id": "seq2seq", "relation": "sibling" },
+      { "id": "transformer", "relation": "next" }
     ],
     "nextStep": {
       "kind": "goDeeper",
-      "targetId": "transformer",
-      "label": "See what replaced most RNNs for language"
+      "targetId": "lstm",
+      "label": "See a stronger memory version"
     },
     "analogy": "Reading a book one word at a time while whispering the plot to yourself.",
     "example": "Early phone keyboards that guessed your next word.",
     "aliases": [
       "recurrent neural network",
-      "LSTM",
-      "sequence model"
+      "recurrent net"
+    ]
+  },
+  {
+    "id": "lstm",
+    "name": "LSTM",
+    "alias": "Long short-term memory",
+    "parentId": "sequence-models",
+    "level": "core",
+    "oneBreath": "An RNN upgrade with gates that help keep useful memory longer — and forget noise — across a sequence.",
+    "does": [
+      "Handle longer text and speech better than plain RNNs",
+      "Show the “memory problem” transformers later solved differently"
+    ],
+    "doesNot": [
+      "Not the main engine inside most new chat models",
+      "Not a guarantee of perfect long-range understanding"
+    ],
+    "neighbors": [
+      { "id": "sequence-models", "relation": "prereq" },
+      { "id": "rnn", "relation": "prereq" },
+      { "id": "seq2seq", "relation": "sibling" },
+      { "id": "transformer", "relation": "next" }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "seq2seq",
+      "label": "See mapping one sequence to another"
+    },
+    "analogy": "A notepad with erase and keep buttons while you read.",
+    "example": "Older speech-to-text and translation systems.",
+    "aliases": [
+      "long short-term memory",
+      "LSTM cell",
+      "GRU"
+    ]
+  },
+  {
+    "id": "seq2seq",
+    "name": "Seq2seq",
+    "alias": "Sequence-to-sequence",
+    "parentId": "sequence-models",
+    "level": "core",
+    "oneBreath": "A setup that reads one sequence and writes another — classic for translation before transformers dominated.",
+    "does": [
+      "Map input text to output text of a different length",
+      "Pair an encoder that reads with a decoder that writes"
+    ],
+    "doesNot": [
+      "Not only translation — summarization used the same idea",
+      "Not how most frontier chat models are built today"
+    ],
+    "neighbors": [
+      { "id": "sequence-models", "relation": "prereq" },
+      { "id": "rnn", "relation": "usedIn" },
+      { "id": "lstm", "relation": "usedIn" },
+      { "id": "transformer", "relation": "next" }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "transformer",
+      "label": "See what largely replaced seq2seq for language"
+    },
+    "analogy": "Listening to a sentence in one language, then speaking it in another.",
+    "example": "Early neural translators turning a French sentence into English.",
+    "aliases": [
+      "sequence to sequence",
+      "encoder-decoder",
+      "seq2seq model"
     ]
   },
   {
