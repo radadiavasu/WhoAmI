@@ -223,6 +223,9 @@ export function buildFlowGraph(nodes: ConceptNode[]): {
       lstm: { angle: 68, radius: 460 },
       rnn: { angle: 90, radius: 430 },
       seq2seq: { angle: 112, radius: 460 },
+      policy: { angle: 292, radius: 460 },
+      reward: { angle: 270, radius: 430 },
+      rlhf: { angle: 248, radius: 460 },
     };
     /** Center-to-center gap so 280px root ovals never sit on top of each other. */
     const ROOT_SIDE_GAP = 320;

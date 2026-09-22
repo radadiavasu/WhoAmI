@@ -1,6 +1,6 @@
 # GenAI slice — content gap list
 
-Current tree: **70 nodes** (1 root + 6 chapters + 63 concepts). Priority A filled; **two Priority B** leaves authored (`base-vs-instruct`, `bias`).
+Current tree: **73 nodes** (1 root + 6 chapters + 66 concepts). Priority A filled; **two Priority B** leaves authored (`base-vs-instruct`, `bias`).
 
 Target band for Phase 1: **~60–70 nodes** — we are inside it. Prefer quality + neighbor wiring over more leaves.
 
@@ -96,11 +96,18 @@ Proper fork under neural network (path to transformers):
 
 Bridge back to spine: all point toward `transformer`.
 
-### Still thin (next domain)
+### Reward learning domain — shipped
 
-| id | Name | Parent | Notes |
-|---|---|---|---|
-| `reinforcement-learning` | Reinforcement learning | machine-learning | Next: reward learning |
+Proper fork under machine learning:
+
+| id | Name | Parent |
+|---|---|---|
+| `reinforcement-learning` | Reinforcement learning | machine-learning |
+| `reward` | Reward | reinforcement-learning |
+| `policy` | Policy | reinforcement-learning |
+| `rlhf` | RLHF | reinforcement-learning |
+
+Bridge back to canopy: `rlhf` ↔ `alignment`.
 
 ## Pause rule
 

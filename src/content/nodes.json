@@ -387,20 +387,122 @@
     ],
     "neighbors": [
       { "id": "machine-learning", "relation": "prereq" },
+      { "id": "reward", "relation": "next" },
       { "id": "deep-learning", "relation": "sibling" },
       { "id": "alignment", "relation": "usedIn" }
     ],
     "nextStep": {
-      "kind": "seeRelated",
-      "targetId": "alignment",
-      "label": "See how chat answers get steered"
+      "kind": "goDeeper",
+      "targetId": "reward",
+      "label": "See the score the learner chases"
     },
     "analogy": "Learning tennis by points, not by memorizing a textbook.",
     "example": "A game bot that improves by playing itself.",
     "aliases": [
       "RL",
-      "RLHF",
-      "reward learning"
+      "reward learning",
+      "trial and error learning"
+    ]
+  },
+  {
+    "id": "reward",
+    "name": "Reward",
+    "alias": "Reward signal",
+    "parentId": "reinforcement-learning",
+    "level": "intro",
+    "oneBreath": "The score that tells the learner “that move was good” or “that was bad” after it acts.",
+    "does": [
+      "Push the system toward higher-scoring actions",
+      "Shape what “success” means in a task"
+    ],
+    "doesNot": [
+      "Not the same as labeled training examples",
+      "Not automatically fair — a bad score teaches bad habits"
+    ],
+    "neighbors": [
+      { "id": "reinforcement-learning", "relation": "prereq" },
+      { "id": "policy", "relation": "next" },
+      { "id": "rlhf", "relation": "sibling" }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "policy",
+      "label": "See how it chooses the next action"
+    },
+    "analogy": "Points on a scoreboard after each play.",
+    "example": "Plus one for a win; minus one for a crash in a driving sim.",
+    "aliases": [
+      "reward signal",
+      "reward function",
+      "scoring signal"
+    ]
+  },
+  {
+    "id": "policy",
+    "name": "Policy",
+    "alias": "Action policy",
+    "parentId": "reinforcement-learning",
+    "level": "core",
+    "oneBreath": "The learner’s rule for what to do next in a situation — its playbook, updated as rewards come in.",
+    "does": [
+      "Map “what I see” to “what I try”",
+      "Improve as rewards show better moves"
+    ],
+    "doesNot": [
+      "Not a company privacy policy",
+      "Not a fixed script — it can keep changing with training"
+    ],
+    "neighbors": [
+      { "id": "reinforcement-learning", "relation": "prereq" },
+      { "id": "reward", "relation": "prereq" },
+      { "id": "rlhf", "relation": "sibling" },
+      { "id": "agent", "relation": "usedIn" }
+    ],
+    "nextStep": {
+      "kind": "goDeeper",
+      "targetId": "rlhf",
+      "label": "See rewards from human preferences"
+    },
+    "analogy": "A coach’s game plan that gets rewritten after each match.",
+    "example": "In a maze game: “at this corner, turn left.”",
+    "aliases": [
+      "action policy",
+      "control policy",
+      "decision policy"
+    ]
+  },
+  {
+    "id": "rlhf",
+    "name": "RLHF",
+    "alias": "RL from human feedback",
+    "parentId": "reinforcement-learning",
+    "level": "core",
+    "oneBreath": "Using people’s ranked preferences as the reward — so a chat model leans toward answers humans liked more.",
+    "does": [
+      "Steer chat tone and helpfulness with human rankings",
+      "Connect classic RL ideas to modern assistants"
+    ],
+    "doesNot": [
+      "Not perfect safety or truth",
+      "Not the only way to align a model"
+    ],
+    "neighbors": [
+      { "id": "reinforcement-learning", "relation": "prereq" },
+      { "id": "reward", "relation": "usedIn" },
+      { "id": "alignment", "relation": "next" },
+      { "id": "policy", "relation": "sibling" }
+    ],
+    "nextStep": {
+      "kind": "seeRelated",
+      "targetId": "alignment",
+      "label": "See alignment in the GenAI canopy"
+    },
+    "analogy": "Coaching that rewards the replies people prefer.",
+    "example": "Raters pick which of two answers feels more helpful.",
+    "aliases": [
+      "reinforcement learning from human feedback",
+      "preference tuning",
+      "human preference training"
     ]
   },
   {
@@ -1121,7 +1223,7 @@
         "relation": "prereq"
       },
       {
-        "id": "base-vs-instruct",
+        "id": "rlhf",
         "relation": "prereq"
       },
       {

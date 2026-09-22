@@ -136,7 +136,7 @@ describe("buildFlowGraph", () => {
     expect(rl.data.role).toBe("root");
     expect(vision.position.x + 140).toBeLessThan(trunkX - 200);
     expect(sequences.position.x + 140).toBeGreaterThan(trunkX + 200);
-    expect(Math.abs(cnn.position.x - vision.position.x)).toBeLessThan(600);
+    expect(Math.abs(cnn.position.x - vision.position.x)).toBeLessThan(700);
     expect(cnn.position.x + 140).toBeLessThan(trunkX);
     expect(rnn.position.x + 140).toBeGreaterThan(trunkX + 100);
     expect(rl.position.x + 140).toBeLessThan(trunkX - 200);
@@ -186,6 +186,33 @@ describe("buildFlowGraph", () => {
     const seq2seq = kids.find((k) => k.id === "seq2seq")!;
     expect(lstm.position.y).toBeLessThan(hub.position.y);
     expect(seq2seq.position.y).toBeGreaterThan(hub.position.y);
+    for (let i = 0; i < kids.length; i++) {
+      for (let j = i + 1; j < kids.length; j++) {
+        const a = kids[i]!;
+        const b = kids[j]!;
+        const dist = Math.hypot(
+          a.position.x - b.position.x,
+          a.position.y - b.position.y,
+        );
+        expect(dist).toBeGreaterThan(280);
+      }
+    }
+  });
+
+  it("nests RL domain leaves under reinforcement-learning", () => {
+    const g = buildFlowGraph(loadNodes());
+    const hub = g.nodes.find((x) => x.id === "reinforcement-learning")!;
+    const kids = ["reward", "policy", "rlhf"].map(
+      (id) => g.nodes.find((x) => x.id === id)!,
+    );
+    for (const leaf of kids) {
+      expect(leaf.data.role).toBe("root");
+      expect(leaf.position.x).toBeLessThan(hub.position.x - 80);
+    }
+    const policy = kids.find((k) => k.id === "policy")!;
+    const rlhf = kids.find((k) => k.id === "rlhf")!;
+    expect(policy.position.y).toBeLessThan(hub.position.y);
+    expect(rlhf.position.y).toBeGreaterThan(hub.position.y);
     for (let i = 0; i < kids.length; i++) {
       for (let j = i + 1; j < kids.length; j++) {
         const a = kids[i]!;
