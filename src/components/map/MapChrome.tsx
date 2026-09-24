@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { WhoAmILockup } from "@/components/brand/WhoAmILockup";
 import { ConceptSearch } from "@/components/search/ConceptSearch";
+import { LatestFindingStrip } from "@/components/site/LatestFindingStrip";
+import { SiteNav } from "@/components/site/SiteNav";
+import type { Finding } from "@/content/findings";
 import type { ConceptNode } from "@/content/schema";
 
 type Props = {
@@ -10,6 +13,7 @@ type Props = {
   compactBrand: boolean;
   /** Soften map chrome while the welcome choice is up. */
   welcoming?: boolean;
+  latestFinding?: Finding;
   onSelect: (id: string) => void;
 };
 
@@ -32,6 +36,7 @@ export function MapChrome({
   nodes,
   compactBrand,
   welcoming = false,
+  latestFinding,
   onSelect,
 }: Props) {
   const [quietHints, setQuietHints] = useState(false);
@@ -59,9 +64,19 @@ export function MapChrome({
 
   return (
     <header className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 md:p-8">
-      <div className="pointer-events-auto flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+      <div className="pointer-events-auto flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div className="max-w-md">
           <WhoAmILockup compact={compactBrand} />
+          {!compactBrand ? (
+            <p className="map-purpose">Place yourself in AI.</p>
+          ) : null}
+          <div
+            className={
+              welcoming ? "mt-3 opacity-50 pointer-events-none" : "mt-3"
+            }
+          >
+            <SiteNav overlay />
+          </div>
           {!compactBrand && !welcoming ? (
             <p
               className={[
@@ -98,6 +113,7 @@ export function MapChrome({
             .join(" ")}
         >
           <ConceptSearch nodes={nodes} onSelect={onSelect} />
+          {latestFinding ? <LatestFindingStrip finding={latestFinding} /> : null}
         </div>
       </div>
     </header>

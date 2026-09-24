@@ -18,6 +18,7 @@ import { MapWelcome } from "@/components/map/MapWelcome";
 import { OrientationCard } from "@/components/card/OrientationCard";
 import { OrientationSheet } from "@/components/card/OrientationSheet";
 import { TreeAtmosphere } from "@/components/map/TreeAtmosphere";
+import { latestFinding } from "@/content/findings";
 
 function useIsMobile() {
   return useSyncExternalStore(
@@ -147,6 +148,8 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
     ? chapterColor(resolveChapterId(focused, byId))
     : "var(--map-accent)";
   const showWelcome = !welcomeDone && !focused;
+  const showLatest = !showWelcome && !focused && !underground;
+  const latest = latestFinding();
 
   const onClose = () => {
     setFocusedId(undefined);
@@ -194,11 +197,12 @@ export function MapExperience({ nodes, initialFocusId }: Props) {
         nodes={nodes}
         compactBrand={Boolean(focused)}
         welcoming={showWelcome}
+        latestFinding={showLatest ? latest : undefined}
         onSelect={(id) => openNode(id, "search")}
       />
       <div
         className={[
-          "absolute inset-0 z-[1] pt-24 md:pt-28",
+          "absolute inset-0 z-[1] pt-36 md:pt-40",
           showWelcome ? "map-stage-dimmed" : "",
         ]
           .filter(Boolean)

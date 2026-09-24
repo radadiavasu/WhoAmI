@@ -1,0 +1,70 @@
+[
+  {
+    "slug": "edge0-ssd-moe-working-set",
+    "title": "Edge0: a big model that keeps most of itself on the disk",
+    "date": "2026-09-24",
+    "kind": "Research",
+    "excerpt": "Edge0 is a way to run a large “team of specialists” model without loading the whole team into RAM. I could not try it: it only runs on Apple Macs today. I have an NVIDIA (CUDA) machine. Worth knowing. Worth installing only if you have a Mac.",
+    "body": "Edge0 is software that helps a large language model run on a smaller computer. The model is still big. The trick is: most of it stays on the hard drive, and only the part needed for the next word is pulled into memory.\n\nPeople share a clip that says “35 billion parameters in 3 GB.” That sounds like a tiny model that somehow got superpowers. It is not. The full 35B download is still about 23 GB on disk. What they mean is: while it is answering, RAM only has to hold the specialists who are working right now — they say about 3 GB on a Mac mini.\n\nThink of a hospital, not one genius doctor. A Mixture of Experts model is a building full of specialists. For each word, only a few of them wake up. That already saves work. The usual setup still keeps every specialist in the waiting room (in RAM). Edge0 leaves the idle ones in the filing cabinet (the SSD) and guesses who is next so the files can start walking over in time.\n\nThe table below is the same story in two columns. Their RAM and speed numbers are from the project (Mac mini M4 Pro), not from my machine.",
+    "afterword": "Can I try it? No — and that matters. Their docs say it only works today on macOS with Apple Silicon (M1, M2, M3, M4). CUDA — the usual path on NVIDIA GPUs — is “coming later,” not here. I have CUDA, so I cannot install it, chat with it, or time it. This is a read of the repo and paper, not a hands-on review.\n\nOverall take — is it worth checking?\n\nThe idea is worth knowing for everyone: “big model” and “small RAM” can both be true if unused pieces live on disk. That is the part I put on the tree, next to Mixture of Experts and Quantization.\n\nIs it worth installing? Only if you have an Apple Silicon Mac and spare disk (about 23 GB for the big one, about 4 GB for the small one). If you have NVIDIA / CUDA like me, wait. Bookmark the repo; do not fight the installer. When they ship CUDA, I will try it and update this note.",
+    "nodeIds": ["moe", "quantization"],
+    "compare": {
+      "usualLabel": "What people usually do",
+      "theirsLabel": "What Edge0 does",
+      "rows": [
+        {
+          "topic": "The common move",
+          "usual": "Run a smaller model on your PC, or send the prompt to a cloud API. If you go local, tools like Ollama / llama.cpp usually load the whole file into RAM or the GPU.",
+          "theirs": "Keep a large “team of specialists” model on disk, and only pull in the few specialists needed for the next word."
+        },
+        {
+          "topic": "Where the model lives while you chat",
+          "usual": "Almost all of it sits in memory (RAM or GPU). If it does not fit, it will not run — or it crawls.",
+          "theirs": "The full model stays on the SSD (~23 GB for 35B, ~4 GB for 8B). Memory holds the current shift only."
+        },
+        {
+          "topic": "RAM they talk about",
+          "usual": "A 35B-class 4-bit model often wants on the order of 20 GB in memory if the whole thing is loaded.",
+          "theirs": "They report about 3 GB of active RAM for the 35B tier, and about 1 GB for the 8B tier — on a Mac mini."
+        },
+        {
+          "topic": "Who can run it today",
+          "usual": "NVIDIA / CUDA PCs are the usual local path. Windows and Linux are normal.",
+          "theirs": "Only Apple Silicon Macs (M1–M4) right now. CUDA is promised later. I cannot test it on my machine."
+        },
+        {
+          "topic": "Speed (their claim)",
+          "usual": "A fully loaded local model can feel snappy if the GPU holds it. Cloud APIs feel instant if the network is fine.",
+          "theirs": "They measured about 15–18 tokens per second for 35B on an M4 Pro. I did not reproduce this."
+        },
+        {
+          "topic": "The catch",
+          "usual": "You pay in RAM, GPU size, or an API bill.",
+          "theirs": "You pay in disk space, SSD wear/speed, and (today) needing a Mac. Quality is a few points below their full-precision teacher, by their tests."
+        }
+      ]
+    },
+    "resources": [
+      {
+        "label": "Edge0-AI/Edge0 — streaming MoE framework (GitHub)",
+        "href": "https://github.com/Edge0-AI/Edge0",
+        "kind": "repo"
+      },
+      {
+        "label": "The Other Half of the Memory Wall (arXiv:2609.18063)",
+        "href": "https://arxiv.org/abs/2609.18063",
+        "kind": "paper"
+      },
+      {
+        "label": "Edge0-35B-A3B-preview (Hugging Face)",
+        "href": "https://huggingface.co/Edge0/Edge0-35B-A3B-preview",
+        "kind": "docs"
+      },
+      {
+        "label": "edge0.ai — 35B in ~3 GB memory",
+        "href": "https://edge0.ai/models/edge0-35b",
+        "kind": "docs"
+      }
+    ]
+  }
+]
