@@ -20,11 +20,22 @@ export function FindingMedia({ finding, priority = false }: Props) {
           <Image
             src={finding.image}
             alt={finding.title}
-            width={1280}
-            height={720}
-            sizes="(max-width: 720px) 100vw, 42rem"
+            width={1600}
+            height={640}
+            sizes="(max-width: 720px) 100vw, 46rem"
             priority={priority}
           />
+          {finding.imageCredit ? (
+            <figcaption>
+              {finding.imageCreditHref ? (
+                <a href={finding.imageCreditHref} rel="noreferrer" target="_blank">
+                  {finding.imageCredit}
+                </a>
+              ) : (
+                finding.imageCredit
+              )}
+            </figcaption>
+          ) : null}
         </figure>
       ) : null}
       {finding.video ? (

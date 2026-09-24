@@ -1369,6 +1369,27 @@ body {
   height: auto;
 }
 
+.finding-media-image figcaption {
+  margin: 0.55rem 0.15rem 0;
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  word-spacing: 0.04em;
+}
+
+.finding-media-image figcaption a {
+  color: var(--moss);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in oklab, var(--moss) 35%, transparent);
+}
+
+.finding-media-image figcaption a:hover,
+.finding-media-image figcaption a:focus-visible {
+  color: var(--sun);
+  border-bottom-color: color-mix(in oklab, var(--sun) 55%, transparent);
+  outline: none;
+}
+
 .finding-media-video {
   position: relative;
   overflow: hidden;

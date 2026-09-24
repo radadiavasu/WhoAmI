@@ -29,6 +29,8 @@ const findingSchema = z.object({
   afterword: z.string().min(1).optional(),
   nodeIds: z.array(z.string().min(1)).min(1),
   image: z.string().min(1).optional(),
+  imageCredit: z.string().min(1).optional(),
+  imageCreditHref: z.string().min(1).optional(),
   video: z
     .object({
       url: z.string().min(1),

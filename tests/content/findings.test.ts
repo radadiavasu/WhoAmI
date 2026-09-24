@@ -7,6 +7,7 @@ describe("findings", () => {
     expect(findings.length).toBeGreaterThan(0);
     expect(findings.some((f) => f.kind === "Research")).toBe(true);
     expect(findings.some((f) => (f.resources?.length ?? 0) > 0)).toBe(true);
+    expect(findings.some((f) => f.image?.includes("edge0-repo"))).toBe(true);
   });
 
   it("reads YouTube ids from common url shapes", () => {
