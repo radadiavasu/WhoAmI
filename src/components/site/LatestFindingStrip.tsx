@@ -8,15 +8,10 @@ type Props = {
 export function LatestFindingStrip({ finding }: Props) {
   return (
     <aside className="latest-finding" aria-label="Latest finding">
-      <div className="latest-finding-inner">
-        <p className="latest-finding-kicker">Latest finding</p>
-        <p className="latest-finding-title">
-          <Link href={`/findings/${finding.slug}`}>{finding.title}</Link>
-        </p>
-        <Link href={`/findings/${finding.slug}`} className="latest-finding-link">
-          Read finding
-        </Link>
-      </div>
+      <Link href={`/findings/${finding.slug}`} className="latest-finding-inner">
+        <span className="latest-finding-kicker">Latest</span>
+        <span className="latest-finding-title">{finding.title}</span>
+      </Link>
     </aside>
   );
 }

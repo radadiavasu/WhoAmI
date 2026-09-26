@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { AuthorByline } from "@/components/site/AuthorByline";
@@ -24,17 +23,6 @@ export default function FindingsPage() {
       <ul className="findings-list">
         {findings.map((finding) => (
           <li key={finding.slug} className="finding-card">
-            {finding.image ? (
-              <Link href={`/findings/${finding.slug}`} className="finding-card-thumb">
-                <Image
-                  src={finding.image}
-                  alt=""
-                  width={640}
-                  height={360}
-                  sizes="(max-width: 720px) 100vw, 20rem"
-                />
-              </Link>
-            ) : null}
             <div className="finding-card-body">
               <div className="finding-card-meta">
                 <time dateTime={finding.date}>{formatFindingDate(finding.date)}</time>
