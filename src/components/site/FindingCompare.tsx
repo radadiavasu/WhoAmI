@@ -10,10 +10,7 @@ export function FindingCompare({ compare }: Props) {
       <h2 id="finding-compare-title">
         {compare.usualLabel} vs {compare.theirsLabel}
       </h2>
-      <p>
-        Same kind of big model. Different place the unused pieces live. Their
-        numbers are from the project, not from my machine.
-      </p>
+      {compare.lead ? <p>{compare.lead}</p> : null}
       <div className="finding-compare-scroll">
         <table>
           <caption className="sr-only">

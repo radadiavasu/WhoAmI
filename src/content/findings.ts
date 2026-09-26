@@ -16,6 +16,7 @@ const compareRowSchema = z.object({
 const compareSchema = z.object({
   usualLabel: z.string().min(1),
   theirsLabel: z.string().min(1),
+  lead: z.string().min(1).optional(),
   rows: z.array(compareRowSchema).min(2),
 });
 
@@ -58,6 +59,20 @@ export function getFinding(slug: string): Finding | undefined {
 
 export function latestFinding(): Finding {
   return loadFindings()[0]!;
+}
+
+export type FindingParagraphKind = "lede" | "beat" | "walk" | "after-open";
+
+/** Short lines become rest-stops on the path; the first body line is the lede. */
+export function classifyFindingParagraph(
+  text: string,
+  index: number,
+  tone: "body" | "after" = "body",
+): FindingParagraphKind {
+  if (tone === "after" && index === 0) return "after-open";
+  if (tone === "body" && index === 0) return "lede";
+  if (text.length <= 120) return "beat";
+  return "walk";
 }
 
 export function formatFindingDate(iso: string) {

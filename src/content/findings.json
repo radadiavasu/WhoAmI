@@ -7,13 +7,17 @@
     "excerpt": "Edge0 is a way to run a large “team of specialists” model without loading the whole team into RAM. I could not try it: it only runs on Apple Macs today. I have an NVIDIA (CUDA) machine. Worth knowing. Worth installing only if you have a Mac.",
     "body": "Edge0 is software that helps a large language model run on a smaller computer. The model is still big. The trick is: most of it stays on the hard drive, and only the part needed for the next word is pulled into memory.\n\nPeople share a clip that says “35 billion parameters in 3 GB.” That sounds like a tiny model that somehow got superpowers. It is not. The full 35B download is still about 23 GB on disk. What they mean is: while it is answering, RAM only has to hold the specialists who are working right now — they say about 3 GB on a Mac mini.\n\nThink of a hospital, not one genius doctor. A Mixture of Experts model is a building full of specialists. For each word, only a few of them wake up. That already saves work. The usual setup still keeps every specialist in the waiting room (in RAM). Edge0 leaves the idle ones in the filing cabinet (the SSD) and guesses who is next so the files can start walking over in time.\n\nThe table below is the same story in two columns. Their RAM and speed numbers are from the project (Mac mini M4 Pro), not from my machine.",
     "afterword": "Can I try it? No — and that matters. Their docs say it only works today on macOS with Apple Silicon (M1, M2, M3, M4). CUDA — the usual path on NVIDIA GPUs — is “coming later,” not here. I have CUDA, so I cannot install it, chat with it, or time it. This is a read of the repo and paper, not a hands-on review.\n\nOverall take — is it worth checking?\n\nThe idea is worth knowing for everyone: “big model” and “small RAM” can both be true if unused pieces live on disk. That is the part I put on the tree, next to Mixture of Experts and Quantization.\n\nIs it worth installing? Only if you have an Apple Silicon Mac and spare disk (about 23 GB for the big one, about 4 GB for the small one). If you have NVIDIA / CUDA like me, wait. Bookmark the repo; do not fight the installer. When they ship CUDA, I will try it and update this note.",
-    "nodeIds": ["moe", "quantization"],
+    "nodeIds": [
+      "moe",
+      "quantization"
+    ],
     "image": "/findings/edge0-repo.jpg",
     "imageCredit": "Banner from Edge0-AI/Edge0. The repo has no demo video.",
     "imageCreditHref": "https://github.com/Edge0-AI/Edge0/blob/main/assets/20260908-223115.jpg",
     "compare": {
       "usualLabel": "What people usually do",
       "theirsLabel": "What Edge0 does",
+      "lead": "Same kind of big model. Different place the unused pieces live. Their numbers are from the project, not from my machine.",
       "rows": [
         {
           "topic": "The common move",
@@ -66,6 +70,104 @@
       {
         "label": "edge0.ai — 35B in ~3 GB memory",
         "href": "https://edge0.ai/models/edge0-35b",
+        "kind": "docs"
+      }
+    ]
+  },
+  {
+    "slug": "jev-system-one-typed-decisions",
+    "title": "Jev: a model that returns a decision, not a chat reply",
+    "date": "2026-09-26",
+    "kind": "Research",
+    "excerpt": "I keep paying chat models to think out loud on questions that only needed a yes, a no, or “send this to billing.” Jev is TypeSafe AI’s answer: not another LLM, a model built to return a pick, a score, or a probability that software can use immediately. I have not called their API yet. Around it, people already shipped demos and open copies. This is what I understood — and why the idea still sat with me.",
+    "body": "I want to start with a feeling, not a product name.\n\nIf you have ever built an AI agent, you already know it. The agent is “thinking.” You are waiting. The bill is moving. And half of those thoughts were not thoughts at all — they were tiny gates. Which tool? Which model? Is this step safe? Is this ticket urgent? Is this spam? You did not need a philosopher. You needed a fast, cheap, boring decision.\n\nTypeSafe AI’s founder said it in one line I keep coming back to: models are superhuman at chat, but where is all the automation? That is not a slogan to me. That is the week I spent watching an agent narrate its way through a choice a junior intern would have made in two seconds.\n\nJev is their first public answer. And the first thing to say, especially if you are new, is this: Jev is an AI model, but it is not an LLM. An LLM is the thing you already met — ChatGPT, Claude, Gemini — a model that writes, word by word, like a person talking. Jev does not talk. You give it some context and a list of questions with options. It gives you back structured answers: this option, this score, this probability. Your code can take that and move. No paragraph to parse. No “sure, here’s my thinking.”\n\nIf that still sounds abstract, picture a form, not a conversation. You are not asking Jev to explain the ticket. You are asking: is this billing or tech? How urgent, from 1 to 5? Should a human see it — yes or no? It fills the form. You run the next step.\n\nNow the smart objection, because I had it too: so what? Any LLM can do this with structured output. True. It can. You can force a chat model to answer in JSON. I have done it. Two things they say change with Jev, and both are the reason I wrote this down: speed and cost. Their pages talk about 70–500 milliseconds, and about four ten-thousandths of a dollar per decision. Their home page even puts a bigger headline on it — “193.6x faster, 444.6x cheaper” on System One workflows. I have not measured any of that. I am repeating their numbers so you know what they are selling — not so you think I ran a bake-off.\n\nThat “so what” is also why I think this is worth a finding and not a bookmark. Structured output on an LLM is still System 2 wearing a form. The model still walks through the answer token by token. Jev is trying to be the reflex.\n\nWhich brings me to the line of theirs that is actually deep, if you let it sit: software needs System 1 thinking, but we keep building System 2 thinking.\n\nIf you have never heard System 1 and System 2, you are not late. The names come from Daniel Kahneman’s book Thinking, Fast and Slow. I learned them the same way I learn most ideas — by needing a picture.\n\nSystem 1 is the bike. You are riding. A barricade is suddenly in front of you. What do you do? You do not pull out equations. You do not estimate distance, friction, reaction time. You turn. Your body decides in a blink. That is System 1: fast, cheap, a little rough, good enough to keep you alive.\n\nSystem 2 is the interview question. Someone asks, “Where do you see yourself in five years?” Now you start a meeting in your own head. Where am I today? What is the market doing? What does my field look like? What do I even want? You think slowly, in words, on purpose. That is what today’s LLMs are good at. They are very expensive interns who can write the five-year plan.\n\nHere is the uncomfortable part for those of us shipping agents: most steps in an agent are barricades, not five-year plans. And we still call the intern who writes essays.\n\nJev’s bet is: let the intern write when you need a plan. For the swerve, use something built only to swerve.\n\nWhat that looks like in their product, in normal words: you send a state — a ticket, a log line, a user message, a little bundle of facts. Then you send questions. A question is one of three shapes. Choice: pick one label from a list you defined (billing, tech, refund). Score: put it on a short ladder you defined (how bad is this, 1 to 5). Noul: a yes/no that comes back as a probability between 0 and 1 — “is this urgent?” → 0.86. You can ask several of these in one call. They say it answers them together, not one after another like a chatbot finishing a sentence.\n\nEvery answer comes with a confidence number. That is the part I care about as someone who has been burned by models that sound sure. They claim Jev is trained with something they call RLCD — Reinforcement Learning for Calibrated Decisions. The promise, in their words: if it says 80%, then in a hundred similar cases it should be right about eighty times. Normal chat models (the RLHF ones we already know) can sound incredibly confident while being wrong. I have not proven Jev is honest. I am saying that is the promise, and it is the right promise for software.\n\nOne more sentence people repeat, and I want to un-confuse it: “Jev can’t hallucinate.” What they mean is narrower, and more useful. Because you locked the shape — these options, this scale, this yes/no — it cannot invent a new field or a weird type. It cannot write a poem where you asked for a label. It can still pick the wrong label. A wrong pick with a number is not the same as a fluent lie, but it is still wrong. For a newcomer: hallucination here is “making up the shape.” Being incorrect is a different problem. Don’t mix them.\n\nWho is this actually for? Not “everyone,” even though the landing page will try.\n\nIf you are new to AI, the takeaway is simple: not every model is a chatbot. Some models are closer to a very fast multiple-choice exam. You will meet this idea again as “structured output,” “routing,” “guardrails.” Jev is one company’s extreme version of that idea.\n\nIf you build agents, this is the pain you already have. The loop thinks, acts, observes, thinks again. Most of those thinks should be cheap. Which tool? Which model? Did the last step look safe? That is Jev’s lane — the if-statements that are too fuzzy to hard-code and too small to spend a frontier model on.\n\nIf you run ops or support, think of the pile: tickets, claims, invoices, leads. You already classify them. Rules break. Full LLMs are slow and spendy when the pile is tall. A model that only classifies, and does several questions at once, is the dream. Dream until measured — but you can see why they aim here.\n\nIf you do trust and safety, same shape: spam, fraud, jailbreak-ish prompts, “should this go up to a human?” A probability you can threshold is more useful than a paragraph that says “this might be risky because…”\n\nAnd if you live in logs, catalogs, transcripts — unstructured to structured — that is the form again. Not a summary. A set of fields.\n\nI am not going to paste seventy demos here. The week after launch, people did not wait for a paper. They sorted mail, scored leads, filtered slop as you scroll, compacted Claude’s context, even let Jev play Doom. Those are other people’s builds, with other people’s numbers. Two maps already exist if you want to wander: an unofficial awesome list that also writes down limits and cost, and shipwithjev’s GitHub shelf (hundreds of repos, not affiliated with TypeSafe, receipts as the authors reported them). Start there. Do not start by cloning everything.\n\nClosed also does not mean alone. Jared Palmer’s Kev is a Jev-shaped family on Qwen you can train and run yourself — same System One API shape, so code written for Jev can point at a local server. Laya is another open System 1 engine; its author says he published the non-autoregressive decision idea a year earlier, with papers and weights. I have not run Kev or Laya. I am naming them so you do not think TypeSafe is the only door, and so you do not treat a competitor’s benchmark board as my result.\n\nTheir own limits, as collected on that awesome list from TypeSafe’s jaggedness notes: Jev reads instructions literally. It is not a calculator — keep math, counting, and date compare in code. Accuracy falls when you stuff the state with junk. Separate questions are not guaranteed to agree. It does not write text. English works best. Text in the state can steer it, so a prompt-injection flavored ticket is not a toy problem. That last one matters if you were about to put it on the public internet with no filter.\n\nI am not going to give you a TED Talk about the future. One picture is enough for me: a big model still plans. Cheap reflexes run in the steps between. When a decision costs almost nothing, you stop asking “is this worth a model call?” You check. That is interesting. It is also how products disappear into the stack and you never say their name again. Either way, I want to see it.\n\nWhat is behind Jev? Here I have to be a grown-up. TypeSafe did not publish a paper. There is no architecture diagram I can put on the tree and defend. They hint at a new architecture and a parallel sampler — all your questions at once, not token-by-token like GPT. The rest is me connecting dots: probably not a normal “write the next word” model; trained for these blink-tasks; closed, early, hosted on their API. BERT-versus-GPT, world knowledge, synthetic data — those are guesses. I will not pretend they are facts. The idea can be brilliant and the box can still be closed. Both are true. The table below is the same story in two columns.",
+    "afterword": "Can I try it? Not yet. I am waiting on API access. So this is a reading of their site, their docs, and the community maps — the same honesty bar as Edge0 before I could run it. When I get a key I will actually send it tickets and agent-gates, time it, and come back and edit this note. If the magic is only on the landing page, I will say that too.\n\nLimitations I already take as real, even before I call it: no independent bench I have run myself; text only; no web search, no extra eyes; it does not explain itself — you get the pick and the confidence, not the reasoning tokens. That last one matters. I would not put this alone on a bank decision. I would put it on small gates, and escalate when the number is mushy.\n\nKnown weak spot, in their own neighborhood of claims: it is not trying to be “very intelligent” in the chat sense. That is the point, and also the ceiling.\n\nOverall take. Is this noise? I don’t think so. The idea is a real foundation: stop using a novelist for a turn signal. The product I will judge when I can hit it. The surrounding weather — demos, awesome lists, Kev, Laya — tells me the idea already left the building. Until I can call it, I placed it on the tree next to structured output, latency and cost, and the agent loop — because that is where the pain lives, not on a brand page.",
+    "nodeIds": [
+      "structured-output",
+      "latency-cost",
+      "agent-loop"
+    ],
+    "compare": {
+      "usualLabel": "What people usually do",
+      "theirsLabel": "What Jev is built for",
+      "lead": "Same job: turn messy text into a decision software can use. Different tool. Speed and price below are from TypeSafe and from other builders, not from my machine.",
+      "rows": [
+        {
+          "topic": "What you asked for",
+          "usual": "A paragraph, or JSON you hope is valid after the chatbot finishes talking.",
+          "theirs": "A pick, a score, or a yes/no probability your code already understands."
+        },
+        {
+          "topic": "How the answer is born",
+          "usual": "Word by word. Structured output still walks that road. You wait, then you parse.",
+          "theirs": "They say every question in one pass — a blink, then the next step."
+        },
+        {
+          "topic": "When it fails",
+          "usual": "Fluent nonsense, or a broken schema you have to catch.",
+          "theirs": "A wrong label, still in the schema you set. Wrong is still wrong."
+        },
+        {
+          "topic": "Speed and price they advertise",
+          "usual": "A frontier chat call: seconds and cents, sometimes more, if the agent thinks out loud.",
+          "theirs": "They say 70–500 ms, about $0.0004 a decision, $42 per billion input tokens. Home-page “193x / 444x” is their workflow claim. I did not time it."
+        },
+        {
+          "topic": "What people already built",
+          "usual": "You invent the demo yourself, or you watch a model vendor’s one happy path.",
+          "theirs": "In the first week: mail triage, slop filters, Claude compaction, game agents. I point you at the catalogs, not a fake top-ten of my own."
+        },
+        {
+          "topic": "If you want to run something yourself",
+          "usual": "Any LLM API tonight, with JSON mode, on your key.",
+          "theirs": "Jev is their hosted box. Kev and Laya are open Jev-shaped bets I have not run. I cannot try Jev until I have a key."
+        },
+        {
+          "topic": "When I would not use it",
+          "usual": "You need a story, a citation, or a “why” for a regulator.",
+          "theirs": "Same — plus math, dates, and anything I cannot afford to get silently wrong."
+        }
+      ]
+    },
+    "resources": [
+      {
+        "label": "TypeSafe AI — System One / Jev (company home)",
+        "href": "https://typesafe.ai/",
+        "kind": "docs"
+      },
+      {
+        "label": "Introducing System One Models and Jev",
+        "href": "https://typesafe.ai/blog/introducing-system-one-models-and-jev",
+        "kind": "docs"
+      },
+      {
+        "label": "What is Jev? (plain explanation)",
+        "href": "https://jevtypesafeai.com/what-is-jev",
+        "kind": "docs"
+      },
+      {
+        "label": "Jev Decision API docs",
+        "href": "https://jevtypesafeai.com/docs",
+        "kind": "docs"
+      },
+      {
+        "label": "awesome-jev-use-cases — unofficial demos, limits, cost (GitHub)",
+        "href": "https://github.com/walidboulanouar/awesome-jev-use-cases",
+        "kind": "repo"
+      },
+      {
+        "label": "shipwithjev — GitHub builds catalog (unofficial)",
+        "href": "https://www.shipwithjev.com/type/github",
+        "kind": "other"
+      },
+      {
+        "label": "jaredpalmer/kev — open Jev-like models you can train and run",
+        "href": "https://github.com/jaredpalmer/kev",
+        "kind": "repo"
+      },
+      {
+        "label": "Laya — open System 1 decision engine (ConvAI Innovations)",
+        "href": "https://laya.convaiinnovations.com/",
         "kind": "docs"
       }
     ]

@@ -1601,10 +1601,60 @@ body {
   font-size: 0.86rem;
 }
 
+.finding-read {
+  position: relative;
+}
+
+.finding-read-rail {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  height: 3px;
+  margin: 0 -1.25rem 1.35rem;
+  overflow: hidden;
+  background: color-mix(in oklab, var(--ink) 10%, transparent);
+}
+
+.finding-read-rail-fill {
+  height: 100%;
+  width: 100%;
+  transform: scaleX(var(--read, 0));
+  transform-origin: left center;
+  background: linear-gradient(
+    90deg,
+    var(--moss),
+    color-mix(in oklab, var(--sun) 80%, var(--moss))
+  );
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .finding-read-rail-fill {
+    transition: transform 80ms linear;
+  }
+}
+
 .finding-detail-body {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.35rem;
+  max-width: 38rem;
+  padding-left: 1.2rem;
+}
+
+.finding-detail-body::before {
+  content: "";
+  position: absolute;
+  left: 0.28rem;
+  top: 0.55rem;
+  bottom: 0.4rem;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--moss) 50%, transparent),
+    color-mix(in oklab, var(--ink) 14%, transparent) 70%,
+    transparent
+  );
 }
 
 .finding-compare + .finding-detail-body {
@@ -1612,10 +1662,74 @@ body {
 }
 
 .finding-detail-body p {
+  position: relative;
   margin: 0;
-  font-size: 1.05rem;
-  line-height: 1.65;
+  font-size: 1.08rem;
+  line-height: 1.7;
   color: color-mix(in oklab, var(--ink) 92%, var(--ink-soft));
+}
+
+.finding-detail-body p::before {
+  content: "";
+  position: absolute;
+  left: -1.2rem;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--night);
+  border: 1.5px solid color-mix(in oklab, var(--moss) 58%, var(--ink-soft));
+  box-shadow: 0 0 0 3px var(--night);
+}
+
+.finding-detail-body p.is-lede {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+  font-size: 1.28rem;
+  font-weight: 520;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.finding-detail-body p.is-lede::before {
+  width: 9px;
+  height: 9px;
+  left: calc(-1.2rem - 1px);
+  top: 0.55em;
+  border-color: var(--moss);
+}
+
+.finding-detail-body p.is-beat {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+  font-size: 1.16rem;
+  font-weight: 520;
+  line-height: 1.42;
+  color: color-mix(in oklab, var(--ink) 90%, var(--sun));
+  padding: 0.1rem 0 0.1rem 0.85rem;
+  border-left: 2px solid color-mix(in oklab, var(--sun) 58%, transparent);
+}
+
+.finding-detail-body p.is-beat::before {
+  border-color: var(--sun);
+  background: color-mix(in oklab, var(--sun) 72%, #1a1208);
+}
+
+.finding-detail-body.is-after p {
+  color: color-mix(in oklab, var(--ink-soft) 35%, var(--ink));
+}
+
+.finding-detail-body.is-after p.is-after-open {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+  font-size: 1.12rem;
+  line-height: 1.5;
+}
+
+.finding-detail-body.is-after::before {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--sun) 42%, transparent),
+    color-mix(in oklab, var(--moss) 28%, transparent) 55%,
+    transparent
+  );
 }
 
 .finding-detail-map {
